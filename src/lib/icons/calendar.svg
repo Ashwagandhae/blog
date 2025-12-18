@@ -1,0 +1,8 @@
+<svg width="100%" style="" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M120 24C131.046 24 140 32.9543 140 44V124C140 135.046 131.046 144 120 144H40C28.9543 144 20 135.046 20 124V44C20 32.9543 28.9543 24 40 24H120ZM40 64V124H120V64H40Z"
+    fill="currentColor" />
+  <rect x="60" y="9" width="40" height="20" rx="10" transform="rotate(90 60 9)" fill="currentColor" />
+  <rect x="120" y="9" width="40" height="20" rx="10" transform="rotate(90 120 9)"
+    fill="currentColor" />
+</svg>
