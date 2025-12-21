@@ -68,44 +68,31 @@
 </svg>
 
 <style>
-  @property --hue-hover-diff {
-    syntax: "<number>";
-    inherits: true;
-    initial-value: 0;
-  }
   svg {
-    --hue-hover-diff: 0;
     transition:
       transform var(--transition-duration-slow),
-      --hue-hover-diff var(--transition-duration-slow);
+      filter var(--transition-duration-slow);
+    filter: brightness(1);
   }
   :global(a:hover) svg {
-    --hue-hover-diff: 0.08;
     transform: rotate(8deg);
+    filter: brightness(1.12);
   }
   :global(a:active) svg {
-    --hue-hover-diff: 0.16;
     transform: rotate(32deg);
+    filter: brightness(1.24);
   }
 
   .body {
-    color: oklch(
-      calc(0.8884 + var(--hue-hover-diff)) 0.0718 calc(var(--hue-front))
-    );
+    color: oklch(0.8884 0.0718 calc(var(--hue-front)));
   }
   .bodyShadow {
-    color: oklch(
-      calc(0.8208 + var(--hue-hover-diff)) 0.0756 calc(var(--hue-front) - 26.49)
-    );
+    color: oklch(0.8208 0.0756 calc(var(--hue-front) - 26.49));
   }
   .comb {
-    color: oklch(
-      calc(0.6257 + var(--hue-hover-diff)) 0.1522 calc(var(--hue-front) - 55.18)
-    );
+    color: oklch(0.6257 0.1522 calc(var(--hue-front) - 55.18));
   }
   .combShadow {
-    color: oklch(
-      calc(0.6257 + var(--hue-hover-diff)) 0.1522 calc(var(--hue-front) - 65.26)
-    );
+    color: oklch(0.6257 0.1522 calc(var(--hue-front) - 65.26));
   }
 </style>
