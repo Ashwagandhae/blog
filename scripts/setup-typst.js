@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 import { pipeline } from "stream/promises";
 import path from "path";
 
-const VERSION = "v0.12.0";
+const VERSION = "v0.14.2";
 const ARCH = "x86_64-unknown-linux-musl";
 const FILENAME = `typst-${ARCH}.tar.xz`;
 const URL = `https://github.com/typst/typst/releases/download/${VERSION}/${FILENAME}`;
