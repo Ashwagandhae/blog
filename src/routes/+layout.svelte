@@ -32,7 +32,7 @@
 <svelte:head>
   <link rel="icon" href={favicon} />
 </svelte:head>
-<header class="siteHeader">
+<header>
   <nav aria-label="Main navigation">
     <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
 
@@ -48,17 +48,32 @@
 
 <style>
   main {
-    padding: 0px 8px;
+    padding: 0px var(--pad);
     max-width: 40em;
 
     margin: auto;
   }
 
-  .siteHeader nav {
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--back-gradient);
+    background-attachment: fixed;
+    background-size: cover;
+    z-index: 9999;
+  }
+
+  header nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--pad);
+    padding: var(--pad-small);
+  }
+
+  main {
+    padding-top: calc(var(--logo-size) + var(--pad-small) * 2);
   }
 
   .navLinks {

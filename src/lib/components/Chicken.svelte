@@ -1,6 +1,6 @@
 <svg
-  width="60px"
-  height="60px"
+  width="100%"
+  height="100%"
   viewBox="0 0 500 500"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
@@ -80,11 +80,11 @@
       --hue-hover-diff var(--transition-duration-slow);
   }
   :global(a:hover) svg {
-    --hue-hover-diff: 0.1;
+    --hue-hover-diff: 0.08;
     transform: rotate(8deg);
   }
   :global(a:active) svg {
-    --hue-hover-diff: 0.15;
+    --hue-hover-diff: 0.16;
     transform: rotate(32deg);
   }
 

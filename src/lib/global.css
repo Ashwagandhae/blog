@@ -39,6 +39,7 @@
   --transition-duration: 0ms;
   --transition-duration-slow: 300ms;
   --transition-duration-background: 500ms;
+  --logo-size: 50px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
