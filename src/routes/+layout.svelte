@@ -32,32 +32,44 @@
 <svelte:head>
   <link rel="icon" href={favicon} />
 </svelte:head>
-<header>
-  <nav aria-label="Main navigation">
-    <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
+<div class="wrapper">
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
 
-    <ul class="navLinks">
-      <li><NavItem href="/about" icon="person">about</NavItem></li>
-      <li><NavItem href="/writing" icon="pen">writing</NavItem></li>
-    </ul>
-  </nav>
-</header>
-<main>
-  {@render children()}
-</main>
+      <ul class="navLinks">
+        <li><NavItem href="/about" icon="person">about</NavItem></li>
+        <li><NavItem href="/writing" icon="pen">writing</NavItem></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="content">
+      {@render children()}
+    </div>
+  </main>
+</div>
 
 <style>
+  .wrapper {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+  }
   main {
     padding: 0px var(--pad);
-    max-width: 40em;
 
+    width: 100%;
+    box-sizing: border-box;
+    overflow: scroll;
+  }
+  .content {
     margin: auto;
+
+    max-width: 40em;
   }
 
   header {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     background: var(--back-gradient);
     background-attachment: fixed;
@@ -70,10 +82,6 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--pad-small);
-  }
-
-  main {
-    padding-top: calc(var(--logo-size) + var(--pad-small) * 2);
   }
 
   .navLinks {
