@@ -4,7 +4,11 @@
   let { data } = $props();
 </script>
 
-<h1>All tags</h1>
+<svelte:head>
+  <title>Tags</title>
+</svelte:head>
+
+<h1>Tags</h1>
 <ul>
   {#each data.tags as tag}
     <li>
@@ -18,5 +22,8 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--pad);
   }
 </style>

@@ -5,6 +5,10 @@
   let { data } = $props();
 </script>
 
-<h1>All articles</h1>
+<svelte:head>
+  <title>Writing</title>
+</svelte:head>
+
+<h1>Writing</h1>
 
 <ArticleList articles={data.articles}></ArticleList>

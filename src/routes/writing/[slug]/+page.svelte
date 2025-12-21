@@ -2,20 +2,15 @@
   import ArticleMeta from "$lib/components/ArticleMetaDisplay.svelte";
   import ContentRenderer from "$lib/components/ContentRenderer.svelte";
   import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
-  import { findMatchingFrontHue, type Palette } from "$lib/palette.js";
+  import {
+    findMatchingFrontHue,
+    getArticlePalette,
+    type Palette,
+  } from "$lib/palette.js";
   let { data } = $props();
 
-  let palette: Palette | null = $derived.by(() => {
-    let hue = data.meta.hue;
-    if (hue == null) return null;
-    return {
-      back: hue,
-      front: findMatchingFrontHue(hue),
-    };
-  });
+  let palette: Palette | null = $derived(getArticlePalette(data.meta));
 </script>
-
-<PaletteDisplay {palette}></PaletteDisplay>
 
 <svelte:head>
   <title>{data.meta.title}</title>
@@ -25,6 +20,8 @@
     <meta property="article:tag" content={tag} />
   {/each}
 </svelte:head>
+
+<PaletteDisplay {palette}></PaletteDisplay>
 
 <article>
   <h1>{data.meta.title}</h1>

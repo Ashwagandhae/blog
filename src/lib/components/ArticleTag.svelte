@@ -20,5 +20,12 @@
   }
   a:hover {
     text-decoration: underline;
+    --tag-back: oklch(var(--article-tag-lightness-hover) 0.08 var(--hue));
+    --tag-transition: background var(--transition-duration);
+  }
+  a:active {
+    text-decoration: underline;
+    --tag-back: oklch(var(--article-tag-lightness-active) 0.08 var(--hue));
+    --tag-transition: background var(--transition-duration);
   }
 </style>

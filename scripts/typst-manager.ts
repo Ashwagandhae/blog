@@ -22,8 +22,6 @@ if (mode === "build") {
 } else if (mode === "dev") {
   buildAll();
   startDevMode();
-} else {
-  console.log("Usage: node scripts/typst-manager.js [dev|build]");
 }
 
 function getTypstFiles() {

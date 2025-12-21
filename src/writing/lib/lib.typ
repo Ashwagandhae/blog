@@ -7,13 +7,16 @@
   html.elem(tag, body, attrs: json-attrs)
 }
 
+#let collapsible(body) = {
+  html.elem("collapsible", body)
+}
+
 #let article(
   content,
   title: "Article title",
   date: datetime(year: 2025, month: 12, day: 14),
   description: "Article description",
   tags: (),
-  hue: none,
 ) = {
   set text(fill: white, font: "Atkinson Hyperlegible")
 
@@ -29,7 +32,7 @@
   }
 
   show image: it => context {
-    html.img(src: it.source)
+    embed("enhanced-img", attrs: (src: it.source, alt: it.alt))
   }
 
   set raw(theme: "one-dark.tmTheme")
@@ -80,9 +83,6 @@
       #html.elem("meta", attrs: (property: "article:published_time", content: date.display()))
       #for tag in tags {
         html.elem("meta", attrs: (property: "article:tag", content: tag))
-      }
-      #if hue != none {
-        html.elem("meta", attrs: (name: "theme:hue", content: str(hue)))
       }
     ]
     #html.elem("body")[

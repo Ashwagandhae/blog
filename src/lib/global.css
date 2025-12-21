@@ -37,7 +37,8 @@
 
   --topbar-height: 28px;
   --transition-duration: 0ms;
-  --transition-duration-slow: 0ms;
+  --transition-duration-slow: 300ms;
+  --transition-duration-background: 500ms;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -46,11 +47,22 @@
   -webkit-text-size-adjust: 100%;
 }
 
+@property --hue-back {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 280;
+}
+@property --hue-front {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 80;
+}
+
 body {
   margin: 0;
 
   --hue-back: 280;
-  --hue-front: 100;
+  --hue-front: 77.67;
   --back-chroma: 0.05;
 
   --back: oklch(var(--level-1) var(--back-chroma) var(--hue-back));
@@ -60,32 +72,47 @@ body {
   --back-4: oklch(var(--level-5) var(--back-chroma) var(--hue-back));
   --back-5: oklch(var(--level-6) var(--back-chroma) var(--hue-back));
 
+  --transparent-back: oklch(100% 0 0 / 0.08);
+  --transparent-back-1: oklch(100% 0 0 / 0.2);
+
   --line-chroma: 0.04;
 
   --line-color: oklch(var(--level-4) var(--line-chroma) var(--hue-back));
   --line-color-1: oklch(var(--level-5) var(--line-chroma) var(--hue-back));
 
   --transparent-back: oklch(100% 0 0 / 0.08);
-  --transparent-back-1: oklch(100% 0 0 / 0.2);
+  --transparent-back-1: oklch(100% 0 0 / 0.16);
+  --transparent-back-2: oklch(100% 0 0 / 0.24);
 
   --text-chroma: 0.04;
   --text: oklch(0.85 var(--text-chroma) var(--hue-front));
   --text-strong: oklch(1 var(--text-chroma) var(--hue-front));
   --text-weak: oklch(0.7 var(--text-chroma) var(--hue-front));
 
-  --tag-back: var(--back-1);
+  --tag-back: var(--transparent-back);
   --tag-transition: background var(--transition-duration);
   --article-tag-lightness: var(--level-2);
+  --article-tag-lightness-hover: var(--level-3);
+  --article-tag-lightness-active: var(--level-4);
 
   color: var(--text);
 
-  background: var(--back);
+  --back-gradient: radial-gradient(
+    at 0% 0%,
+    oklch(var(--level-1) var(--back-chroma) var(--hue-front)),
+    oklch(var(--level-1) var(--back-chroma) var(--hue-back))
+  );
+
+  background: var(--back-gradient);
   background-attachment: fixed;
   background-size: cover;
+
+  transition: --hue-front var(--transition-duration-background),
+    --hue-back var(--transition-duration-background);
 }
 
 button {
-  background: var(--back-1);
+  background: var(--transparent-back);
   border: none;
   padding: 0;
   margin: 0;
@@ -98,11 +125,15 @@ button {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  transition: background var(--transition-duration-slow);
 }
 button:hover {
-  background: var(--back-2);
+  background: var(--transparent-back-1);
+  transition: background var(--transition-duration);
 }
 
 button:active {
-  background: var(--back-3);
+  background: var(--transparent-back-2);
+  transition: background var(--transition-duration);
 }

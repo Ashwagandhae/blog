@@ -1,36 +1,61 @@
 <script lang="ts">
   import ArticleList from "$lib/components/ArticleList.svelte";
+  import Icon from "$lib/components/Icon.svelte";
   import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
-  import {
-    findMatchingFrontHue,
-    getPaletteContext,
-    type Palette,
-  } from "$lib/palette.js";
-  import { getTagHue } from "$lib/tag.js";
+  import { getTagPalette, type Palette } from "$lib/palette.js";
+  import { getTagHue } from "$lib/tag";
 
   let { data } = $props();
-  let updateLayers = getPaletteContext();
 
-  let palette: Palette | null = $derived.by(() => {
-    let tagHue = getTagHue(data.tag);
-    if (tagHue == null) return null;
-    return {
-      back: tagHue,
-      front: findMatchingFrontHue(tagHue),
-    };
-  });
+  let palette: Palette | null = $derived(getTagPalette(data.tag));
+
+  let hue = $derived(getTagHue(data.tag) ?? 0);
 </script>
 
+<svelte:head>
+  <title>Writing with tag {data.tag}</title>
+</svelte:head>
+
 <PaletteDisplay {palette}></PaletteDisplay>
-<h1>Articles with tag <span class="tag">{data.tag}</span></h1>
+<h1>
+  Writing with tag
+  <div class="tag" style="--hue: {hue}">
+    <span class="text">{data.tag}</span><a href="/writing" class="close">
+      <div class="icon"><Icon name="x"></Icon></div>
+    </a>
+  </div>
+</h1>
 {#key data.tag}
   <ArticleList articles={data.articles}></ArticleList>
 {/key}
 
 <style>
   .tag {
-    background: var(--back-1);
+    display: inline-block;
+
+    background: oklch(var(--level-2) 0.08 var(--hue));
     border-radius: var(--radius);
-    padding: 0 var(--pad);
+    padding: 0.2em;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .text {
+    display: inline;
+  }
+
+  .close {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    margin-left: var(--pad);
+
+    vertical-align: middle;
+  }
+
+  .icon {
+    width: 1em;
+    height: 1em;
+    display: block;
   }
 </style>

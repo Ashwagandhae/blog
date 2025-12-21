@@ -6,7 +6,6 @@ export type ArticleMeta = {
   date: string;
   wordCount: number;
   tags: string[];
-  hue: number | null;
 };
 
 function parseNum(str: string | null) {
@@ -34,17 +33,12 @@ export function extractMeta(html: string): ArticleMeta {
     document.querySelectorAll('meta[property="article:tag"]')
   ).map((x) => x.getAttribute("content") ?? "tag");
 
-  const hueMeta = document.querySelector('meta[name="theme:hue"]');
-  const hueString = hueMeta?.getAttribute("content") ?? null;
-  const hue = parseNum(hueString);
-
   return {
     title,
     description,
     date,
     wordCount,
     tags,
-    hue,
   };
 }
 
@@ -94,17 +88,14 @@ export function extractContent(html: string): ContentNode[] {
     anchor.appendChild(heading);
   });
 
-  return Array.from(document.body.childNodes)
-    .map(nodeToContentNode)
-    .filter((n) => n !== null);
+  return nodesToContentNodes(Array.from(document.body.childNodes));
 }
 
-//
+import { embedComponents } from "$lib/embed";
+
+const customTags = new Set(Object.keys(embedComponents));
+
 export type ContentNode =
-  | {
-      type: "text";
-      content: string;
-    }
   | {
       type: "element";
       tag: string;
@@ -113,41 +104,83 @@ export type ContentNode =
     }
   | { type: "raw"; html: string };
 
-export function nodeToContentNode(node: Node): ContentNode | null {
-  if (node.nodeType === 3) {
-    return { type: "text", content: node.textContent || "" };
+export function nodesToContentNodes(nodes: Node[]): ContentNode[] {
+  const result: ContentNode[] = [];
+
+  function pushRaw(html: string) {
+    if (result.length > 0 && result[result.length - 1].type === "raw") {
+      (result[result.length - 1] as { type: "raw"; html: string }).html += html;
+    } else {
+      result.push({ type: "raw", html });
+    }
   }
 
-  if (node.nodeType === 1) {
-    const element = node as Element;
-    const tagName = element.tagName.toLowerCase();
-
-    if (tagName === "svg") {
-      return {
-        type: "raw",
-
-        html: element.outerHTML,
-      };
+  for (const node of nodes) {
+    if (node.nodeType === 3) {
+      const text = node.textContent || "";
+      pushRaw(escapeHtml(text));
+      continue;
     }
 
-    const attributes: Record<string, string> = {};
-    if (element.attributes) {
-      Array.from(element.attributes).forEach((attr) => {
-        attributes[attr.name] = attr.value;
+    if (node.nodeType === 1) {
+      const element = node as Element;
+      const tagName = element.tagName.toLowerCase();
+
+      if (tagName === "svg") {
+        pushRaw(element.outerHTML);
+        continue;
+      }
+
+      if (customTags.has(tagName)) {
+        result.push({
+          type: "element",
+          tag: tagName,
+          attributes: getAttributes(element),
+          children: nodesToContentNodes(Array.from(element.childNodes)),
+        });
+        continue;
+      }
+
+      if (!containsCustomTag(element)) {
+        pushRaw(element.outerHTML);
+        continue;
+      }
+
+      result.push({
+        type: "element",
+        tag: tagName,
+        attributes: getAttributes(element),
+        children: nodesToContentNodes(Array.from(element.childNodes)),
       });
     }
-
-    return {
-      type: "element",
-      tag: tagName,
-      attributes,
-      children: Array.from(element.childNodes)
-        .map(nodeToContentNode)
-        .filter((n): n is ContentNode => n !== null),
-    };
   }
 
-  return null;
+  return result;
+}
+
+function getAttributes(element: Element): Record<string, string> {
+  const attributes: Record<string, string> = {};
+  if (element.attributes) {
+    Array.from(element.attributes).forEach((attr) => {
+      attributes[attr.name] = attr.value;
+    });
+  }
+  return attributes;
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function containsCustomTag(element: Element): boolean {
+  const selector = Array.from(customTags).join(",");
+  if (!selector) return false;
+  return element.querySelector(selector) !== null;
 }
 
 export async function loadArticlesHtml(): Promise<
@@ -173,4 +206,17 @@ export async function loadArticlesHtml(): Promise<
   );
 
   return articles;
+}
+
+export async function getSortedArticleMetas(): Promise<
+  { meta: ArticleMeta; path: string }[]
+> {
+  return (await loadArticlesHtml())
+    .map(({ html, path }) => ({
+      path,
+      meta: extractMeta(html),
+    }))
+    .sort((a, b) => {
+      return new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime();
+    });
 }

@@ -36,8 +36,11 @@
     flex-direction: row;
     gap: var(--pad);
     align-items: center;
+    width: min-content;
   }
   .metaScroll {
     overflow: scroll;
+    width: min-content;
+    display: block;
   }
 </style>

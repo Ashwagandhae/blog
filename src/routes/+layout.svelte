@@ -9,14 +9,7 @@
   import favicon from "$lib/assets/chicken.svg";
   import NavItem from "$lib/components/NavItem.svelte";
   import ChickenLogo from "$lib/components/ChickenLogo.svelte";
-  import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
-  import {
-    defaultPalette,
-    setPaletteContext,
-    type Palette,
-    type PaletteLayers,
-  } from "$lib/palette";
-  import { setContext } from "svelte";
+  import { setPaletteContext, type PaletteLayers } from "$lib/palette";
 
   let { children } = $props();
 
@@ -44,15 +37,16 @@
     <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
 
     <ul class="navLinks">
-      <li><NavItem href="/about">About</NavItem></li>
-      <li><NavItem href="/writing">Writing</NavItem></li>
+      <li><NavItem href="/about" icon="person">about</NavItem></li>
+      <li><NavItem href="/writing" icon="pen">writing</NavItem></li>
     </ul>
   </nav>
 </header>
 <main>
   {@render children()}
 </main>
-<PaletteDisplay palette={paletteLayers.active}></PaletteDisplay>
+
+<!-- <PaletteDisplay palette={paletteLayers.active}></PaletteDisplay> -->
 
 <style>
   main {
@@ -71,7 +65,7 @@
 
   .navLinks {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--pad);
     list-style: none;
     margin: 0;
     padding: 0 var(--pad-big);

@@ -4,17 +4,16 @@
   title: "Test article",
   date: datetime(year: 2025, month: 12, day: 14),
   description: "An article to test different content types, such as headings, equations, and code blocks.",
-  tags: ("typst", "svelte"),
-  hue: 340,
+  tags: ("test",),
 )
 
-
+I use this article as a test for all the different content types this website should support, ranging from simple paragraphs and lists to code blocks, images, and embedded components.
 
 = Paragraph and marks
 
 #lorem(67)
 
-Footnote that shows up#footnote[wow what an interesting footnote with some *formatting*], and then after that, another interesting#footnote[wow how interesting so good and interesting https://typst.app] group#footnote[$6 + 7$ wow good footnote] of footnotes#footnote[what if i attach a post-it to my feet].
+Footnote that shows up#footnote[wow what an interesting footnote with some *formatting*], and then after that, another interesting#footnote[wow how interesting so good and interesting https://typst.app] group#footnote[$6 + 7$ wow good footnote] of footnotes#footnote[extremely long footnote #lorem(67)].
 
 Marks:
 

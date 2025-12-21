@@ -1,4 +1,6 @@
 import { getContext, setContext } from "svelte";
+import type { ArticleMeta } from "./article";
+import { getTagHue } from "./tag";
 
 export function findMatchingFrontHue(backHue: number): number {
   return moveHueTowardsYellow(backHue, 80);
@@ -22,15 +24,11 @@ function moveHueTowardsYellow(currentHue: number, amount: number): number {
   return ((newHue % 360) + 360) % 360;
 }
 
-export type Palette = {
-  front: number;
-  back: number;
-};
+export type Palette = number[];
 
-export const defaultPalette: Palette = {
-  front: 100,
-  back: 280,
-};
+const defaultBack = 280;
+
+export const defaultPalette: Palette = [100, defaultBack];
 
 export function setPaletteContext(
   updatePalette: (updater: (layers: PaletteLayers) => PaletteLayers) => void
@@ -46,3 +44,20 @@ export function getPaletteContext(): (
 export type PaletteLayers = {
   active: Palette | null;
 };
+
+export function getArticlePalette(meta: ArticleMeta): Palette | null {
+  let tagHues = meta.tags
+    .map((tag) => getTagHue(tag))
+    .filter((tag) => tag != null);
+  if (tagHues.length == 0) return null;
+  if (tagHues.length == 1) {
+    return [tagHues[0], defaultBack];
+  }
+  return tagHues;
+}
+
+export function getTagPalette(name: string): Palette | null {
+  let hue = getTagHue(name);
+  if (hue == null) return null;
+  return [hue, defaultBack];
+}
