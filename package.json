@@ -6,7 +6,7 @@
   "scripts": {
     "typst:dev": "node scripts/typst-manager.ts dev",
     "typst:build": "node scripts/typst-manager.ts build",
-    "setup:typst": "node scripts/setup-typst.js",
+    "setup:typst": "node scripts/setup-typst.ts",
     "dev": "concurrently \"npm run typst:dev\" \"vite dev\"",
     "build": "npm run setup:typst && npm run typst:build && vite build",
     "preview": "vite preview",
