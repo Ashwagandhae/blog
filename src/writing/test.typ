@@ -94,6 +94,11 @@ $
 
 #embed("click-counter", attrs: (count: 67, celebrations: ("wow", "yay", "yippee")))
 
+#collapsible[
+
+  #lorem(400)
+]
+
 = Images
 
 #image("san-francisco.png", alt: "San Francisco road with trees in the background")
@@ -122,6 +127,9 @@ $
   )
 ]
 
+
+
 = Ending paragraph
 
 #lorem(57)
+
