@@ -1,9 +1,10 @@
 <script>
   import Email from "$lib/components/Email.svelte";
+  import { titleSuffix } from "$lib/title";
 </script>
 
 <svelte:head>
-  <title>About</title>
+  <title>About{titleSuffix}</title>
 </svelte:head>
 <h1>About</h1>
 <p>

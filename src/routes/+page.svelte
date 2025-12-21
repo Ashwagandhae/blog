@@ -1,5 +1,9 @@
+<script>
+  import { titleSuffix } from "$lib/title";
+</script>
+
 <svelte:head>
-  <title>Home</title>
+  <title>Home{titleSuffix}</title>
 </svelte:head>
 <p>Hi, I'm Julian! Welcome to my website. Here, you can</p>
 <ul>

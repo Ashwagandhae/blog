@@ -7,13 +7,14 @@
     getArticlePalette,
     type Palette,
   } from "$lib/palette.js";
+  import { titleSuffix } from "$lib/title.js";
   let { data } = $props();
 
   let palette: Palette | null = $derived(getArticlePalette(data.meta));
 </script>
 
 <svelte:head>
-  <title>{data.meta.title}</title>
+  <title>{data.meta.title}{titleSuffix}</title>
   <meta name="description" content={data.meta.description} />
   <meta property="article:published_time" content={data.meta.date} />
   {#each data.meta.tags as tag}

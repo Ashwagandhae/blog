@@ -1,11 +1,12 @@
 <script lang="ts">
   import ArticleTag from "$lib/components/ArticleTag.svelte";
+  import { titleSuffix } from "$lib/title.js";
 
   let { data } = $props();
 </script>
 
 <svelte:head>
-  <title>Tags</title>
+  <title>Tags{titleSuffix}</title>
 </svelte:head>
 
 <h1>Tags</h1>

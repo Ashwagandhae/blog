@@ -46,8 +46,6 @@
   {@render children()}
 </main>
 
-<!-- <PaletteDisplay palette={paletteLayers.active}></PaletteDisplay> -->
-
 <style>
   main {
     padding: 0px 8px;
@@ -69,12 +67,11 @@
     list-style: none;
     margin: 0;
     padding: 0 var(--pad-big);
+    align-items: center;
   }
 
   .logo {
     display: block;
-    height: 2.5rem;
-    width: 2.5rem;
 
     flex-shrink: 0;
     color: inherit;

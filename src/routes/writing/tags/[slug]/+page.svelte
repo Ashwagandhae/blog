@@ -4,6 +4,7 @@
   import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
   import { getTagPalette, type Palette } from "$lib/palette.js";
   import { getTagHue } from "$lib/tag";
+  import { titleSuffix } from "$lib/title.js";
 
   let { data } = $props();
 
@@ -13,7 +14,7 @@
 </script>
 
 <svelte:head>
-  <title>Writing with tag {data.tag}</title>
+  <title>Writing with tag {data.tag}{titleSuffix}</title>
 </svelte:head>
 
 <PaletteDisplay {palette}></PaletteDisplay>
