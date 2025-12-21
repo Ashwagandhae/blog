@@ -1,23 +1,22 @@
 <script lang="ts">
-  import circle from "../icons/circle.svg?raw";
+  import defaultIcon from "../icons/circle.svg?raw";
 
   let { name }: { name: string } = $props();
-  let iconPromise: Promise<string | null> = $derived.by(async () => {
-    try {
-      return (await import(`../icons/${name}.svg?raw`)).default;
-    } catch (e) {
-      console.warn(`Icon "${name}" not found`);
-      return null;
-    }
+
+  const modules = import.meta.glob("../icons/*.svg", {
+    eager: true,
+    query: "?raw",
+    import: "default",
   });
+
+  const icons: Record<string, string> = Object.fromEntries(
+    Object.entries(modules).map(([path, content]) => {
+      const fileName = path.split("/").pop()?.replace(".svg", "") ?? "";
+      return [fileName, content as string];
+    })
+  );
+
+  let icon = $derived(icons[name] ?? defaultIcon);
 </script>
 
-{#await iconPromise}
-  {@html circle}
-{:then icon}
-  {#if icon == null}
-    {@html circle}
-  {:else}
-    {@html icon}
-  {/if}
-{/await}
+{@html icon}

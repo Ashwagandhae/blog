@@ -72,8 +72,11 @@
   }
 
   .logo {
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 1.25rem;
+    display: block;
+    height: 2.5rem;
+    width: 2.5rem;
+
+    flex-shrink: 0;
+    color: inherit;
   }
 </style>
