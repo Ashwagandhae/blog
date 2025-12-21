@@ -6,6 +6,7 @@ export async function load() {
   );
 
   let tags = Array.from(new Set(allTags));
+  tags.sort();
   return {
     tags,
   };

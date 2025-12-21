@@ -110,7 +110,7 @@
   .metaWrapper {
     position: relative;
     z-index: 2;
-    width: min-content;
-    pointer-events: auto;
+    width: 100%;
+    pointer-events: none;
   }
 </style>

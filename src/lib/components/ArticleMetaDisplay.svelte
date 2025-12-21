@@ -37,10 +37,13 @@
     gap: var(--pad);
     align-items: center;
     width: min-content;
+    pointer-events: all;
   }
   .metaScroll {
     overflow: scroll;
-    width: min-content;
+    width: 100%;
     display: block;
+    position: relative;
+    pointer-events: none;
   }
 </style>
