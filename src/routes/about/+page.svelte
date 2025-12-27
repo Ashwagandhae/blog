@@ -1,5 +1,5 @@
 <script>
-  import Email from "$lib/components/Email.svelte";
+  import ContactForm from "$lib/components/ContactForm.svelte";
   import { titleSuffix } from "$lib/title";
 </script>
 
@@ -8,10 +8,10 @@
 </svelte:head>
 <h1>About</h1>
 <p>
-  Hello, I'm Julian. I'm studying Computer Science at the Georgia Institute of
-  Technology.
+  Hi, I'm Julian. I'm studying Computer Science at the Georgia Institute of
+  Technology, threading in Systems & Architecture and Devices.
 </p>
-<h2>Contact</h2>
+<h2>Links</h2>
 <ul>
   <li>
     GitHub: <a href="https://github.com/Ashwagandhae">github.com/Ashwagandhae</a
@@ -22,6 +22,16 @@
       >linkedin.com/in/julian-bauer-32823b246</a
     >
   </li>
-  <li>Email: <Email user="julianlianbauer" domain="gmail.com" /></li>
   <li>Discord: ashwagandhae</li>
 </ul>
+<h2>Contact</h2>
+<ContactForm />
+<h2>Website source</h2>
+<p>
+  I wrote this website with
+  <a href="https://svelte.dev/docs/kit/introduction">SvelteKit</a>, using
+  <a href="https://typst.app/">Typst</a>
+  as the markup language for
+  <a href="/writing">writing</a>. You can find
+  <a href="https://github.com/Ashwagandhae/blog">the source code on GitHub</a>.
+</p>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import Icon from "./Icon.svelte";
+  import InlineIcon from "./InlineIcon.svelte";
 
   let {
     children,
@@ -13,9 +14,7 @@
 
 <div class="tag">
   {#if icon}
-    <div class="icon">
-      <Icon name={icon}></Icon>
-    </div>
+    <InlineIcon name={icon} />
   {/if}
   <div class="content">
     {@render children()}
@@ -28,19 +27,12 @@
     background: var(--tag-back);
     transition: var(--tag-transition);
     border-radius: var(--radius);
-    padding: 0 0.25em;
+    padding: var(--pad-small);
+    line-height: 1;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: var(--pad-small);
-    line-height: 1.6;
     white-space: nowrap;
-  }
-  .icon {
-    width: 1em;
-    height: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 </style>

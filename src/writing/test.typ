@@ -63,6 +63,23 @@ def code_block(with_syntax_highlight):
 	return f"hello {1}"
 ```
 
+#lorem(21)
+
+#file-display("hello-world.py")[
+  ```python
+  print("hello world")
+  for i in range(0, 10):
+    print(i)
+  ```
+]
+#file-display("src/main/long/path/that/is/very/long/and/extremely/long/hello-world.py")[
+  ```python
+  print("hello world")
+  for i in range(0, 10):
+    print(i)
+  ```
+]
+
 = Table
 
 #table(

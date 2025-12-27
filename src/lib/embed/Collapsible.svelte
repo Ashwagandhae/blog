@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-
   let { children } = $props();
 
   let isOpen = $state(false);
@@ -25,7 +23,7 @@
   </div>
 
   {#if !isOpen}
-    <div class="fade" transition:fade></div>
+    <div class="fade"></div>
   {/if}
 
   <button onclick={toggle} class="toggle">

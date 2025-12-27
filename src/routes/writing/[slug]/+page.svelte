@@ -1,6 +1,8 @@
 <script lang="ts">
   import ArticleMeta from "$lib/components/ArticleMetaDisplay.svelte";
+  import ArticlePreview from "$lib/components/ArticlePreview.svelte";
   import ContentRenderer from "$lib/components/ContentRenderer.svelte";
+  import InlineIcon from "$lib/components/InlineIcon.svelte";
   import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
   import {
     findMatchingFrontHue,
@@ -30,5 +32,66 @@
   <ContentRenderer nodes={data.content}></ContentRenderer>
 </article>
 
+<div class="nav">
+  <div class="linkContainer">
+    <a href="/writing/{data.next.path}" class="button">
+      <InlineIcon name="triangleLeft" />
+      <span class="text">{data.next.meta.title}</span>
+    </a>
+  </div>
+  <div class="linkContainer bottom">
+    <a href="/writing/{data.previous.path}" class="button">
+      <span class="text">{data.previous.meta.title}</span>
+      <InlineIcon name="triangleRight" />
+    </a>
+  </div>
+</div>
+
 <style>
+  .nav {
+    display: flex;
+    flex: 1fr 1fr;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--pad);
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .linkContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: start;
+
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .linkContainer.bottom {
+    justify-content: end;
+  }
+
+  .nav a {
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    gap: var(--pad-small);
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  :global(.nav a svg) {
+    flex-shrink: 0;
+  }
 </style>

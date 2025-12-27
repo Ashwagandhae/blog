@@ -1,6 +1,7 @@
 <script lang="ts">
   import ArticleList from "$lib/components/ArticleList.svelte";
   import Icon from "$lib/components/Icon.svelte";
+  import InlineIcon from "$lib/components/InlineIcon.svelte";
   import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
   import { getTagPalette, type Palette } from "$lib/palette.js";
   import { getTagHue } from "$lib/tag";
@@ -22,7 +23,7 @@
   Writing with tag
   <div class="tag" style="--hue: {hue}">
     <span class="text">{data.tag}</span><a href="/writing" class="close">
-      <div class="icon"><Icon name="x"></Icon></div>
+      <InlineIcon name="x" />
     </a>
   </div>
 </h1>
@@ -36,7 +37,7 @@
 
     background: oklch(var(--level-2) 0.08 var(--hue));
     border-radius: var(--radius);
-    padding: 0.2em;
+    padding: var(--pad);
     white-space: nowrap;
     line-height: 1;
   }
@@ -52,11 +53,5 @@
     margin-left: var(--pad);
 
     vertical-align: middle;
-  }
-
-  .icon {
-    width: 1em;
-    height: 1em;
-    display: block;
   }
 </style>

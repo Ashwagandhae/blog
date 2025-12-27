@@ -5,7 +5,7 @@
 <svelte:head>
   <title>Home{titleSuffix}</title>
 </svelte:head>
-<p>Hi, I'm Julian! Welcome to my website. Here, you can</p>
+<p>Welcome to Julian Bauer's website. Here, you can</p>
 <ul>
   <li>
     Learn <a href="./about">about</a> me, including my background and my contact

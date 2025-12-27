@@ -1,10 +1,10 @@
 :root {
-  --font-size: 1.125rem;
+  --font-size: 1rem;
 }
 
 @media (min-width: 768px) {
   :root {
-    --font-size: 1.25rem;
+    --font-size: 1.125rem;
   }
 }
 
@@ -22,7 +22,7 @@
   --level-0: 0.08;
   --level-1: 0.19;
   --level-2: 0.28;
-  --level-3: 0.37;
+  --level-3: 0.4;
   --level-4: 0.47;
   --level-5: 0.53;
   --level-6: 0.62;
@@ -35,11 +35,13 @@
 
   --line-width: 2px;
 
-  --topbar-height: 28px;
   --transition-duration: 0ms;
   --transition-duration-slow: 300ms;
   --transition-duration-background: 500ms;
   --logo-size: 50px;
+  --header-height: calc(var(--logo-size) + var(--pad-small) * 2);
+
+  --font-size-small: calc(var(--font-size) * 0.8);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -88,7 +90,7 @@ body {
   --text-chroma: 0.04;
   --text: oklch(0.85 var(--text-chroma) var(--hue-front));
   --text-strong: oklch(1 var(--text-chroma) var(--hue-front));
-  --text-weak: oklch(0.7 var(--text-chroma) var(--hue-front));
+  --text-weak: oklch(0.65 var(--text-chroma) var(--hue-front));
 
   --tag-back: var(--transparent-back);
   --tag-transition: background var(--transition-duration);
@@ -96,14 +98,13 @@ body {
   --article-tag-lightness-hover: var(--level-3);
   --article-tag-lightness-active: var(--level-4);
 
-  color: var(--text);
-
   --back-gradient: radial-gradient(
     at 0% 0%,
     oklch(var(--level-1) var(--back-chroma) var(--hue-front)),
     oklch(var(--level-1) var(--back-chroma) var(--hue-back))
   );
 
+  color: var(--text);
   background: var(--back-gradient);
   background-attachment: fixed;
   background-size: cover;
@@ -111,16 +112,17 @@ body {
   transition: --hue-front var(--transition-duration-background),
     --hue-back var(--transition-duration-background);
 }
-
-button {
+button,
+a.button {
   background: var(--transparent-back);
   border: none;
-  padding: 0;
   margin: 0;
   border-radius: var(--radius);
-  padding: 8px;
+  padding: var(--pad);
+  line-height: 1;
   color: var(--text);
-  font-size: 1rem;
+  font-size: 1em;
+  text-decoration: none;
 
   display: inline-flex;
   flex-direction: row;
@@ -129,12 +131,20 @@ button {
 
   transition: background var(--transition-duration-slow);
 }
-button:hover {
+button:hover,
+a.button:hover {
   background: var(--transparent-back-1);
   transition: background var(--transition-duration);
 }
 
-button:active {
+button:active,
+a.button:active {
   background: var(--transparent-back-2);
   transition: background var(--transition-duration);
+}
+
+button:disabled,
+a.button:disabled {
+  background: var(--transparent-back);
+  color: var(--text-weak);
 }

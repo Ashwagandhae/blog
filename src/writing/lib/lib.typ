@@ -8,7 +8,11 @@
 }
 
 #let collapsible(body) = {
-  html.elem("collapsible", body)
+  embed("collapsible", body: body)
+}
+
+#let file-display(path, body) = {
+  embed("file-display", body: body, attrs: (path: path))
 }
 
 #let article(
@@ -32,6 +36,9 @@
   }
 
   show image: it => context {
+    if it.alt == none {
+      panic("image " + it.source + " missing alt tag")
+    }
     embed("enhanced-img", attrs: (src: it.source, alt: it.alt))
   }
 

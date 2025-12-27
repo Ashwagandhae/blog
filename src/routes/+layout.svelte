@@ -32,49 +32,49 @@
 <svelte:head>
   <link rel="icon" href={favicon} />
 </svelte:head>
-<div class="wrapper">
-  <header>
-    <nav aria-label="Main navigation">
-      <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
+<header>
+  <nav aria-label="Main navigation">
+    <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
 
-      <ul class="navLinks">
-        <li><NavItem href="/about" icon="person">about</NavItem></li>
-        <li><NavItem href="/writing" icon="pen">writing</NavItem></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <div class="content">
-      {@render children()}
-    </div>
-  </main>
-</div>
+    <ul class="navLinks">
+      <li><NavItem href="/about" icon="person">about</NavItem></li>
+      <li><NavItem href="/writing" icon="pen">writing</NavItem></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <div class="content">
+    {@render children()}
+  </div>
+</main>
 
 <style>
-  .wrapper {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-  }
-  main {
-    padding: 0px var(--pad);
-
-    width: 100%;
-    box-sizing: border-box;
-    overflow: scroll;
-  }
-  .content {
-    margin: auto;
-
-    max-width: 40em;
-  }
-
   header {
+    position: sticky;
+    top: 0;
+
     width: 100%;
+
+    z-index: 100;
+
     background: var(--back-gradient);
     background-attachment: fixed;
     background-size: cover;
-    z-index: 9999;
+  }
+
+  main {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 var(--pad);
+    margin: auto;
+
+    padding-bottom: calc(90vh - var(--logo-size));
+  }
+
+  .content {
+    max-width: 40em;
+    margin: auto;
+    box-sizing: border-box;
   }
 
   header nav {

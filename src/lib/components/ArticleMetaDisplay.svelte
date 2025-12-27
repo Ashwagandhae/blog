@@ -40,7 +40,7 @@
     pointer-events: all;
   }
   .metaScroll {
-    overflow: scroll;
+    overflow: auto;
     width: 100%;
     display: block;
     position: relative;

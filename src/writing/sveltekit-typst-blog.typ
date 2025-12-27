@@ -61,7 +61,10 @@ npm run dev -- --open
 ```
 
 You should see your website running in your browser!
-#image("sveltekit-typst-blog/svelkit-starter.png")
+#image(
+  "sveltekit-typst-blog/svelkit-starter.png",
+  alt: "Screenshot of rendered SvelteKit starter project, with simple 'Welcome to SvelteKit' header.",
+)
 
 = Strategy
 
@@ -81,25 +84,25 @@ We'll start by creating a folder to hold our blog posts. Create a folder `src/po
 == `lib.typ` article function
 
 In our `lib.typ` file, we'll create a function called `article` that we'll wrap all future articles in using show rules:
-
-```typ
-// src/posts/lib/lib.typ
-#let article(
-  content,
-  title: "Article title",
-  date: datetime(year: 2025, month: 12, day: 14),
-) = {
-  html.elem("html")[
-    #html.elem("head")[
-      #html.elem("title")[#title]
-      #html.elem("meta", attrs: (property: "article:published_time", content: date.display()))
+#file-display("src/posts/lib/lib.typ")[
+  ```typ
+  #let article(
+    content,
+    title: "Article title",
+    date: datetime(year: 2025, month: 12, day: 14),
+  ) = {
+    html.elem("html")[
+      #html.elem("head")[
+        #html.elem("title")[#title]
+        #html.elem("meta", attrs: (property: "article:published_time", content: date.display()))
+      ]
+      #html.elem("body")[
+        #content
+      ]
     ]
-    #html.elem("body")[
-      #content
-    ]
-  ]
-}
-```
+  }
+  ```
+]
 
 Here, we allow users to specify we use Typst's HTML `elem` function to generate the basic structure of our document, including metadata in the `head` element.#footnote[Typst automatically generates the basic `html`, `head` and `body` if you don't create your own `html` element. However, we're manually specifying the structure to give us more control over metadata.]
 
@@ -107,88 +110,92 @@ Here, we allow users to specify we use Typst's HTML `elem` function to generate 
 
 Now, we can use our newly-created `article` function in our test article:
 
-```typ
-// src/posts/test.typ
-#import "lib/lib.typ": *
+#file-display("src/posts/test.typ")[
+  ```typ
+  #import "lib/lib.typ": *
 
-#show: article.with(
-  title: "Test article",
-  date: datetime(year: 2025, month: 12, day: 14),
-)
-```
+  #show: article.with(
+    title: "Test article",
+    date: datetime(year: 2025, month: 12, day: 14),
+  )
+  ```
+]
 
 We'll also include examples of different types content we want to support in our blog.
 
-#collapsible[````typ
-// src/posts/test.typ
-// ...
-= Paragraph
-#lorem(67)
+#collapsible[
+  #file-display("src/posts/test.typ")[
+    ````typ
+    // ...
+    = Paragraph
+    #lorem(67)
 
-= Marks
+    = Marks
 
-Marks:
+    Marks:
 
-- *bold text*
-- _italic text_
-- #underline[underline text]
-- `code text`
-- #link("https://www.google.com/")[link to google]
+    - *bold text*
+    - _italic text_
+    - #underline[underline text]
+    - `code text`
+    - #link("https://www.google.com/")[link to google]
 
-= Headings
+    = Headings
 
-== Heading 2
+    == Heading 2
 
-=== Heading 3
+    === Heading 3
 
-==== Heading 4
+    ==== Heading 4
 
-===== Heading 5
+    ===== Heading 5
 
-= Lists
+    = Lists
 
-== Unordered
-- unordered list
-  - that goes
-    - like this
-- and also has item
-- hello
+    == Unordered
+    - unordered list
+      - that goes
+        - like this
+    - and also has item
+    - hello
 
-== Ordered
-+ ordered list
-+ that goes
-+ like this
-  + and has
-    + nestings
+    == Ordered
+    + ordered list
+    + that goes
+    + like this
+      + and has
+        + nestings
 
-= Code
+    = Code
 
-```python
-import math
+    ```python
+    import math
 
-def code_block(with_syntax_highlight):
-print("hello world")
-x = {"hello": (1, 2), "goodbye": (3, 4)}
-return f"hello {1}"
-```
+    def code_block(with_syntax_highlight):
+    print("hello world")
+    x = {"hello": (1, 2), "goodbye": (3, 4)}
+    return f"hello {1}"
+    ```
 
-= Blockquote
+    = Blockquote
 
-#quote(block: true)[
-  Blockquote that is pretty long and contains *rich content*.
+    #quote(block: true)[
+      Blockquote that is pretty long and contains *rich content*.
 
-  And can be multiline.
+      And can be multiline.
+    ]
+
+    = Math
+
+    Inline math $(1 + 3 + 3^4 / 1) / 2 x y z$ wow that was cool math.
+
+    Block math:
+    $
+      cases(1 + 1, hat(2 + 2), 3 + 3/2)
+    $
+    ````
+  ]
 ]
-
-= Math
-
-Inline math $(1 + 3 + 3^4 / 1) / 2 x y z$ wow that was cool math.
-
-Block math:
-$
-  cases(1 + 1, hat(2 + 2), 3 + 3/2)
-$
-````]
 
 == Compile to HTML
 
@@ -211,135 +218,148 @@ npm i linkedom
 
 Now, create a new file `posts.ts` in `src/lib` for our extraction functions. We'll first create a `PostMeta` type to group each post's metadata:
 
-```ts
-export type PostMeta = {
-  title: string;
-  date: string;
-};
-```
+#file-display("src/lib/posts.ts")[
+  ```ts
+  export type PostMeta = {
+    title: string;
+    date: string;
+  };
+  ```
+]
 
 Then, we'll create a function to extract that metadata, using the `parseHTML` function from `linkedom`.
 
-```ts
-export function extractMeta(html: string): PostMeta {
-  const { document } = parseHTML(html);
+#file-display("src/lib/posts.ts")[
+  ```ts
+  export function extractMeta(html: string): PostMeta {
+    const { document } = parseHTML(html);
 
-  const title = document.title ?? "no title";
+    const title = document.title ?? "no title";
 
-  const dateMeta = document.querySelector(
-    'meta[property="article:published_time"]'
-  );
-  const date = dateMeta?.getAttribute("content") ?? "2000-1-1";
+    const dateMeta = document.querySelector(
+      'meta[property="article:published_time"]'
+    );
+    const date = dateMeta?.getAttribute("content") ?? "2000-1-1";
 
-  return {
-    title,
-    date,
-  };
-}
-```
+    return {
+      title,
+      date,
+    };
+  }
+  ```
+]
 
 Finally, we'll create a symmetrical function to extract the article's content.
 
-```ts
-export function extractContent(html: string): string {
-  const { document } = parseHTML(html);
-  return document.body.innerHTML;
-}
-```
+#file-display("src/lib/posts.ts")[
+  ```ts
+  export function extractContent(html: string): string {
+    const { document } = parseHTML(html);
+    return document.body.innerHTML;
+  }
+  ```
+]
 
 == Post listing
 We'll make the website's homepage display a list of links to all blog posts. In `src/routes`, create a new file `+page.server.ts`. This file will load all HTML files in our target directory and extract the metadata from each one.
-```ts
-// src/routes/+page.server.ts
-import { extractMeta } from "$lib/posts";
 
-export async function load() {
-  const allPostFiles = import.meta.glob("/src/posts/target/*.html", {
-    query: "?raw",
-    import: "default",
-  });
-  const posts = await Promise.all(
-    Object.entries(allPostFiles).map(async ([path, resolver]) => {
-      const html = (await resolver()) as string;
+#file-display("src/routes/+page.server.ts")[
+  ```ts
+  import { extractMeta } from "$lib/posts";
 
-      const slug = path.split("/").pop()?.replace(".html", "") ?? "unknown";
+  export async function load() {
+    const allPostFiles = import.meta.glob("/src/posts/target/*.html", {
+      query: "?raw",
+      import: "default",
+    });
+    const posts = await Promise.all(
+      Object.entries(allPostFiles).map(async ([path, resolver]) => {
+        const html = (await resolver()) as string;
 
-      return {
-        meta: extractMeta(html),
-        path: slug,
-      };
-    })
-  );
+        const slug = path.split("/").pop()?.replace(".html", "") ?? "unknown";
 
-  return { posts };
-}
-```
+        return {
+          meta: extractMeta(html),
+          path: slug,
+        };
+      })
+    );
+
+    return { posts };
+  }
+  ```
+]
 
 Then, we'll edit the existing `src/routes/+page.svelte` to display a list of links to all posts.
-```svelte
-<!-- src/routes/+page.svelte -->
-<script lang="ts">
-  let { data } = $props();
-</script>
+#file-display("src/routes/+page.svelte")[
+  ```svelte
+  <script lang="ts">
+    let { data } = $props();
+  </script>
 
-<h1>Posts</h1>
-<ul>
-  {#each data.posts as post}
-    <li>
-      <a href="./{post.path}">
-        {post.meta.title} - {post.meta.date}
-      </a>
-    </li>
-  {/each}
-</ul>
-```
+  <h1>Posts</h1>
+  <ul>
+    {#each data.posts as post}
+      <li>
+        <a href="./{post.path}">
+          {post.meta.title} - {post.meta.date}
+        </a>
+      </li>
+    {/each}
+  </ul>
+  ```
+]
 
 == Post display
 In `src/routes`, create a folder called `[slug]`. Inside that folder, first create a file `+page.server.ts`. This file will get our HTML file, extract the metadata, and send both the metadata and the article contents to the frontend.
 
 We'll define a function called `load`, whose return value SvelteKit will automatically pass to the frontend.
-```ts
-// src/routes/[slug]/+page.server.ts
-import { extractContent, extractMeta } from "$lib/posts";
-import { error } from "@sveltejs/kit";
+#file-display("src/routes/[slug]/+page.server.ts")[
+  ```ts
+  import { extractContent, extractMeta } from "$lib/posts";
+  import { error } from "@sveltejs/kit";
 
-export async function load({ params }) {
-  const slug = params.slug;
+  export async function load({ params }) {
+    const slug = params.slug;
 
-  const module = await import(`../../posts/target/${slug}.html?raw`);
-  const html = module.default;
+    const module = await import(`../../posts/target/${slug}.html?raw`);
+    const html = module.default;
 
-  if (!html) {
-    throw error(404, "Post not found");
+    if (!html) {
+      throw error(404, "Post not found");
+    }
+
+    return {
+      content: extractContent(html),
+      meta: extractMeta(html),
+    };
   }
-
-  return {
-    content: extractContent(html),
-    meta: extractMeta(html),
-  };
-}
-```
+  ```
+]
 
 Here, we first load the HTML by `import`ing it from the target directory based on the URL's slug (the slug is the part after the last `/` in the URL, which should match the name of our file, see the #link("https://svelte.dev/docs/kit/routing")[SvelteKit routing docs] for more information). Then, we use our extraction functions to return the post's content and metadata.
 
 With all the data we need extracted, rendering it becomes quite easy. Create another file `+page.svelte` in our `[slug]` folder. In that file, we'll write some simple rendering code:
-```svelte
-<!-- src/routes/[slug]/+page.svelte -->
+#file-display("src/routes/[slug]/+page.svelte")[
+  ```svelte
+  <script lang="ts">
+    let { data } = $props();
+  </script>
 
-<script lang="ts">
-  let { data } = $props();
-</script>
-
-<h1>Title: {data.meta.title}</h1>
-<p>Published on {data.meta.date}</p>
-<article>
-  {@html data.content}
-</article>
-```
+  <h1>Title: {data.meta.title}</h1>
+  <p>Published on {data.meta.date}</p>
+  <article>
+    {@html data.content}
+  </article>
+  ```
+]
 
 Now, all the pieces are in place! Run `npm run dev`, and go to `localhost:????/test` to view the rendered `test.typ` blog post!
 
-#image("sveltekit-typst-blog/first-post-render.png")
+#image(
+  "sveltekit-typst-blog/first-post-render.png",
+  alt: "Screenshot of rendered blog post, with the title and date displayed at the top, followed by sample headings, paragraphs, and lists.",
+)
 
 = Developer experience
 
@@ -360,135 +380,140 @@ Then, create a new file `scripts/typst-manager.ts`. This script has two modes, `
   - if a `.typ` file is modified, then the script runs `typst watch` for that file, which will instantly update the HTML whenever the Typst content changes. The approach prevents spawning hundreds of `typst watch` processes if you have hundreds of `.typ` files (assuming that you will likely only edit one blog post at a time).
 I won't go into much more detail about the script. Here's the code:
 
-#collapsible[```ts
-// scripts/typst-manager.ts
-import { spawn, execSync } from "node:child_process";
-import fs from "node:fs";
-import path from "node:path";
-import chokidar from "chokidar";
+#collapsible[
+  #file-display("scripts/typst-manager.ts")[
+    ```ts
+    import { spawn, execSync } from "node:child_process";
+    import fs from "node:fs";
+    import path from "node:path";
+    import chokidar from "chokidar";
 
-const ROOT = process.cwd();
-const SOURCE_DIR = "src/posts";
-const TARGET_DIR = "src/posts/target";
-const EXCLUDE = ["lib.typ"];
-const ABS_TARGET = path.resolve(ROOT, TARGET_DIR);
+    const ROOT = process.cwd();
+    const SOURCE_DIR = "src/posts";
+    const TARGET_DIR = "src/posts/target";
+    const EXCLUDE = ["lib.typ"];
+    const ABS_TARGET = path.resolve(ROOT, TARGET_DIR);
 
-if (!fs.existsSync(path.join(ROOT, TARGET_DIR))) {
-  fs.mkdirSync(path.join(ROOT, TARGET_DIR), { recursive: true });
-}
-
-const activeWatchers = new Map();
-
-const mode = process.argv[2] || "build";
-
-if (mode === "build") {
-  buildAll();
-} else if (mode === "dev") {
-  buildAll();
-  startDevMode();
-}
-
-function getTypstFiles() {
-  const dir = path.join(ROOT, SOURCE_DIR);
-  return fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith(".typ") && !EXCLUDE.includes(f));
-}
-
-function compileFile(fileName: string) {
-  const source = path.join(SOURCE_DIR, fileName);
-  const target = path.join(TARGET_DIR, fileName.replace(".typ", ".html"));
-
-  try {
-    execSync(
-      `typst compile "${source}" "${target}" --format html --features html`,
-      { stdio: "inherit" }
-    );
-    console.log(`built ${fileName}`);
-  } catch (e) {
-    console.error(`failed to build ${fileName}`);
-  }
-}
-
-function buildAll() {
-  console.log("\nstarting full typst build...");
-  const files = getTypstFiles();
-  files.forEach(compileFile);
-  console.log("build complete.\n");
-}
-
-function startDevMode() {
-  console.log("watching for changes...");
-
-  const watcher = chokidar.watch(SOURCE_DIR, {
-    persistent: true,
-    ignoreInitial: true,
-    ignored: [ABS_TARGET],
-  });
-
-  watcher.on("all", (event, filePath) => {
-    const fileName = path.basename(filePath);
-    const ext = path.extname(filePath).toLowerCase();
-
-    if (!filePath.endsWith(".typ") || EXCLUDE.includes(fileName)) {
-      return;
+    if (!fs.existsSync(path.join(ROOT, TARGET_DIR))) {
+      fs.mkdirSync(path.join(ROOT, TARGET_DIR), { recursive: true });
     }
 
-    if (activeWatchers.has(fileName)) {
-      return;
+    const activeWatchers = new Map();
+
+    const mode = process.argv[2] || "build";
+
+    if (mode === "build") {
+      buildAll();
+    } else if (mode === "dev") {
+      buildAll();
+      startDevMode();
     }
 
-    if (event === "change" || event === "add") {
-      spawnDedicatedWatcher(fileName);
+    function getTypstFiles() {
+      const dir = path.join(ROOT, SOURCE_DIR);
+      return fs
+        .readdirSync(dir)
+        .filter((f) => f.endsWith(".typ") && !EXCLUDE.includes(f));
     }
-  });
 
-  process.on("SIGINT", () => {
-    console.log("\nstopping all typst watchers...");
-    activeWatchers.forEach((child, name) => {
-      child.kill();
-    });
-    process.exit();
-  });
-}
+    function compileFile(fileName: string) {
+      const source = path.join(SOURCE_DIR, fileName);
+      const target = path.join(TARGET_DIR, fileName.replace(".typ", ".html"));
 
-function spawnDedicatedWatcher(fileName: string) {
-  console.log(`spawning dedicated watcher for: ${fileName}`);
-
-  const source = path.join(SOURCE_DIR, fileName);
-  const target = path.join(TARGET_DIR, fileName.replace(".typ", ".html"));
-
-  const child = spawn(
-    "typst",
-    ["watch", source, target, "--format", "html", "--features", "html"],
-    {
-      stdio: "inherit",
-      shell: true,
+      try {
+        execSync(
+          `typst compile "${source}" "${target}" --format html --features html`,
+          { stdio: "inherit" }
+        );
+        console.log(`built ${fileName}`);
+      } catch (e) {
+        console.error(`failed to build ${fileName}`);
+      }
     }
-  );
 
-  activeWatchers.set(fileName, child);
+    function buildAll() {
+      console.log("\nstarting full typst build...");
+      const files = getTypstFiles();
+      files.forEach(compileFile);
+      console.log("build complete.\n");
+    }
 
-  child.on("close", () => {
-    activeWatchers.delete(fileName);
-  });
-}
-```]
+    function startDevMode() {
+      console.log("watching for changes...");
+
+      const watcher = chokidar.watch(SOURCE_DIR, {
+        persistent: true,
+        ignoreInitial: true,
+        ignored: [ABS_TARGET],
+      });
+
+      watcher.on("all", (event, filePath) => {
+        const fileName = path.basename(filePath);
+        const ext = path.extname(filePath).toLowerCase();
+
+        if (!filePath.endsWith(".typ") || EXCLUDE.includes(fileName)) {
+          return;
+        }
+
+        if (activeWatchers.has(fileName)) {
+          return;
+        }
+
+        if (event === "change" || event === "add") {
+          spawnDedicatedWatcher(fileName);
+        }
+      });
+
+      process.on("SIGINT", () => {
+        console.log("\nstopping all typst watchers...");
+        activeWatchers.forEach((child, name) => {
+          child.kill();
+        });
+        process.exit();
+      });
+    }
+
+    function spawnDedicatedWatcher(fileName: string) {
+      console.log(`spawning dedicated watcher for: ${fileName}`);
+
+      const source = path.join(SOURCE_DIR, fileName);
+      const target = path.join(TARGET_DIR, fileName.replace(".typ", ".html"));
+
+      const child = spawn(
+        "typst",
+        ["watch", source, target, "--format", "html", "--features", "html"],
+        {
+          stdio: "inherit",
+          shell: true,
+        }
+      );
+
+      activeWatchers.set(fileName, child);
+
+      child.on("close", () => {
+        activeWatchers.delete(fileName);
+      });
+    }
+    ```
+  ]
+]
 
 Now, we'll modify our `package.json` to run `typst-manager.ts` whenever we run `dev` or `build`. Modify `package.json` so the `scripts` section looks like this:
-```json
-{
-  ...
-  "scripts": {
-    "typst:dev": "node scripts/typst-manager.ts dev",
-    "typst:build": "node scripts/typst-manager.ts build",
-    "dev": "concurrently \"npm run typst:dev\" \"vite dev\"",
-    "build": "npm run typst:build && vite build",
+#file-display("package.json")[
+  ```json
+  {
     ...
-  },
-  ...
-}
-```
+    "scripts": {
+      "typst:dev": "node scripts/typst-manager.ts dev",
+      "typst:build": "node scripts/typst-manager.ts build",
+      "dev": "concurrently \"npm run typst:dev\" \"vite dev\"",
+      "build": "npm run typst:build && vite build",
+      ...
+    },
+    ...
+  }
+  ```
+]
 Now, if you run `npm run dev`, any changes to `test.typ` should be reflected in `test.html` on save.
 
 == Hot reloading
@@ -496,150 +521,167 @@ Now, if you run `npm run dev`, any changes to `test.typ` should be reflected in 
 Even though our HTML files change in sync with our Typst files, we have to manually reload our blog in `dev` mode if we want to see how those changes will look on our website. Let's fix that!
 
 In `vite.config.ts`, we'll create a new custom plugin that notifies the frontend whenever HTML files change. Replace
-```ts
-export default defineConfig({
-	plugins: [sveltekit()]
-});
-```
+#file-display("vite.config.ts")[
+  ```ts
+  export default defineConfig({
+  	plugins: [sveltekit()]
+  });
+  ```
+]
 with
-```ts
-export default defineConfig({
-  plugins: [
-    sveltekit(),
-    {
-      name: "watch-content",
-      handleHotUpdate({ file, server }) {
-        if (file.endsWith(".html")) {
-          server.ws.send({ type: "custom", event: "content-update" });
-        }
+#file-display("vite.config.ts")[
+  ```ts
+  export default defineConfig({
+    plugins: [
+      sveltekit(),
+      {
+        name: "watch-content",
+        handleHotUpdate({ file, server }) {
+          if (file.endsWith(".html")) {
+            server.ws.send({ type: "custom", event: "content-update" });
+          }
+        },
       },
-    },
-  ],
-});
-```
+    ],
+  });
+  ```
+]
 We can listen for these changes on the frontend by modifying `src/routes/+layout.svelte`. Add the following snippet to the `script` section of your `+layout.svelte` file:
-```ts
-import { invalidateAll } from "$app/navigation";
-if (import.meta.hot) {
-   import.meta.hot.on("content-update", () => {
-     invalidateAll();
-   });
-}
-```
+#file-display("src/routes/+layout.svelte")[
+  ```ts
+  import { invalidateAll } from "$app/navigation";
+  if (import.meta.hot) {
+     import.meta.hot.on("content-update", () => {
+       invalidateAll();
+     });
+  }
+  ```
+]
 Now, when you're running `npm run dev`, any changes to `test.typ` should be reflected in your browser on save!
 
 = Math
 
 Clever observers might have noticed that Typst has been furiously emitting warnings about our use of math blocks in our `test.typ` file. Even cleverer observers might have noticed that our output HTML currently contains no math—Typst currently removes math elements because it doesn't know how to display them. Let's fix this!
 
-Open `src/writing/lib/lib.typ`. In the article function, we'll create a show rule that changes the way Typst renders math equations by modifying our article function:
-```typ
-// src/posts/lib/lib.typ
-#let article(
-  // ...
-) = context {
-  show math.equation: it => {
-    show: if it.block {
-      it => html.elem("div", attrs: (class: "math"), it)
-    } else {
-      it => html.elem("span", attrs: (class: "math"), it)
+In the article function, we'll create a show rule that changes the way Typst renders math equations:
+#file-display("src/posts/lib/lib.typ")[
+  ```typ
+  #let article(
+    // ...
+  ) = context {
+    show math.equation: it => {
+      show: if it.block {
+        it => html.elem("div", attrs: (class: "math"), it)
+      } else {
+        it => html.elem("span", attrs: (class: "math"), it)
+      }
+      html.frame(it)
     }
-    html.frame(it)
+    // ...
   }
-  // ...
-}
-```
+  ```
+]
 Our show rule maps block math in `div`s and inline math in `span`s. Most importantly, it wraps the whole element in a `frame`, which makes Typst render the contained content as an SVG. Typst doesn't currently have built-in HTML rendering for math, but it can render any part of the document as SVG, so we just wrap all our math equations with `frame`s to show them as SVGs instead.#footnote[
   There are other approaches to rendering math, like using #link("https://codeberg.org/akida/mathyml")[mathyml] to convert equations to MathML Core or #link("https://github.com/qwinsi/tex2typst")[convert to LaTeX] and render with #link("https://www.mathjax.org/")[MathJax] or #link("https://katex.org/")[KaTeX]. I decided to use SVG rendering because of simplicity and visual accuracy.
 ]
 
 Now, math displays correctly!
 
-#image("sveltekit-typst-blog/math.png")
+#image(
+  "sveltekit-typst-blog/math.png",
+  alt: "Screenshot of rendered blog post, with math section containing inline and block equations.",
+)
 
 = Footnotes
 
-Let's add support for footnotes! First, create another show rule in the `lib.typ` `article` function:
-```typ
-// src/posts/lib/lib.typ
-#let article(
-  // ...
-) = context {
-  show footnote: it => {
-    let count = counter(footnote).display()
-    super([#{
-        show html.elem.where(tag: "a"): it => {
-          if it.attrs.at("role", default: none) == none {
-            html.elem("a", attrs: (..it.attrs, role: "doc-noteref", aria-label: "footnote " + count), it.body)
-          } else {
-            it
+Let's add support for footnotes!#footnote[Typst already supports footnotes if you don't override the default `html` and `body` element creation. Because we did override it, we have to implement footnotes manually. Manual implementation has the benefit of more customization, like allowing for backlinks. ] We want numbered superscripts that link to numbered footnotes at the bottom of the article which all also have backlinks. First, create another show rule:
+#file-display("src/posts/lib/lib.typ")[
+  ```typ
+  #let article(
+    // ...
+  ) = context {
+    show footnote: it => {
+      let count = counter(footnote).display()
+      super([#{
+          show html.elem.where(tag: "a"): it => {
+            if it.attrs.at("role", default: none) == none {
+              html.elem("a", attrs: (..it.attrs, role: "doc-noteref", aria-label: "footnote " + count), it.body)
+            } else {
+              it
+            }
           }
-        }
-        link(label("footnote-" + count), count)
-      } #label("footnote-return-" + count)])
+          link(label("footnote-" + count), count)
+        } #label("footnote-return-" + count)])
+    }
+    // ...
   }
-  // ...
-}
-```
+  ```
+]
 
 This show rule uses Typst's `counter` function to display numbered footnotes linked to their sources, and also sets up backlink targets so that readers can return to the article after reading the footnote. We use a show rule to add accessible attributes to the generated `a` element.
 
 Then, let's update the `html.body` function to display each footnote, using Typst's `query` function to find each footnote's content.
 
-```typ
-#html.elem("body")[
-  #content
-  #context {
-    let footnotes = query(footnote)
-    if footnotes.len() != 0 {
-      html.elem("footer")[
-        #html.elem("ol")[
-          #for (i, footnote) in footnotes.enumerate() {
-            let count = str(i + 1)
-            [#html.elem("li", attrs: (role: "doc-footnote"))[
-                #footnote.body #{
-                  show html.elem.where(tag: "a"): it => {
-                    if it.attrs.at("role", default: none) == none {
-                      html.elem(
-                        "a",
-                        attrs: (
-                          ..it.attrs,
-                          role: "doc-backlink",
-                          aria-label: "Back to content",
-                        ),
-                        it.body,
-                      )
-                    } else {
-                      it
+#file-display("src/posts/lib/lib.typ")[
+  ```typ
+  #html.elem("body")[
+    #content
+    #context {
+      let footnotes = query(footnote)
+      if footnotes.len() != 0 {
+        html.elem("footer")[
+          #html.elem("ol")[
+            #for (i, footnote) in footnotes.enumerate() {
+              let count = str(i + 1)
+              [#html.elem("li", attrs: (role: "doc-footnote"))[
+                  #footnote.body #{
+                    show html.elem.where(tag: "a"): it => {
+                      if it.attrs.at("role", default: none) == none {
+                        html.elem(
+                          "a",
+                          attrs: (
+                            ..it.attrs,
+                            role: "doc-backlink",
+                            aria-label: "Back to content",
+                          ),
+                          it.body,
+                        )
+                      } else {
+                        it
+                      }
                     }
-                  }
-                  link(label("footnote-return-" + count))[↩︎]
-                }] #label("footnote-" + count)]
-          }
+                    link(label("footnote-return-" + count))[↩︎]
+                  }] #label("footnote-" + count)]
+            }
+          ]
         ]
-      ]
+      }
     }
-  }
+  ]
+  ```
 ]
-```
 
 Here, we create the targets for the links we set up in our show rule, and create backlinks with the `↩︎` symbol at the end of each footnote. We also use another show rule to add accessible attributes to our links.
 
 We can our implementation by modifying our `test.typ` file to include some example footnotes:
 
-```typ
-// src/posts/test.typ
-// ...
-= Footnote
+#file-display("src/posts/test.typ")[
+  ```typ
+  // ...
+  = Footnote
 
-Let's make footnotes#footnote[An example footnote]
-and more footnotes#footnote[
-  Another example footnote with *rich content*
+  Let's make footnotes#footnote[An example footnote]
+  and more footnotes#footnote[
+    Another example footnote with *rich content*
+  ]
+  ```
 ]
-```
 Now, we have support for footnotes!
 
-#image("sveltekit-typst-blog/footnote.png")
+#image(
+  "sveltekit-typst-blog/footnote.png",
+  alt: "Screenshot of rendered blog post, with footnotes where clickable superscript links correspond to a numbered footnote list.",
+)
 
 = Conclusion
 

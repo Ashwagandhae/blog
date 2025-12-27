@@ -60,6 +60,9 @@
     padding: var(--pad);
     box-sizing: border-box;
     border-radius: var(--radius);
+    flex: 1;
+    flex-basis: 0;
+    min-width: 0;
 
     --tag-back: var(--transparent-back);
     --article-tag-lightness: var(--level-2);

@@ -8,11 +8,6 @@ export type ArticleMeta = {
   tags: string[];
 };
 
-function parseNum(str: string | null) {
-  if (str == null) return null;
-  const num = parseFloat(str);
-  return isNaN(num) ? null : num;
-}
 export function extractMeta(html: string): ArticleMeta {
   const { document } = parseHTML(html);
 
