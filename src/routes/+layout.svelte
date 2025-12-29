@@ -34,7 +34,7 @@
 </svelte:head>
 <header>
   <nav aria-label="Main navigation">
-    <a href="/" class="logo"> <ChickenLogo></ChickenLogo> </a>
+    <a href="/" class="logo" aria-label="Home"> <ChickenLogo></ChickenLogo> </a>
 
     <ul class="navLinks">
       <li><NavItem href="/about" icon="person">about</NavItem></li>
@@ -50,7 +50,7 @@
 
 <style>
   header {
-    position: sticky;
+    position: fixed;
     top: 0;
 
     width: 100%;
@@ -58,17 +58,16 @@
     z-index: 100;
 
     background: var(--back-gradient);
-    background-attachment: fixed;
-    background-size: cover;
   }
 
   main {
     width: 100%;
     box-sizing: border-box;
     padding: 0 var(--pad);
+    padding-top: var(--header-height);
     margin: auto;
 
-    padding-bottom: calc(90vh - var(--logo-size));
+    padding-bottom: calc(100vh - var(--logo-size) - 2lh);
   }
 
   .content {
@@ -89,7 +88,7 @@
     gap: var(--pad);
     list-style: none;
     margin: 0;
-    padding: 0 var(--pad-big);
+    padding: 0 var(--pad-small);
     align-items: center;
   }
 

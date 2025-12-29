@@ -1,10 +1,12 @@
 :root {
   --font-size: 1rem;
+  --font-size-small: 0.85rem;
 }
 
 @media (min-width: 768px) {
   :root {
     --font-size: 1.125rem;
+    --font-size-small: 0.9rem;
   }
 }
 
@@ -40,8 +42,6 @@
   --transition-duration-background: 500ms;
   --logo-size: 50px;
   --header-height: calc(var(--logo-size) + var(--pad-small) * 2);
-
-  --font-size-small: calc(var(--font-size) * 0.8);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -99,18 +99,27 @@ body {
   --article-tag-lightness-active: var(--level-4);
 
   --back-gradient: radial-gradient(
-    at 0% 0%,
-    oklch(var(--level-1) var(--back-chroma) var(--hue-front)),
-    oklch(var(--level-1) var(--back-chroma) var(--hue-back))
-  );
-
+      circle calc(max(90vw, 90vh)) at 0% 0%,
+      oklch(var(--level-1) var(--back-chroma) var(--hue-front)),
+      transparent
+    )
+    oklch(var(--level-1) var(--back-chroma) var(--hue-back));
   color: var(--text);
-  background: var(--back-gradient);
-  background-attachment: fixed;
-  background-size: cover;
 
   transition: --hue-front var(--transition-duration-background),
     --hue-back var(--transition-duration-background);
+
+  background: var(--back);
+}
+body::before {
+  content: "";
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background: var(--back-gradient);
+  z-index: -1;
 }
 button,
 a.button {
@@ -147,4 +156,8 @@ button:disabled,
 a.button:disabled {
   background: var(--transparent-back);
   color: var(--text-weak);
+}
+
+h1 {
+  font-size: 1.8em;
 }

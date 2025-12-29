@@ -52,6 +52,7 @@
     display: block;
     width: 100%;
     border-radius: 0 0 var(--radius) var(--radius);
+    font-size: var(--font-size-small);
   }
 
   .open .toggle {

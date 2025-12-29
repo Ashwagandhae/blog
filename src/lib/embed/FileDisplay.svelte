@@ -50,11 +50,9 @@
     margin-top: var(--margin);
 
     box-sizing: border-box;
-
-    scrollbar-width: thin;
   }
   .dir,
-  .path {
+  .file {
     white-space: nowrap;
   }
   .dir {

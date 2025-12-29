@@ -47,13 +47,42 @@
   <input type="hidden" name="access_key" value={accessKey} />
   <input placeholder="name" type="text" name="name" required />
   <input placeholder="email" type="email" name="email" required />
-  <textarea placeholder="message" name="message" required rows="8"></textarea>
+  <textarea placeholder="message" name="message" required rows="4"></textarea>
   <button type="submit" disabled={status.type != "waiting"}
     >{submitButtonText}</button
   >
 </form>
 
 <style>
+  form {
+    display: grid;
+    grid-template-areas:
+      "name name"
+      "email email"
+      "message message"
+      "submit submit";
+    gap: var(--pad);
+  }
+  @media (min-width: 500px) {
+    form {
+      grid-template-areas:
+        "name email"
+        "message message"
+        "submit submit";
+    }
+  }
+  textarea {
+    grid-area: message;
+  }
+  button {
+    grid-area: submit;
+  }
+  input[name="name"] {
+    grid-area: name;
+  }
+  input[name="email"] {
+    grid-area: email;
+  }
   form input[type="text"],
   form input[type="email"],
   form textarea {
@@ -67,10 +96,9 @@
 
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 0.5rem;
+    margin: 0;
 
     transition: background var(--transition-duration-slow);
-    margin-bottom: var(--pad);
   }
 
   form input[type="text"]:hover,

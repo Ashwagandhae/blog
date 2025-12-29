@@ -1,12 +1,10 @@
 <script lang="ts">
   import type { ArticleMeta } from "$lib/article";
   import {
-    findMatchingFrontHue,
     getArticlePalette,
     getPaletteContext,
     type Palette,
   } from "$lib/palette";
-  import { getTagHue } from "$lib/tag";
   import ArticleMetaDisplay from "./ArticleMetaDisplay.svelte";
 
   let { path, meta }: { path: string; meta: ArticleMeta } = $props();
@@ -45,8 +43,6 @@
   <div class="metaWrapper">
     <ArticleMetaDisplay {meta} />
   </div>
-
-  {meta.description}
 </div>
 
 <style>
@@ -63,6 +59,7 @@
     flex: 1;
     flex-basis: 0;
     min-width: 0;
+    gap: var(--pad-small);
 
     --tag-back: var(--transparent-back);
     --article-tag-lightness: var(--level-2);
@@ -93,6 +90,7 @@
   h2 {
     margin: 0;
     font-size: 1.25em;
+    font-weight: normal;
   }
 
   .mainLink {

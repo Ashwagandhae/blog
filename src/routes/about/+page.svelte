@@ -9,9 +9,17 @@
 <h1>About</h1>
 <p>
   Hi, I'm Julian. I'm studying Computer Science at the Georgia Institute of
-  Technology, threading in Systems & Architecture and Devices.
+  Technology, threading in <a
+    href="https://www.cc.gatech.edu/academics/threads/systems-architecture"
+    >Systems & Architecture</a
+  >
+  and <a href="https://www.cc.gatech.edu/academics/threads/devices">Devices</a>.
 </p>
-<h2>Links</h2>
+<p>
+  I'm interested in programming languages, embedded systems, and UI design. I
+  also like playing piano and taking care of chickens.
+</p>
+<h2>Connect</h2>
 <ul>
   <li>
     GitHub: <a href="https://github.com/Ashwagandhae">github.com/Ashwagandhae</a
@@ -28,7 +36,7 @@
 <ContactForm />
 <h2>Website source</h2>
 <p>
-  I wrote this website with
+  Written with
   <a href="https://svelte.dev/docs/kit/introduction">SvelteKit</a>, using
   <a href="https://typst.app/">Typst</a>
   as the markup language for
