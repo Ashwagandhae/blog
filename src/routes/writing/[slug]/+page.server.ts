@@ -31,7 +31,7 @@ export async function load({ params }): Promise<Article> {
   let previous = metas[(index - 1 + metas.length) % metas.length];
 
   return {
-    content: extractContent(rawHtml),
+    content: await extractContent(rawHtml),
     meta: extractMeta(rawHtml),
     next,
     previous,

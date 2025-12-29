@@ -45,13 +45,20 @@
   set raw(theme: "one-dark.tmTheme")
 
   show raw: it => context {
+    let lang = if it.lang == none { "" } else { it.lang }
     if it.block {
       html.elem("div", attrs: (class: "raw"))[
         #embed("raw-copy-button", attrs: (text: it.text))
-        #it
+        #html.pre[
+          #html.elem("code", attrs: (data-lang: lang))[
+            #it.text
+          ]
+        ]
       ]
     } else {
-      it
+      html.elem("code", attrs: (data-lang: lang))[
+        #it.text
+      ]
     }
   }
 

@@ -54,6 +54,8 @@ Marks:
 
 = Code
 
+Inline code like ```python print("hello world")``` is very beautiful.
+
 ```python
 import math
 
