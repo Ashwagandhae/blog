@@ -32,6 +32,7 @@
   "dependencies": {
     "@fontsource-variable/atkinson-hyperlegible-next": "^5.2.6",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@shikijs/transformers": "^3.20.0",
     "linkedom": "^0.18.12",
     "shiki": "^3.20.0"
   }

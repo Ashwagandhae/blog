@@ -1,9 +1,4 @@
 import { parseHTML } from "linkedom";
-import {
-  bundledLanguages,
-  createHighlighter,
-  type BundledLanguage,
-} from "shiki";
 
 export type ArticleMeta = {
   title: string;
@@ -93,76 +88,8 @@ export async function extractContent(html: string): Promise<ContentNode[]> {
   return nodesToContentNodes(Array.from(document.body.childNodes));
 }
 
-async function addShikiHighlighting(document: Document) {
-  const removeBgTransformer = {
-    name: "remove-bg",
-    pre(node: any) {
-      if (node.properties && typeof node.properties.style === "string") {
-        node.properties.style = node.properties.style.replace(
-          /background-color\s*:\s*[^;]+;?/gi,
-          ""
-        );
-      }
-    },
-    span(node: any) {
-      if (node.properties && typeof node.properties.style === "string") {
-        node.properties.style = node.properties.style.replace(
-          /background-color\s*:\s*[^;]+;?/gi,
-          ""
-        );
-      }
-    },
-  };
-
-  const highlighter = await createHighlighter({
-    themes: ["one-dark-pro"],
-    langs: [],
-  });
-
-  await highlighter.loadLanguage({
-    ...(typstTmGrammar as any),
-    name: "typst",
-    aliases: ["typ"],
-  });
-
-  const codes = Array.from(document.querySelectorAll("code"));
-
-  for (const code of codes) {
-    const rawLang = code.getAttribute("data-lang");
-    if (!rawLang) continue;
-
-    const lang = rawLang as BundledLanguage;
-    const text = code.textContent || "";
-
-    // Check context
-    const isBlock = code.parentElement && code.parentElement.tagName === "PRE";
-
-    if (!highlighter.getLoadedLanguages().includes(lang)) {
-      await highlighter.loadLanguage(lang);
-    }
-
-    const codeHtml = highlighter.codeToHtml(text, {
-      lang,
-      theme: "one-dark-pro",
-      structure: isBlock ? "classic" : "inline",
-      transformers: [removeBgTransformer],
-    });
-
-    if (isBlock) {
-      // BLOCK: Replace the entire <pre>
-      // Shiki output: <pre ...><code ...>...</code></pre>
-      code.parentElement!.outerHTML = codeHtml;
-    } else {
-      // INLINE: Wrap the Shiki output (<span>) back into a <code> tag
-      // Shiki output: <span ...>...</span>
-      // Result: <code class="shiki-inline"><span ...>...</span></code>
-      code.outerHTML = `<code class="shiki-inline">${codeHtml}</code>`;
-    }
-  }
-}
-
 import { embedComponents } from "$lib/embed";
-import typstTmGrammar from "./typstGrammar.json";
+import { addShikiHighlighting } from "./articleHighlight";
 
 const customTags = new Set(Object.keys(embedComponents));
 

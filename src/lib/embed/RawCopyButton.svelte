@@ -1,15 +1,20 @@
 <script lang="ts">
   import Icon from "$lib/components/Icon.svelte";
 
-  let { text }: { text?: string } = $props();
-
+  let element: HTMLElement | null = $state(null);
   function copyText() {
+    let text = element?.parentElement?.innerText;
     if (text == null) return;
     navigator.clipboard.writeText(text);
   }
 </script>
 
-<button class="copyButton" onclick={copyText} aria-label="Copy code">
+<button
+  class="copyButton"
+  onclick={copyText}
+  aria-label="Copy code"
+  bind:this={element}
+>
   <Icon name="copy" />
 </button>
 
@@ -25,6 +30,7 @@
     transition:
       opacity var(--transition-duration-slow),
       background var(--transition-duration-slow);
+    z-index: 10;
   }
   :global(div.raw):hover .copyButton {
     opacity: 1;

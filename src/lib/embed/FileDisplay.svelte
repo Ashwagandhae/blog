@@ -16,17 +16,24 @@
 
 <div class="fileDisplay">
   <div class="path">
-    {#if dir != null}
-      <button class="dir" onclick={() => (showDir = !showDir)}>
-        {#if showDir}
-          {dir}
-        {:else}
-          …/
-        {/if}
-      </button>{/if}<span class="file">
-      {file}
-    </span>
+    <div class="content-scroll">
+      {#if dir != null}
+        <button class="dir" onclick={() => (showDir = !showDir)}>
+          {#if showDir}
+            {dir}
+          {:else}
+            …/
+          {/if}
+        </button>{/if}<span class="file">
+        {file}
+      </span>
+    </div>
+
+    <svg class="corner-right" viewBox="0 0 20 20">
+      <path d="M 0 0 A 20 20 0 0 0 20 20 L 0 20 Z" />
+    </svg>
   </div>
+
   {@render children()}
 </div>
 
@@ -35,38 +42,61 @@
     width: 100%;
     box-sizing: border-box;
   }
+
   div.path {
+    position: relative;
+
+    display: flex;
+    width: fit-content;
+    max-width: calc(100% - var(--pad) - var(--radius));
+    margin-top: var(--margin);
+
+    background: var(--transparent-back);
+    border-radius: var(--radius) var(--radius) 0 0;
+
+    padding: 0;
+  }
+
+  .content-scroll {
     display: flex;
     align-items: baseline;
 
-    max-width: calc(100% - var(--pad));
-    width: min-content;
-    overflow-x: auto;
-
-    background: var(--transparent-back);
     padding: var(--pad-small);
-    border-radius: var(--radius) var(--radius) 0 0;
-    font-size: var(--font-size-small);
-    margin-top: var(--margin);
 
-    box-sizing: border-box;
-  }
-  .dir,
-  .file {
+    overflow-x: auto;
     white-space: nowrap;
+
+    font-size: var(--font-size-small);
+    font-family: inherit;
+
+    scrollbar-width: none;
   }
+
+  .corner-right {
+    position: absolute;
+    bottom: 0;
+
+    right: calc(var(--radius) * -1);
+
+    width: var(--radius);
+    height: var(--radius);
+
+    fill: var(--transparent-back);
+
+    pointer-events: none;
+  }
+
   .dir {
     background: none;
     border: none;
     padding: 0;
     margin: 0;
-
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
     color: var(--text-weak);
-
     vertical-align: baseline;
+    cursor: pointer;
   }
   .dir:hover {
     text-decoration: underline;

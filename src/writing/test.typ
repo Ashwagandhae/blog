@@ -56,17 +56,21 @@ Marks:
 
 Inline code like ```python print("hello world")``` is very beautiful.
 
+```
+raw text
+wow raw text is so good
+
+look at this raw text
+```
+
 ```python
 import math
-
 def code_block(with_syntax_highlight):
 	print("hello world")
 	x = {"hello": (1, 2), "goodbye": (3, 4)}
 	return f"hello {1}"
 ```
-
-#lorem(21)
-
+== File display
 #file-display("hello-world.py")[
   ```python
   print("hello world")
@@ -81,6 +85,28 @@ def code_block(with_syntax_highlight):
     print(i)
   ```
 ]
+== Annotations
+```ts
+console.log("remove"); // [!code --]
+console.log("normal");
+console.log("add"); // [!code ++]
+console.log("normal");
+console.log("highlight"); // [!code highlight]
+console.log("normal");
+console.error("error"); // [!code error]
+console.log("normal");
+console.warn("warning"); // [!code warning]
+console.log("normal");
+let x = [1, 2, 3, (4 + 5)]; // [!code word:(4 + 5)]
+```
+
+```ts
+function helloWorld() {
+  console.log("not important");
+  console.log("focused"); // [!code focus]
+  console.log("not important");
+}
+```
 
 = Table
 

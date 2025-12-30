@@ -64,20 +64,49 @@
     <h2>Code</h2>
     <p>Inline code like <code data-lang="python">print("hello world")</code> is very beautiful.</p>
     <div class="raw">
-      <raw-copy-button text="&quot;import math\n\ndef code_block(with_syntax_highlight):\n\tprint(\&quot;hello world\&quot;)\n\tx = {\&quot;hello\&quot;: (1, 2), \&quot;goodbye\&quot;: (3, 4)}\n\treturn f\&quot;hello {1}\&quot;&quot;"></raw-copy-button>
-      <pre><code data-lang="python">import math
+      <raw-copy-button></raw-copy-button>
+      <pre><code data-lang>raw text
+wow raw text is so good
 
+look at this raw text</code></pre>
+    </div>
+    <div class="raw">
+      <raw-copy-button></raw-copy-button>
+      <pre><code data-lang="python">import math
 def code_block(with_syntax_highlight):
 	print("hello world")
 	x = {"hello": (1, 2), "goodbye": (3, 4)}
 	return f"hello {1}"</code></pre>
     </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-    <file-display path="&quot;hello-world.py&quot;"><div class="raw"><raw-copy-button text="&quot;print(\&quot;hello world\&quot;)\nfor i in range(0, 10):\n  print(i)&quot;"></raw-copy-button><pre><code data-lang="python">print("hello world")
+    <h3>File display</h3>
+    <file-display path="&quot;hello-world.py&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="python">print("hello world")
 for i in range(0, 10):
-  print(i)</code></pre></div></file-display><file-display path="&quot;src/main/long/path/that/is/very/long/and/extremely/long/hello-world.py&quot;"><div class="raw"><raw-copy-button text="&quot;print(\&quot;hello world\&quot;)\nfor i in range(0, 10):\n  print(i)&quot;"></raw-copy-button><pre><code data-lang="python">print("hello world")
+  print(i)</code></pre></div></file-display><file-display path="&quot;src/main/long/path/that/is/very/long/and/extremely/long/hello-world.py&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="python">print("hello world")
 for i in range(0, 10):
   print(i)</code></pre></div></file-display>
+    <h3>Annotations</h3>
+    <div class="raw">
+      <raw-copy-button></raw-copy-button>
+      <pre><code data-lang="ts">console.log("remove"); // [!code --]
+console.log("normal");
+console.log("add"); // [!code ++]
+console.log("normal");
+console.log("highlight"); // [!code highlight]
+console.log("normal");
+console.error("error"); // [!code error]
+console.log("normal");
+console.warn("warning"); // [!code warning]
+console.log("normal");
+let x = [1, 2, 3, (4 + 5)]; // [!code word:(4 + 5)]</code></pre>
+    </div>
+    <div class="raw">
+      <raw-copy-button></raw-copy-button>
+      <pre><code data-lang="ts">function helloWorld() {
+  console.log("not important");
+  console.log("focused"); // [!code focus]
+  console.log("not important");
+}</code></pre>
+    </div>
     <h2>Table</h2>
     <table>
       <thead>

@@ -354,7 +354,7 @@ With all the data we need extracted, rendering it becomes quite easy. Create ano
   ```
 ]
 
-Now, all the pieces are in place! Run `npm run dev`, and go to `localhost:????/test` to view the rendered `test.typ` blog post!
+Now, all the pieces are in place! Run ```bash npm run dev```, and go to `localhost:????/test` to view the rendered `test.typ` blog post!
 
 #image(
   "sveltekit-typst-blog/first-post-render.png",
@@ -498,40 +498,37 @@ I won't go into much more detail about the script. Here's the code:
   ]
 ]
 
-Now, we'll modify our `package.json` to run `typst-manager.ts` whenever we run `dev` or `build`. Modify `package.json` so the `scripts` section looks like this:
+Now, we'll modify our `package.json` to run `typst-manager.ts` whenever we run `dev` or `build`. Modify the `scripts` section of `package.json`:
 #file-display("package.json")[
   ```json
   {
     ...
     "scripts": {
-      "typst:dev": "node scripts/typst-manager.ts dev",
-      "typst:build": "node scripts/typst-manager.ts build",
-      "dev": "concurrently \"npm run typst:dev\" \"vite dev\"",
-      "build": "npm run typst:build && vite build",
+      "typst:dev": "node scripts/typst-manager.ts dev", // [!code ++]
+      "typst:build": "node scripts/typst-manager.ts build", // [!code ++]
+
+      "dev": "vite dev",// [!code --]
+      "dev": "concurrently \"npm run typst:dev\" \"vite dev\"", // [!code ++]
+      "build": "vite build", // [!code --]
+      "build": "npm run typst:build && vite build", // [!code ++]
       ...
     },
     ...
   }
   ```
 ]
-Now, if you run `npm run dev`, any changes to `test.typ` should be reflected in `test.html` on save.
+Now, if you run ```bash npm run dev```, any changes to `test.typ` should be reflected in `test.html` on save.
 
 == Hot reloading
 
 Even though our HTML files change in sync with our Typst files, we have to manually reload our blog in `dev` mode if we want to see how those changes will look on our website. Let's fix that!
 
-In `vite.config.ts`, we'll create a new custom plugin that notifies the frontend whenever HTML files change. Replace
+In `vite.config.ts`, we'll create a new custom plugin that notifies the frontend whenever HTML files change.
 #file-display("vite.config.ts")[
   ```ts
   export default defineConfig({
-  	plugins: [sveltekit()]
-  });
-  ```
-]
-with
-#file-display("vite.config.ts")[
-  ```ts
-  export default defineConfig({
+  	plugins: [sveltekit()] // [!code --]
+    // [!code ++:11]
     plugins: [
       sveltekit(),
       {
@@ -546,6 +543,7 @@ with
   });
   ```
 ]
+
 We can listen for these changes on the frontend by modifying `src/routes/+layout.svelte`. Add the following snippet to the `script` section of your `+layout.svelte` file:
 #file-display("src/routes/+layout.svelte")[
   ```ts
@@ -557,7 +555,7 @@ We can listen for these changes on the frontend by modifying `src/routes/+layout
   }
   ```
 ]
-Now, when you're running `npm run dev`, any changes to `test.typ` should be reflected in your browser on save!
+Now, when you're running ```bash npm run dev```, any changes to `test.typ` should be reflected in your browser on save!
 
 = Math
 
