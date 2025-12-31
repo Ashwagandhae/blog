@@ -1,14 +1,10 @@
 <script lang="ts">
   import ArticleMeta from "$lib/components/ArticleMetaDisplay.svelte";
-  import ArticlePreview from "$lib/components/ArticlePreview.svelte";
   import ContentRenderer from "$lib/components/ContentRenderer.svelte";
   import InlineIcon from "$lib/components/InlineIcon.svelte";
   import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
-  import {
-    findMatchingFrontHue,
-    getArticlePalette,
-    type Palette,
-  } from "$lib/palette.js";
+  import TableOfContents from "$lib/components/TableOfContents.svelte";
+  import { getArticlePalette, type Palette } from "$lib/palette.js";
   import { titleSuffix } from "$lib/title.js";
   let { data } = $props();
 
@@ -29,9 +25,14 @@
 <article>
   <h1>{data.meta.title}</h1>
   <ArticleMeta meta={data.meta}></ArticleMeta>
-  <ContentRenderer nodes={data.content}></ContentRenderer>
-</article>
 
+  <div class="contentBody">
+    {#key data.path}
+      <TableOfContents toc={data.content.toc} />
+    {/key}
+    <ContentRenderer nodes={data.content.nodes}></ContentRenderer>
+  </div>
+</article>
 <div class="nav">
   <div class="linkContainer">
     <a href="/writing/{data.next.path}" class="button">
@@ -48,6 +49,13 @@
 </div>
 
 <style>
+  article {
+    position: relative;
+  }
+  .contentBody {
+    position: relative;
+  }
+
   .nav {
     display: flex;
     flex: 1fr 1fr;

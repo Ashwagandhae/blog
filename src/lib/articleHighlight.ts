@@ -9,7 +9,7 @@ import {
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
 
-export async function addShikiHighlighting(document: Document) {
+export async function addShikiHighlighting(root: HTMLElement) {
   const highlighter = await createHighlighter({
     themes: ["one-dark-pro"],
     langs: [],
@@ -21,7 +21,7 @@ export async function addShikiHighlighting(document: Document) {
     aliases: ["typ"],
   });
 
-  const codes = Array.from(document.querySelectorAll("code"));
+  const codes = Array.from(root.querySelectorAll("code"));
 
   for (const code of codes) {
     let rawLang = code.getAttribute("data-lang");

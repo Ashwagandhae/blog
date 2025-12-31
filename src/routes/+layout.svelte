@@ -71,7 +71,7 @@
   }
 
   .content {
-    max-width: 40em;
+    max-width: var(--content-width);
     margin: auto;
     box-sizing: border-box;
   }

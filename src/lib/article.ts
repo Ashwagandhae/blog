@@ -8,6 +8,17 @@ export type ArticleMeta = {
   tags: string[];
 };
 
+export type TocHeading = {
+  nodes: ContentNode[];
+  id: string;
+  level: 2 | 3 | 4 | 5 | 6;
+};
+
+export type ArticleContent = {
+  nodes: ContentNode[];
+  toc: TocHeading[];
+};
+
 export function extractMeta(html: string): ArticleMeta {
   const { document } = parseHTML(html);
 
@@ -46,22 +57,15 @@ function slugify(text: string): string {
     .replace(/[^\w\-]+/g, "")
     .replace(/\-\-+/g, "-");
 }
-export async function extractContent(html: string): Promise<ContentNode[]> {
+export async function extractContent(html: string): Promise<ArticleContent> {
   const { document } = parseHTML(html);
 
-  const targetFills = document.querySelectorAll(
-    '.math [fill="#ffffff"], figure [fill="#ffffff"]'
-  );
-  targetFills.forEach((el) => el.setAttribute("fill", "currentColor"));
-
-  const targetStrokes = document.querySelectorAll(
-    '.math [stroke="#ffffff"], figure [stroke="#ffffff"]'
-  );
-  targetStrokes.forEach((el) => el.setAttribute("stroke", "currentColor"));
+  await modifyHtml(document.body);
 
   const slugCounts = new Map<string, number>();
   const headings = document.querySelectorAll("h2, h3, h4, h5, h6");
-  headings.forEach((heading) => {
+  let toc: TocHeading[] = [];
+  for (const heading of headings) {
     const text = heading.textContent || "";
     const baseSlug = slugify(text);
 
@@ -74,18 +78,61 @@ export async function extractContent(html: string): Promise<ContentNode[]> {
       slugCounts.set(baseSlug, 0);
     }
 
+    const headingNodes = nodesToContentNodes(Array.from(heading.childNodes));
+    let headingLevel: TocHeading["level"];
+    switch (heading.tagName) {
+      case "H2":
+        headingLevel = 2;
+        break;
+      case "H3":
+        headingLevel = 3;
+        break;
+      case "H4":
+        headingLevel = 4;
+        break;
+      case "H5":
+        headingLevel = 5;
+        break;
+      case "H6":
+        headingLevel = 6;
+        break;
+      default:
+        headingLevel = 2;
+    }
+
+    toc.push({
+      level: headingLevel,
+      nodes: headingNodes,
+      id: finalSlug,
+    });
+
     const anchor = document.createElement("a");
-    anchor.setAttribute("id", finalSlug);
     anchor.setAttribute("href", `#${finalSlug}`);
+    heading.setAttribute("id", finalSlug);
     anchor.className = "anchor-link";
 
     heading.parentNode?.insertBefore(anchor, heading);
     anchor.appendChild(heading);
-  });
+  }
 
-  await addShikiHighlighting(document);
+  let nodes = nodesToContentNodes(Array.from(document.body.childNodes));
+  return {
+    nodes,
+    toc,
+  };
+}
 
-  return nodesToContentNodes(Array.from(document.body.childNodes));
+async function modifyHtml(root: HTMLElement) {
+  const targetFills = root.querySelectorAll(
+    '.math [fill="#ffffff"], figure [fill="#ffffff"]'
+  );
+  targetFills.forEach((el) => el.setAttribute("fill", "currentColor"));
+
+  const targetStrokes = root.querySelectorAll(
+    '.math [stroke="#ffffff"], figure [stroke="#ffffff"]'
+  );
+  targetStrokes.forEach((el) => el.setAttribute("stroke", "currentColor"));
+  await addShikiHighlighting(root);
 }
 
 import { embedComponents } from "$lib/embed";

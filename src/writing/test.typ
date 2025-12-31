@@ -36,6 +36,8 @@ Marks:
 == Duplicate heading
 == Duplicate heading
 
+== Rich heading with _strange_ ```python print("rich content")```
+
 = Lists
 
 == Unordered
