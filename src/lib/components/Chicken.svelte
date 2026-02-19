@@ -1,19 +1,19 @@
+<!-- We make a bunch of svgs for each
+ different color of the chicken because chrome
+ doesn't smoothly transition the colors otherwise -->
 <svg
   width="100%"
   height="100%"
   viewBox="0 0 700 500"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
+  class="bodyWrap"
 >
   <g class="body">
     <path
       d="M450 350C450 377.614 427.614 400 400 400L200 400C172.386 400 150 377.614 150 350L150 250C150 222.386 172.386 200 200 200L300 200L400 200C427.614 200 450 222.386 450 250L450 350Z"
       fill="currentColor"
     />
-    <!-- <path
-      d="M450 300C450 327.614 427.614 350 400 350L350 350C322.386 350 300 327.614 300 300L300 100C300 72.3858 322.386 50 350 50L375 50L400 50C427.614 50 450 72.3858 450 100L450 300Z"
-      fill="currentColor"
-    /> -->
     <path
       d="M200 300C200 327.614 177.614 350 150 350L100 350C72.3858 350 50 327.614 50 300L50 200C50 172.386 72.3858 150 100 150L125 150L150 150C177.614 150 200 172.386 200 200L200 300Z"
       fill="currentColor"
@@ -29,7 +29,15 @@
       fill="currentColor"
     />
   </g>
-
+</svg>
+<svg
+  width="100%"
+  height="100%"
+  viewBox="0 0 700 500"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class="bodyShadowWrap"
+>
   <g class="bodyShadow">
     <!-- <path
       d="M400 400C400 427.614 377.614 450 350 450C322.386 450 300 427.614 300 400L300 150C300 122.386 322.386 100 350 100C377.614 100 400 122.386 400 150L400 400Z"
@@ -51,14 +59,31 @@
       fill="currentColor"
     />
   </g>
-
+</svg>
+<svg
+  width="100%"
+  height="100%"
+  viewBox="0 0 700 500"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class="combShadowWrap"
+>
   <g class="combShadow">
     <path
       d="M350 475C350 488.807 338.807 500 325 500L275 500C261.193 500 250 488.807 250 475C250 461.193 261.193 450 275 450L325 450C338.807 450 350 461.193 350 475Z"
       fill="currentColor"
     />
   </g>
+</svg>
 
+<svg
+  width="100%"
+  height="100%"
+  viewBox="0 0 700 500"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class="combWrap"
+>
   <g class="comb">
     <path
       d="M300 475C300 488.807 288.807 500 275 500L225 500C211.193 500 200 488.807 200 475C200 461.193 211.193 450 225 450L275 450C288.807 450 300 461.193 300 475Z"
@@ -75,7 +100,15 @@
       fill="currentColor"
     />
   </g>
-
+</svg>
+<svg
+  width="100%"
+  height="100%"
+  viewBox="0 0 700 500"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class="eyeWrap"
+>
   <g class="eye neck">
     <path
       d="M400 125C400 138.807 388.807 150 375 150C361.193 150 350 138.807 350 125C350 111.193 361.193 100 375 100C388.807 100 400 111.193 400 125Z"
@@ -90,30 +123,30 @@
       transform var(--transition-duration-slow),
       filter var(--transition-duration-slow);
     filter: brightness(1);
-    /* width: calc(var(--logo-size) * 2); */
-    /* height: var(--logo-size); */
+    position: absolute;
+    top: 0;
+    left: 0;
   }
-  /* :global(a:hover) svg {
-    transform: rotate(8deg);
-    filter: brightness(1.12);
-  }
-  :global(a:active) svg {
-    transform: rotate(32deg);
-    filter: brightness(1.24);
-  } */
 
-  .body {
+  svg.bodyWrap {
     color: oklch(0.8884 0.0718 calc(var(--hue-front)));
   }
-  .bodyShadow {
+  svg.bodyShadowWrap {
     color: oklch(0.8208 0.0756 calc(var(--hue-front) - 26.49));
   }
-  .comb {
+  svg.combWrap {
     color: oklch(0.6257 0.1522 calc(var(--hue-front) - 55.18));
   }
-  .combShadow {
+  svg.combShadowWrap {
     color: oklch(0.6257 0.1522 calc(var(--hue-front) - 65.26));
   }
+  .body,
+  .bodyShadow,
+  .comb,
+  .combShadow {
+    color: currentColor;
+  }
+
   .neck {
     --peck-duration: 200ms;
     transition:
