@@ -11,7 +11,7 @@
     const object = Object.fromEntries(formData);
     const json = JSON.stringify(object);
 
-    const response = await fetch("https://api.web3forms.com/submit", {
+    const response = await fetch("https://api.web3s.com/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,50 +83,17 @@
   input[name="email"] {
     grid-area: email;
   }
-  form input[type="text"],
-  form input[type="email"],
-  form textarea {
-    background: var(--transparent-back);
-    border: none;
-    border-radius: var(--radius);
-    padding: var(--pad);
-    color: var(--text);
-    font-size: 1em;
-    font-family: inherit;
 
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0;
-
-    transition: background var(--transition-duration-slow);
-  }
-
-  form input[type="text"]:hover,
-  form input[type="email"]:hover,
-  form textarea:hover {
-    background: var(--transparent-back-1);
-    transition: background var(--transition-duration);
-  }
-
-  form input[type="text"]:focus,
-  form input[type="email"]:focus,
-  form textarea:focus {
-    background: var(--transparent-back-2);
-    outline: none;
-    transition: background var(--transition-duration);
-  }
-
-  form textarea {
+  textarea {
     resize: vertical;
     min-height: 80px;
   }
 
-  input::placeholder {
-    color: var(--text-weak);
-  }
-
-  form button[type="submit"] {
+  button[type="submit"] {
     width: 100%;
     text-align: center;
+  }
+  input {
+    width: 100%;
   }
 </style>

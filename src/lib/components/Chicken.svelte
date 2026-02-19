@@ -1,7 +1,7 @@
 <svg
   width="100%"
   height="100%"
-  viewBox="0 0 500 500"
+  viewBox="0 0 700 500"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
 >
@@ -10,10 +10,10 @@
       d="M450 350C450 377.614 427.614 400 400 400L200 400C172.386 400 150 377.614 150 350L150 250C150 222.386 172.386 200 200 200L300 200L400 200C427.614 200 450 222.386 450 250L450 350Z"
       fill="currentColor"
     />
-    <path
+    <!-- <path
       d="M450 300C450 327.614 427.614 350 400 350L350 350C322.386 350 300 327.614 300 300L300 100C300 72.3858 322.386 50 350 50L375 50L400 50C427.614 50 450 72.3858 450 100L450 300Z"
       fill="currentColor"
-    />
+    /> -->
     <path
       d="M200 300C200 327.614 177.614 350 150 350L100 350C72.3858 350 50 327.614 50 300L50 200C50 172.386 72.3858 150 100 150L125 150L150 150C177.614 150 200 172.386 200 200L200 300Z"
       fill="currentColor"
@@ -23,18 +23,31 @@
       fill="currentColor"
     />
   </g>
-
-  <g class="bodyShadow">
+  <g class="body neck">
     <path
-      d="M400 400C400 427.614 377.614 450 350 450C322.386 450 300 427.614 300 400L300 150C300 122.386 322.386 100 350 100C377.614 100 400 122.386 400 150L400 400Z"
+      d="M450 300C450 327.614 427.614 350 400 350L350 350C322.386 350 300 327.614 300 300L300 100C300 72.3858 322.386 50 350 50L375 50L400 50C427.614 50 450 72.3858 450 100L450 300Z"
       fill="currentColor"
     />
+  </g>
+
+  <g class="bodyShadow">
+    <!-- <path
+      d="M400 400C400 427.614 377.614 450 350 450C322.386 450 300 427.614 300 400L300 150C300 122.386 322.386 100 350 100C377.614 100 400 122.386 400 150L400 400Z"
+      fill="currentColor"
+    /> -->
     <path
       d="M150 301C150 328.614 127.614 351 100 351C72.3858 351 50 328.614 50 301L50 250C50 222.386 72.3858 200 100 200C127.614 200 150 222.386 150 250L150 301Z"
       fill="currentColor"
     />
     <path
       d="M400 401C400 428.614 377.614 451 350 451L150 451C122.386 451 100 428.614 100 401L100 350C100 322.386 122.386 300 150 300L250 300L350 300C377.614 300 400 322.386 400 350L400 401Z"
+      fill="currentColor"
+    />
+  </g>
+
+  <g class="bodyShadow neck">
+    <path
+      d="M400 400C400 427.614 377.614 450 350 450C322.386 450 300 427.614 300 400L300 150C300 122.386 322.386 100 350 100C377.614 100 400 122.386 400 150L400 400Z"
       fill="currentColor"
     />
   </g>
@@ -48,11 +61,13 @@
 
   <g class="comb">
     <path
-      d="M488 150C488 163.807 476.807 175 463 175L438 175C424.193 175 413 163.807 413 150C413 136.193 424.193 125 438 125L463 125C476.807 125 488 136.193 488 150Z"
+      d="M300 475C300 488.807 288.807 500 275 500L225 500C211.193 500 200 488.807 200 475C200 461.193 211.193 450 225 450L275 450C288.807 450 300 461.193 300 475Z"
       fill="currentColor"
     />
+  </g>
+  <g class="comb neck">
     <path
-      d="M300 475C300 488.807 288.807 500 275 500L225 500C211.193 500 200 488.807 200 475C200 461.193 211.193 450 225 450L275 450C288.807 450 300 461.193 300 475Z"
+      d="M488 150C488 163.807 476.807 175 463 175L438 175C424.193 175 413 163.807 413 150C413 136.193 424.193 125 438 125L463 125C476.807 125 488 136.193 488 150Z"
       fill="currentColor"
     />
     <path
@@ -61,10 +76,12 @@
     />
   </g>
 
-  <path
-    d="M400 125C400 138.807 388.807 150 375 150C361.193 150 350 138.807 350 125C350 111.193 361.193 100 375 100C388.807 100 400 111.193 400 125Z"
-    fill="rgb(10, 10, 10)"
-  />
+  <g class="eye neck">
+    <path
+      d="M400 125C400 138.807 388.807 150 375 150C361.193 150 350 138.807 350 125C350 111.193 361.193 100 375 100C388.807 100 400 111.193 400 125Z"
+      fill="rgb(10, 10, 10)"
+    />
+  </g>
 </svg>
 
 <style>
@@ -73,15 +90,17 @@
       transform var(--transition-duration-slow),
       filter var(--transition-duration-slow);
     filter: brightness(1);
+    /* width: calc(var(--logo-size) * 2); */
+    /* height: var(--logo-size); */
   }
-  :global(a:hover) svg {
+  /* :global(a:hover) svg {
     transform: rotate(8deg);
     filter: brightness(1.12);
   }
   :global(a:active) svg {
     transform: rotate(32deg);
     filter: brightness(1.24);
-  }
+  } */
 
   .body {
     color: oklch(0.8884 0.0718 calc(var(--hue-front)));
@@ -94,5 +113,43 @@
   }
   .combShadow {
     color: oklch(0.6257 0.1522 calc(var(--hue-front) - 65.26));
+  }
+  .neck {
+    --peck-duration: 200ms;
+    transition:
+      rotate var(--peck-duration) ease-in-out,
+      scale var(--peck-duration) ease-in-out,
+      translate var(--peck-duration) ease-in-out;
+    /* translate 0.3s ease-in-out; */
+  }
+  .body.neck,
+  .comb.neck,
+  .eye.neck {
+    transform-origin: 50% 50%;
+  }
+
+  .bodyShadow.neck {
+    transform-origin: 50% 120%;
+  }
+  :global(a:hover) .body.neck,
+  :global(a:hover) .comb.neck,
+  :global(a:hover) .eye.neck {
+    /* rotate: 90deg; */
+    translate: 0% -5%;
+  }
+  :global(a:hover) .bodyShadow.neck {
+    /* rotate: 90deg; */
+    translate: 0% -5%;
+  }
+
+  :global(a:active) .body.neck,
+  :global(a:active) .comb.neck,
+  :global(a:active) .eye.neck {
+    rotate: 90deg;
+    translate: 10% 0%;
+  }
+  :global(a:active) .bodyShadow.neck {
+    rotate: 90deg;
+    translate: -57% -50%;
   }
 </style>

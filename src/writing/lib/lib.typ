@@ -1,3 +1,6 @@
+
+#import "@local/mathyml:0.1.0": to-mathml;
+
 // embedded components
 #let embed(tag, body: none, attrs: (:)) = {
   let json-attrs = (:)
@@ -31,7 +34,8 @@
       } else {
         it => html.elem("span", attrs: (class: "math"), it)
       }
-      html.frame(it)
+      html.elem("span", attrs: (class: "mathVisual", aria-hidden: "true"), html.frame(it))
+      html.elem("span", attrs: (class: "mathSemantic"), to-mathml(it))
     } else { it }
   }
 
@@ -42,22 +46,28 @@
     embed("enhanced-img", attrs: (src: it.source, alt: it.alt))
   }
 
-  set raw(theme: "one-dark.tmTheme")
 
   show raw: it => context {
     let lang = if it.lang == none { "" } else { it.lang }
+    let text = if it.lang == "ansi" {
+      // in HTML, \u{1b} (the escape character) is not allowed. we replace
+      // \x1b with the safe unicode symbol ␛ (\u{241b}), then replace it back later
+      it.text.replace("\u{1b}", "\u{241b}")
+    } else {
+      it.text
+    }
     if it.block {
       html.elem("div", attrs: (class: "raw"))[
         #embed("raw-copy-button")
         #html.pre[
           #html.elem("code", attrs: (data-lang: lang))[
-            #it.text
+            #text
           ]
         ]
       ]
     } else {
       html.elem("code", attrs: (data-lang: lang))[
-        #it.text
+        #text
       ]
     }
   }

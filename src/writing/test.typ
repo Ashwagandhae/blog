@@ -72,6 +72,15 @@ def code_block(with_syntax_highlight):
 	x = {"hello": (1, 2), "goodbye": (3, 4)}
 	return f"hello {1}"
 ```
+
+== Ansi
+
+```ansi
+]10;rgb:ab/b2/bf\]11;rgb:21/25/2b\* [0m[38;2;229;192;123m366a8c3 ([0m[1m[38;2;86;182;194mHEAD [0m[38;2;229;192;123m-> [0m[1m[38;2;152;195;121mmain[0m[38;2;229;192;123m, [0m[1m[38;2;224;108;117morigin/main[0m[38;2;229;192;123m) [0madd toc
+* [0m[38;2;229;192;123m10075bd [0madd shiki transformers
+* [0m[38;2;229;192;123m482914a [0mmarginally improve syntax highlighting with shiki
+```
+
 == File display
 #file-display("hello-world.py")[
   ```python

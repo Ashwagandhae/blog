@@ -2,5 +2,8 @@
   "typst": 208,
   "svelte": 34,
   "test": 144,
-  "javascript": 102
+  "javascript": 102,
+  "rust": 37,
+  "benchmark": 100,
+  "multithread": 260
 }

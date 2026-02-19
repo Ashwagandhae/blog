@@ -35,11 +35,12 @@
   .tag {
     display: inline-block;
 
-    background: oklch(var(--level-2) 0.08 var(--hue));
+    /* background: oklch(var(--level-2) 0.08 var(--hue)); */
     border-radius: var(--radius);
-    padding: var(--pad);
+    /* padding: var(--pad); */
     white-space: nowrap;
     line-height: 1;
+    color: oklch(var(--text-lightness) var(--text-color-chroma) var(--hue));
   }
 
   .text {

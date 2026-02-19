@@ -24,7 +24,9 @@
 
 <article>
   <h1>{data.meta.title}</h1>
-  <ArticleMeta meta={data.meta}></ArticleMeta>
+  <div class="meta">
+    <ArticleMeta meta={data.meta}></ArticleMeta>
+  </div>
 
   <div class="contentBody">
     {#key data.path}
@@ -35,13 +37,13 @@
 </article>
 <div class="nav">
   <div class="linkContainer">
-    <a href="/writing/{data.next.path}" class="button">
+    <a href="/writing/{data.next.path}">
       <InlineIcon name="triangleLeft" />
       <span class="text">{data.next.meta.title}</span>
     </a>
   </div>
   <div class="linkContainer bottom">
-    <a href="/writing/{data.previous.path}" class="button">
+    <a href="/writing/{data.previous.path}">
       <span class="text">{data.previous.meta.title}</span>
       <InlineIcon name="triangleRight" />
     </a>
@@ -51,6 +53,12 @@
 <style>
   article {
     position: relative;
+  }
+  div.meta {
+    padding-bottom: 2.5rem;
+  }
+  h1 {
+    margin-bottom: 0.4em;
   }
   .contentBody {
     position: relative;
@@ -74,6 +82,15 @@
 
     min-width: 0;
     box-sizing: border-box;
+  }
+
+  .linkContainer a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .linkContainer :is(a:hover, a:active) {
+    text-decoration: underline;
   }
 
   .linkContainer.bottom {

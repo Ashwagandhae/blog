@@ -8,7 +8,7 @@
 
 <style>
   .chicken {
-    width: var(--logo-size);
+    width: calc(var(--logo-size) * 1.4);
     height: var(--logo-size);
   }
 </style>

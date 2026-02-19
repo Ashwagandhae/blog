@@ -50,21 +50,20 @@
 
 <style>
   header {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
 
     width: 100%;
 
     z-index: 100;
 
-    background: var(--back-gradient);
+    /* background: var(--back-gradient); */
   }
 
   main {
     width: 100%;
     box-sizing: border-box;
     padding: 0 var(--pad);
-    padding-top: var(--header-height);
     margin: auto;
 
     padding-bottom: calc(100vh - var(--logo-size) - 2lh);
@@ -80,7 +79,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--pad-small);
+    padding: var(--pad-big);
+    /* max-width: calc(40rem + var(--logo-size)); */
+    margin: auto;
   }
 
   .navLinks {

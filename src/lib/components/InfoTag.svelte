@@ -24,7 +24,7 @@
 <style>
   .tag {
     display: flex;
-    background: var(--tag-back);
+    /* background: var(--tag-back); */
     transition: var(--tag-transition);
     border-radius: var(--radius);
     padding: var(--pad-small);

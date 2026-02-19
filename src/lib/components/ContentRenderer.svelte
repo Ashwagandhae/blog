@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ContentNode } from "$lib/article";
+  import type { ContentNode } from "$lib/article/contentNode";
   import { embedComponents } from "$lib/embed";
   import Self from "./ContentRenderer.svelte";
 

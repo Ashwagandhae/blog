@@ -11,7 +11,7 @@
       month: "short",
       day: "numeric",
       year: "numeric",
-    })
+    }),
   );
 
   let readingTime = $derived(Math.ceil(meta.wordCount / 225));
@@ -25,7 +25,6 @@
     <InfoTag icon="clock">
       {readingTime} min
     </InfoTag>
-
     {#each meta.tags as tag}<ArticleTag name={tag} />{/each}
   </div>
 </div>
@@ -37,8 +36,11 @@
     gap: var(--pad);
     align-items: center;
     width: min-content;
+    /* justify-content: space-between; */
     pointer-events: all;
+    width: 100%;
   }
+
   .metaScroll {
     overflow: auto;
     width: 100%;

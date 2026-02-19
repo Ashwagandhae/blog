@@ -2,19 +2,38 @@ article {
   box-sizing: border-box;
 }
 /* article id jumping*/
-article *[id],
+/* article *[id],
 article .collapsible {
   scroll-margin-top: var(--header-height);
-}
+} */
 
 /* heading */
 :is(h1, h2, h3, h4, h5, h6) {
-  line-height: 1.6;
+  line-height: 1.4;
   margin-top: var(--margin);
   margin-bottom: var(--margin);
 }
 
-.anchor-link {
+h1 {
+  font-size: 2em;
+}
+h2 {
+  font-size: 1.5em;
+}
+h3 {
+  font-size: 1.17em;
+}
+h4 {
+  font-size: 1em;
+}
+h5 {
+  font-size: 0.83em;
+}
+h6 {
+  font-size: 0.67;
+}
+
+.anchorLink {
   text-decoration: none;
   color: inherit;
   position: relative;
@@ -25,7 +44,7 @@ ul,
 ol,
 p {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.8;
   margin-top: var(--margin);
   margin-bottom: var(--margin);
 }
@@ -138,11 +157,43 @@ tr:last-of-type td:last-of-type {
 }
 
 /* math */
+.math {
+  position: relative;
+  vertical-align: baseline;
+}
 div.math {
   text-align: center;
   width: 100%;
 }
+.mathVisual svg {
+  display: block;
+}
+.mathVisual {
+  display: inline-block;
+  user-select: none;
+  -webkit-user-select: none;
+}
 
+.mathSemantic {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+
+  user-select: text;
+}
+
+/* footer */
 article footer {
   border-top: var(--line-width) solid var(--line-color);
   margin-top: var(--margin);
@@ -192,7 +243,9 @@ pre {
 
 code {
   font-family: "JetBrains Mono Variable", monospace;
-  font-feature-settings: "calt" 1, "liga" 1;
+  font-feature-settings:
+    "calt" 1,
+    "liga" 1;
   background-color: var(--transparent-back);
   border-radius: 0.4em;
   padding: 0.2em 0.3em;

@@ -17,13 +17,13 @@
   let isActive = $derived(
     href === "/"
       ? page.url.pathname === "/"
-      : page.url.pathname.startsWith(href)
+      : page.url.pathname.startsWith(href),
   );
 </script>
 
 <a {href} class:current={isActive} aria-current={isActive ? "page" : undefined}>
   {#if icon}
-    <InlineIcon name={icon}></InlineIcon>
+    <!-- <InlineIcon name={icon}></InlineIcon> -->
   {/if}
   {@render children()}
 </a>
@@ -48,14 +48,18 @@
     transition: background var(--transition-duration-slow);
   }
   a:hover {
-    background: var(--transparent-back);
+    /* background: var(--transparent-back); */
     transition: background var(--transition-duration);
+    text-decoration: underline;
   }
   a:active {
-    background: var(--transparent-back-1);
+    /* background: var(--transparent-back-1); */
     transition: background var(--transition-duration);
+    text-decoration: underline;
   }
   a.current {
-    background: var(--transparent-back);
+    text-decoration: underline;
+
+    /* background: var(--transparent-back); */
   }
 </style>

@@ -25,6 +25,6 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--pad);
+    gap: 2em;
   }
 </style>

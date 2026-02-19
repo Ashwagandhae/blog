@@ -43,6 +43,8 @@
   <div class="metaWrapper">
     <ArticleMetaDisplay {meta} />
   </div>
+
+  <p>{meta.description}</p>
 </div>
 
 <style>
@@ -53,13 +55,13 @@
     flex-direction: column;
     color: inherit;
     width: 100%;
-    padding: var(--pad);
+    /* padding: var(--pad); */
     box-sizing: border-box;
     border-radius: var(--radius);
     flex: 1;
     flex-basis: 0;
     min-width: 0;
-    gap: var(--pad-small);
+    gap: var(--pad);
 
     --tag-back: var(--transparent-back);
     --article-tag-lightness: var(--level-2);
@@ -69,7 +71,7 @@
     transition: background var(--transition-duration-slow);
   }
 
-  .articlePreview:has(.mainLink:hover) {
+  /* .articlePreview:has(.mainLink:hover) {
     background: var(--transparent-back);
     --article-tag-lightness: var(--level-3);
     --article-tag-lightness-hover: var(--level-4);
@@ -85,19 +87,22 @@
     --article-tag-lightness-active: var(--level-6);
     --tag-transition: background var(--transition-duration);
     transition: background var(--transition-duration);
-  }
+  } */
 
-  h2 {
+  h2,
+  p {
     margin: 0;
-    font-size: 1.25em;
-    font-weight: normal;
+    /* font-size: 1em; */
+    /* font-weight: normal; */
   }
 
   .mainLink {
     text-decoration: none;
     color: inherit;
+    display: block;
+    width: 100%;
   }
-
+  /*
   .mainLink::after {
     content: "";
     position: absolute;
@@ -106,12 +111,16 @@
     right: 0;
     bottom: 0;
     z-index: 1;
-  }
+  } */
 
   .metaWrapper {
     position: relative;
     z-index: 2;
-    width: 100%;
+    width: min-content;
     pointer-events: none;
+  }
+
+  .mainLink:hover {
+    text-decoration: underline;
   }
 </style>
