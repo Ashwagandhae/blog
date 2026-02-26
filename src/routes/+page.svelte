@@ -4,12 +4,17 @@
 
 <svelte:head>
   <title>Home{titleSuffix}</title>
+  <meta
+    name="description"
+    content="Julian Bauer's home on the internet. Explore my projects, read my writing, and learn about me."
+  />
 </svelte:head>
-<p>Welcome to Julian Bauer's website. Here, you can</p>
+<h1>Home</h1>
+<p>Welcome to Julian Bauer's home on the internet. Here, you can</p>
 <ul>
   <li>
     Learn <a href="./about">about</a> me, including my background and my contact
     information
   </li>
-  <li>Read my <a href="./writing">writing</a> about various things</li>
+  <li>Read my <a href="./writing">writing</a> about coding</li>
 </ul>

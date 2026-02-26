@@ -89,7 +89,7 @@ ol ol ol ol ol ol {
 
 /* link */
 a {
-  color: oklch(0.8 0.2 260);
+  color: oklch(0.8 0.05 260);
 }
 a:visited {
   color: oklch(0.8, 0.2, 280);

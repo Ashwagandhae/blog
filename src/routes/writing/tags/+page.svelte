@@ -7,6 +7,10 @@
 
 <svelte:head>
   <title>Tags{titleSuffix}</title>
+  <meta
+    name="description"
+    content="List of all tags for writing in the library of Julian Bauer's home on the internet."
+  />
 </svelte:head>
 
 <h1>Tags</h1>

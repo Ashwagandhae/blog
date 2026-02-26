@@ -1,10 +1,13 @@
 <script>
-  import ContactForm from "$lib/components/ContactForm.svelte";
   import { titleSuffix } from "$lib/title";
 </script>
 
 <svelte:head>
   <title>About{titleSuffix}</title>
+  <meta
+    name="description"
+    content="Background and contact information for Julian Bauer, with building materials for his home on the internet in the Colophon."
+  />
 </svelte:head>
 <h1>About</h1>
 <p>
@@ -19,24 +22,13 @@
   I'm interested in programming languages, embedded systems, and UI design. I
   also like playing piano and taking care of chickens.
 </p>
-<h2>Connect</h2>
-<ul>
-  <li>
-    GitHub: <a href="https://github.com/Ashwagandhae">github.com/Ashwagandhae</a
-    >
-  </li>
-  <li>
-    LinkedIn: <a href="https://www.linkedin.com/in/julian-bauer-32823b246/"
-      >linkedin.com/in/julian-bauer-32823b246</a
-    >
-  </li>
-  <li>Discord: ashwagandhae</li>
-</ul>
-<h2>Contact</h2>
-<ContactForm />
-<h2>Website source</h2>
+<h2>Links</h2>
+<a href="https://github.com/Ashwagandhae">Github</a> •
+<a href="https://www.linkedin.com/in/julian-bauer-32823b246/">Linkedin</a> •
+<a href="./about/contact">Contact</a>
+<h2>Colophon</h2>
 <p>
-  Written with
+  Website written with
   <a href="https://svelte.dev/docs/kit/introduction">SvelteKit</a>, using
   <a href="https://typst.app/">Typst</a>
   as the markup language for

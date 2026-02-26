@@ -16,6 +16,10 @@
 
 <svelte:head>
   <title>Writing with tag {data.tag}{titleSuffix}</title>
+  <meta
+    name="description"
+    content="Writing tagged with '{data.tag}' in the library of Julian Bauer's home on the internet."
+  />
 </svelte:head>
 
 <PaletteDisplay {palette}></PaletteDisplay>

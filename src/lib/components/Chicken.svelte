@@ -170,10 +170,6 @@
     /* rotate: 90deg; */
     translate: 0% -5%;
   }
-  :global(a:hover) .bodyShadow.neck {
-    /* rotate: 90deg; */
-    translate: 0% -5%;
-  }
 
   :global(a:active) .body.neck,
   :global(a:active) .comb.neck,
