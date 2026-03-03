@@ -32,8 +32,6 @@
 <svelte:head>
   <link rel="icon" href={favicon} type="image/svg+xml" sizes="any" />
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
-
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
 
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
