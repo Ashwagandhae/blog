@@ -37,7 +37,6 @@
     align-items: center;
     width: min-content;
     /* justify-content: space-between; */
-    pointer-events: all;
     width: 100%;
   }
 
@@ -46,6 +45,5 @@
     width: 100%;
     display: block;
     position: relative;
-    pointer-events: none;
   }
 </style>

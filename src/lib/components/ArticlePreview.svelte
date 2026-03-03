@@ -40,9 +40,7 @@
     </a>
   </h2>
 
-  <div class="metaWrapper">
-    <ArticleMetaDisplay {meta} />
-  </div>
+  <ArticleMetaDisplay {meta} />
 
   <p>{meta.description}</p>
 </div>
@@ -71,29 +69,9 @@
     transition: background var(--transition-duration-slow);
   }
 
-  /* .articlePreview:has(.mainLink:hover) {
-    background: var(--transparent-back);
-    --article-tag-lightness: var(--level-3);
-    --article-tag-lightness-hover: var(--level-4);
-    --article-tag-lightness-active: var(--level-5);
-    --tag-transition: background var(--transition-duration);
-    transition: background var(--transition-duration);
-  }
-
-  .articlePreview:has(.mainLink:active) {
-    background: var(--transparent-back-1);
-    --article-tag-lightness: var(--level-4);
-    --article-tag-lightness-hover: var(--level-5);
-    --article-tag-lightness-active: var(--level-6);
-    --tag-transition: background var(--transition-duration);
-    transition: background var(--transition-duration);
-  } */
-
   h2,
   p {
     margin: 0;
-    /* font-size: 1em; */
-    /* font-weight: normal; */
   }
 
   .mainLink {
@@ -101,23 +79,6 @@
     color: inherit;
     display: block;
     width: 100%;
-  }
-  /*
-  .mainLink::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-  } */
-
-  .metaWrapper {
-    position: relative;
-    z-index: 2;
-    width: min-content;
-    pointer-events: none;
   }
 
   .mainLink:hover {
