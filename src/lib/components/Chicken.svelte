@@ -138,7 +138,7 @@
     color: oklch(0.6257 0.1522 calc(var(--hue-front) - 55.18));
   }
   svg.combShadowWrap {
-    color: oklch(0.6257 0.1522 calc(var(--hue-front) - 65.26));
+    color: oklch(0.5517 0.1419 calc(var(--hue-front) - 65.26));
   }
   .body,
   .bodyShadow,
