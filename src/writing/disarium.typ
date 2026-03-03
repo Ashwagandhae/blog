@@ -271,7 +271,7 @@ Our cumbersome implementing is rewarded by criterion with more beautiful green n
 
 = Parallel processing
 
-After implementing the more optimized algorithm, I decided to improve performance by splitting my work across multiple threads. For every digit length $n$, I split the $m^3$ frozen digits into 10 different buckets by deciding the first frozen digit in a parallelized outer loop.#footnote[I eventually switched to 100 buckets because it performed better, likely because smaller units of work improved load balancing.]
+After implementing the more optimized algorithm, I decided to improve performance by splitting my work across multiple threads. For every digit length $n$, I split the $10^m$ frozen digits into 10 different buckets by deciding the first frozen digit in a parallelized outer loop.#footnote[I eventually switched to 100 buckets because it performed better, likely because smaller units of work improved load balancing.]
 #file-display("src/lib.rs")[
   ```rs
   use rayon::prelude::*;
