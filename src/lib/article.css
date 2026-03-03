@@ -235,6 +235,7 @@ pre {
   line-height: 1.6;
   overflow: auto;
   padding: 0.25em 0;
+  position: relative;
 }
 .fileDisplay pre {
   border-radius: 0 var(--radius) var(--radius) var(--radius);
@@ -261,14 +262,15 @@ pre code {
 .shiki code {
   display: flex;
   flex-direction: column;
-  min-width: 100%;
+  min-width: max-content;
 }
 
 .shiki .line {
-  width: 100%;
+  /* width: 100%; */
   box-sizing: border-box;
   padding: 0 0.3em;
   height: 1lh;
+  width: 100%;
 }
 
 .shiki.has-diff .line {
