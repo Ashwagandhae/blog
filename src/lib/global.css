@@ -130,7 +130,7 @@ body {
   --article-tag-lightness-active: var(--level-4);
 
   --back-gradient: radial-gradient(
-      circle calc(max(80vw, 80vh)) at 0% 0%,
+      circle clamp(400px, 80vw, 900px) at 0% 0%,
       oklch(0.26 0.08 var(--hue-front)),
       transparent
     )
