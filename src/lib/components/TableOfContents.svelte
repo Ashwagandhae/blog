@@ -41,7 +41,7 @@
         }
       },
       {
-        rootMargin: "-58px 0px 0px 0px",
+        rootMargin: "0px 0px 0px 0px",
       },
     );
 
