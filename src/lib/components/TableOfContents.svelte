@@ -162,6 +162,7 @@
     color: var(--text);
     opacity: 0.75;
     padding-left: calc((var(--heading-level) - 2) * var(--pad-big));
+    word-break: break-all;
   }
 
   .tocItem.active {

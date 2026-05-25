@@ -42,7 +42,8 @@ h6 {
 /* paragraph spacing */
 ul,
 ol,
-p {
+p,
+blockquote {
   margin: 0;
   line-height: 1.8;
   margin-top: var(--margin);

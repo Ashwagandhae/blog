@@ -1,4 +1,13 @@
 {
   "tinymist.exportPdf": "never",
-  "tinymist.exportTarget": "html"
+  "tinymist.exportTarget": "html",
+  "cSpell.words": [
+    "Idris",
+    "sortedness",
+    "Succ",
+    "typers",
+    "Vect",
+    "x'ys",
+    "y'ys"
+  ]
 }

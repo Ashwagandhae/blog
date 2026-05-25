@@ -5,6 +5,7 @@ import {
   type SpecialLanguage,
 } from "shiki";
 import typstGrammar from "../typstGrammar.json";
+import idrisGrammar from "../idrisGrammar.json";
 import {
   transformerNotationDiff,
   transformerNotationErrorLevel,
@@ -25,6 +26,11 @@ async function getHighlighter(): Promise<Highlighter> {
       ...(typstGrammar as any),
       name: "typst",
       aliases: ["typ"],
+    });
+    await newHighlighter.loadLanguage({
+      ...(idrisGrammar as any),
+      name: "idris",
+      aliases: ["idr"],
     });
     highlighter = newHighlighter;
     return newHighlighter;
@@ -87,7 +93,7 @@ const transformerRemoveBackground = {
     if (node.properties && typeof node.properties.style === "string") {
       node.properties.style = node.properties.style.replace(
         /background-color\s*:\s*[^;]+;?/gi,
-        ""
+        "",
       );
     }
   },
@@ -95,7 +101,7 @@ const transformerRemoveBackground = {
     if (node.properties && typeof node.properties.style === "string") {
       node.properties.style = node.properties.style.replace(
         /background-color\s*:\s*[^;]+;?/gi,
-        ""
+        "",
       );
     }
   },
