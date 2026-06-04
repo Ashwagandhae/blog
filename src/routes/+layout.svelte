@@ -50,6 +50,7 @@
     <ul class="navLinks">
       <li><NavItem href="/about" icon="person">about</NavItem></li>
       <li><NavItem href="/writing" icon="pen">writing</NavItem></li>
+      <li><NavItem href="/projects" icon="pen">projects</NavItem></li>
     </ul>
   </nav>
 </header>

@@ -187,4 +187,7 @@
       display: block;
     }
   }
+  li {
+    margin: 0;
+  }
 </style>

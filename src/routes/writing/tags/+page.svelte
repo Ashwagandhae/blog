@@ -13,7 +13,7 @@
   />
 </svelte:head>
 
-<h1>Tags</h1>
+<h1>Writing tags</h1>
 <ul>
   {#each data.tags as tag}
     <li>
@@ -30,5 +30,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--pad);
+  }
+  li {
+    margin: 0;
   }
 </style>

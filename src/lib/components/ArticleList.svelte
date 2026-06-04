@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { ComponentProps } from "svelte";
   import ArticlePreview from "./ArticlePreview.svelte";
   import type { ArticleMeta } from "$lib/article";
 
@@ -26,5 +25,8 @@
     display: flex;
     flex-direction: column;
     gap: 2em;
+  }
+  li {
+    margin: 0;
   }
 </style>

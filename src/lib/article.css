@@ -1,11 +1,6 @@
 article {
   box-sizing: border-box;
 }
-/* article id jumping*/
-/* article *[id],
-article .collapsible {
-  scroll-margin-top: var(--header-height);
-} */
 
 /* heading */
 :is(h1, h2, h3, h4, h5, h6) {
@@ -43,6 +38,7 @@ h6 {
 ul,
 ol,
 p,
+li,
 blockquote {
   margin: 0;
   line-height: 1.8;
@@ -51,11 +47,6 @@ blockquote {
 }
 :is(ul, ol) :is(ul, ol) {
   margin: 0;
-}
-
-li > p {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 ul,
@@ -195,14 +186,14 @@ div.math {
 }
 
 /* footer */
-article footer {
+footer {
   border-top: var(--line-width) solid var(--line-color);
   margin-top: var(--margin);
 }
 
 /* image */
 
-article img {
+img {
   display: block;
   width: 100%;
 

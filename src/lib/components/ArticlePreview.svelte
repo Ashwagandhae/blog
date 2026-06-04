@@ -48,25 +48,16 @@
 <style>
   .articlePreview {
     position: relative;
-
     display: flex;
     flex-direction: column;
     color: inherit;
     width: 100%;
-    /* padding: var(--pad); */
     box-sizing: border-box;
     border-radius: var(--radius);
     flex: 1;
     flex-basis: 0;
     min-width: 0;
     gap: var(--pad);
-
-    --tag-back: var(--transparent-back);
-    --article-tag-lightness: var(--level-2);
-    --article-tag-lightness-hover: var(--level-3);
-    --article-tag-lightness-active: var(--level-4);
-    --tag-transition: background var(--transition-duration-slow);
-    transition: background var(--transition-duration-slow);
   }
 
   h2,

@@ -7,5 +7,14 @@
   "benchmark": 100,
   "multithread": 260,
   "idris": 29,
-  "dependent-type": 294
+  "dependent-type": 294,
+  "typescript": 253,
+  "tauri": 83,
+  "parallel": 143,
+  "wasm": 281,
+  "mobile": 46,
+  "python": 245,
+  "game": 338,
+  "haskell": 294,
+  "chrome-extension": 257
 }
