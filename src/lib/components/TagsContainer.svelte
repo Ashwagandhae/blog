@@ -18,7 +18,8 @@
   }
 
   .metaScroll {
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
     width: 100%;
     display: block;
     position: relative;

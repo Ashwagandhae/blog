@@ -63,7 +63,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: middle;
+    align-items: center;
     flex-wrap: wrap;
   }
   .links {
