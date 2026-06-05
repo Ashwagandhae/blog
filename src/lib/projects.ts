@@ -104,7 +104,7 @@ export const projects: Project[] = [
   {
     name: "Evidencer",
     links: {
-      github: ", 'wasmhttps://github.com/Ashwagandhae/evidencer",
+      github: "https://github.com/Ashwagandhae/evidencer",
       release: "https://github.com/Ashwagandhae/evidencer/releases/",
     },
     tags: ["typescript", "svelte", "chrome-extension"],
