@@ -1,8 +1,21 @@
+import flower from "$lib/assets/flower.png?enhanced"
+import mutable from "$lib/assets/mutable.gif"
+import rolly from "$lib/assets/rolly.gif"
+import monochromeLayers from "$lib/assets/monochromeLayers.gif"
+import evidencer from "$lib/assets/evidencer.jpg?enhanced"
+import dateoFunRemover from "$lib/assets/dateoFunRemover.png?enhanced"
+import brot from "$lib/assets/brot.png?enhanced"
+import gimkitBlockConverter from "$lib/assets/gimkitBlockConverter.jpg?enhanced"
+import frameworkSpeak from "$lib/assets/frameworkSpeak.png?enhanced"
+import typesweeper from "$lib/assets/typesweeper.png?enhanced"
+import clairoCharmNotebook from "$lib/assets/clairoCharmNotebook.png?enhanced"
+
+import type { Picture } from '@sveltejs/enhanced-img';
 export type Project = {
   name: string;
   links: Record<string, string>;
   description: string;
-  image?: { src: string; alt: string };
+  image?: { src: Picture | string; alt: string };
   tags: string[];
 };
 export const projects: Project[] = [
@@ -18,7 +31,7 @@ export const projects: Project[] = [
         export to Excel, built-in timer, and live sharing.
       </p>`,
     image: {
-      src: "flower.png",
+      src: flower,
       alt: "Screenshot of Flower app showing tree of debate arguments and timer",
     },
   },
@@ -38,7 +51,7 @@ export const projects: Project[] = [
         >.
       </p>`,
     image: {
-      src: "mutable.gif",
+      src: mutable,
       alt: "Recording of mutable showing sea of moving organisms",
     },
   },
@@ -55,7 +68,7 @@ export const projects: Project[] = [
         water.
       </p>`,
     image: {
-      src: "rolly.gif",
+      src: rolly,
       alt: "Gif of game Rolly being played, with the rolly character jumping accross grass hills, rocks, and water",
     },
   },
@@ -83,7 +96,7 @@ export const projects: Project[] = [
         of single-color pixel grids that approximate an image.
       </p>`,
     image: {
-      src: "monochromeLayers.gif",
+      src: monochromeLayers,
       alt: "Gif of monochrome layers being applied one-by-one to create image of two chickens",
     },
   },
@@ -113,7 +126,7 @@ export const projects: Project[] = [
         formatting features.
       </p>`,
     image: {
-      src: "evidencer.jpg",
+      src: evidencer,
       alt: "Screenshot of evidencer being used on Onion writing",
     },
   },
@@ -157,7 +170,7 @@ export const projects: Project[] = [
         >.
       </p>`,
     image: {
-      src: "dateoFunRemover.png",
+      src: dateoFunRemover,
       alt: "Screenshot of date-o displaying solutions for the date 6/21/2026",
     },
   },
@@ -174,7 +187,7 @@ export const projects: Project[] = [
       </p>`,
 
     image: {
-      src: "brot.png",
+      src: brot,
       alt: "Screenshot of brot app displaying richly formatted text and a command palette",
     },
   },
@@ -190,7 +203,7 @@ export const projects: Project[] = [
         the educational game Gimkit that converts JavaScript to Gimkit code blocks.
       </p>`,
     image: {
-      src: "gimkitBlockConverter.jpg",
+      src: gimkitBlockConverter,
       alt: "Screenshot of Gimkit block converter converting javascript to equivalent Gimkit blocks",
     },
   },
@@ -220,7 +233,7 @@ export const projects: Project[] = [
         JavaScript frameworks.
       </p>`,
     image: {
-      src: "frameworkSpeak.png",
+      src: frameworkSpeak,
       alt: "Screenshot of framework speak with the text 'Change your point of view' on the left and 'Change your point of Vue' on the right.",
     },
   },
@@ -236,7 +249,7 @@ export const projects: Project[] = [
         editing as controls for the game.
       </p>`,
     image: {
-      src: "typesweeper.png",
+      src: typesweeper,
       alt: "Screenshot of typst source code being edited on the left to control minesweeper game on the right",
     },
   },
@@ -271,7 +284,7 @@ export const projects: Project[] = [
         >.
       </p>`,
     image: {
-      src: "clairoCharmNotebook.png",
+      src: clairoCharmNotebook,
       alt: "Screenshot of Typst source next to the front page of the diplomatic edition of Clairo's charm notebook.",
     },
   },

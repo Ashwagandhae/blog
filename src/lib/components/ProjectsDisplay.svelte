@@ -2,11 +2,6 @@
   import ProjectDisplay from "./ProjectDisplay.svelte";
   import { projects, type Project } from "$lib/projects";
   let { filter }: { filter: (project: Project) => boolean } = $props();
-
-  const images = import.meta.glob("$lib/assets/*", {
-    eager: true,
-    import: "default",
-  }) as Record<string, string>;
 </script>
 
 <ul>
@@ -18,7 +13,7 @@
         tags={project.tags}
         image={project.image
           ? {
-              src: images[`/src/lib/assets/${project.image.src}`],
+              src: project.image.src,
               alt: project.image.alt,
             }
           : undefined}

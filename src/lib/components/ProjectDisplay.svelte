@@ -3,6 +3,7 @@
   import InfoTag from "./InfoTag.svelte";
   import TagsContainer from "./TagsContainer.svelte";
   import ProjectTag from "./ProjectTag.svelte";
+  import type { Picture } from "@sveltejs/enhanced-img";
 
   let {
     name,
@@ -14,7 +15,7 @@
     name: string;
     links: Record<string, string>;
     children: Snippet;
-    image?: { src: string; alt: string };
+    image?: { src: string | Picture; alt: string };
     tags: string[];
   } = $props();
   function getIcon(name: string) {
@@ -46,13 +47,13 @@
 
 {@render children()}
 
-<p>
+<div class="tagsWrapper">
   <TagsContainer>
     {#each tags as tag}
       <ProjectTag name={tag}></ProjectTag>
     {/each}
   </TagsContainer>
-</p>
+</div>
 
 {#if image != null}
   <enhanced:img src={image.src} alt={image.alt}></enhanced:img>
@@ -84,5 +85,8 @@
   }
   h2 {
     margin: 0;
+  }
+  .tagsWrapper {
+    margin: var(--margin) 0;
   }
 </style>
