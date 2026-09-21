@@ -1,58 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SvelteKit blog with Typst as markup language</title>
-    <meta name="description" content="Guide to making a SvelteKit blog with Typst as the markup language.">
-    <meta property="article:published_time" content="2025-12-19">
-    <meta property="article:tag" content="typst">
-    <meta property="article:tag" content="javascript">
-    <meta property="article:tag" content="svelte">
-  </head>
-  <body>
-    <p>As of December 2025, Typst’s <a href="https://typst.app/docs/reference/html/">documentation for HTML export</a> states:</p>
-    <blockquote>Typst’s HTML export is currently under active development. The feature is still very incomplete and only available for experimentation behind a feature flag. Do not use this feature for production use cases.</blockquote>
-    <p>Seems like a great time to create a blog that relies on Typst HTML export!</p>
-    <h2>Introduction</h2>
-    <p>This article acts as a guide to building a bare-bones blog website with SvelteKit and Typst, based on my experience making the website you’re currently looking at, with support for code blocks, math, footnotes, and other rich content. I focus on getting the website to function, omitting the styling that makes it look nice.</p>
-    <p>Because of the experimental nature of Typst’s HTML export, much of this article consists of code that patches unsupported elements into Typst and SvelteKit. If you have a popular blog with billions of important serious users, I probably can’t safely recommend this setup. However, if you really like Typst, really like Svelte, and don’t really mind an unstable setup for your website, this guide is for you.</p>
-    <h2>Why</h2>
-    <p>Because SvelteKit and Typst are both very good.</p>
-    <p><strong>SvelteKit</strong> is built on Svelte, a JavaScript framework that’s extremely simple and focused on developer experience. It also supports static site generation with <code data-lang>adapter-static</code>, prerendering each page at compile time for blazingly fast loading speeds on any static website hosting service, such as GitHub pages.</p>
-    <p><strong>Typst</strong> has beautiful markdown-inspired syntax that makes reading the source almost as easy as reading the output. The biggest reason Typst is better than Markdown for a blog is that it is also a fully-featured programming language, allowing you to run arbitrary code to generate your markup.<sup><a id="footnote-return-1" href="#footnote-1" role="doc-noteref" aria-label="footnote 1">1</a></sup></p>
-    <h2>Setup</h2>
-    <p>To generate a SvelteKit project named <code data-lang>sveltekit-typst-blog</code>, open your terminal and run</p>
-    <div class="raw">
-      <raw-copy-button></raw-copy-button>
-      <pre><code data-lang="bash">npx sv create sveltekit-typst-blog</code></pre>
-    </div>
-    <p>Then, when prompted, choose <code data-lang>SvelteKit minimal</code> as your template, add TypeScript type checking, and don’t add anything else to your project.<sup><a id="footnote-return-2" href="#footnote-2" role="doc-noteref" aria-label="footnote 2">2</a></sup> Now, run</p>
-    <div class="raw">
-      <raw-copy-button></raw-copy-button>
-      <pre><code data-lang="bash">cd sveltkit-typst-blog
-npm run dev -- --open</code></pre>
-    </div>
-    <p>You should see your website running in your browser!</p>
-    <enhanced-img src="&quot;sveltekit-typst-blog/svelkit-starter.png&quot;" alt="&quot;Screenshot of rendered SvelteKit starter project, with simple 'Welcome to SvelteKit' header.&quot;"></enhanced-img>
-    <h2>Strategy</h2>
-    <p>I’ll discuss the strategy we’ll use to render Typst in our website. We will</p>
-    <ol>
-      <li>Write our blog posts in Typst.</li>
-      <li>Use the Typst compiler to convert all Typst files into HTML files.</li>
-      <li>Parse the HTML files server-side to extract metadata, like the post title and publish date.</li>
-      <li>Render the HTML on the frontend with the Svelte <a href="https://svelte.dev/docs/svelte/@html"><code data-lang>@html</code> template syntax</a>.</li>
-    </ol>
-    <h2>Posts folder</h2>
-    <p>We’ll start by creating a folder to hold our blog posts. Create a folder <code data-lang>src/posts</code>. Inside this folder, create</p>
-    <ol>
-      <li>a folder named <code data-lang>lib</code> with a file <code data-lang>lib.typ</code>, which we will use to create shared code for all articles</li>
-      <li>a folder named <code data-lang>target</code> which will contain the generated HTML</li>
-      <li>a file <code data-lang>test.typ</code> that we’ll use to test different content types</li>
-    </ol>
-    <h3><code data-lang>lib.typ</code> article function</h3>
-    <p>In our <code data-lang>lib.typ</code> file, we’ll create a function called <code data-lang>article</code> that we’ll wrap all future articles in using show rules:</p>
-    <file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let article(
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SvelteKit blog with Typst as markup language</title><meta name="description" content="Guide to making a SvelteKit blog with Typst as the markup language."><meta property="article:published_time" content="2025-12-19"><meta property="article:tag" content="typst"><meta property="article:tag" content="javascript"><meta property="article:tag" content="svelte"></head><body><p>As of December 2025, Typst’s <a href="https://typst.app/docs/reference/html/">documentation for HTML export</a> states:</p><blockquote>Typst’s HTML export is currently under active development. The feature is still very incomplete and only available for experimentation behind a feature flag. Do not use this feature for production use cases.</blockquote><p>Seems like a great time to create a blog that relies on Typst HTML export!</p><h2>Introduction</h2><p>This article acts as a guide to building a bare-bones blog website with SvelteKit and Typst, based on my experience making the website you’re currently looking at, with support for code blocks, math, footnotes, and other rich content. I focus on getting the website to function, omitting the styling that makes it look nice.</p><p>Because of the experimental nature of Typst’s HTML export, much of this article consists of code that patches unsupported elements into Typst and SvelteKit. If you have a popular blog with billions of important serious users, I probably can’t safely recommend this setup. However, if you really like Typst, really like Svelte, and don’t really mind an unstable setup for your website, this guide is for you.</p><h2>Why</h2><p>Because SvelteKit and Typst are both very good.</p><p><strong>SvelteKit</strong> is built on Svelte, a JavaScript framework that’s extremely simple and focused on developer experience. It also supports static site generation with <code data-lang>adapter-static</code>, prerendering each page at compile time for blazingly fast loading speeds on any static website hosting service, such as GitHub pages.</p><p><strong>Typst</strong> has beautiful markdown-inspired syntax that makes reading the source almost as easy as reading the output. The biggest reason Typst is better than Markdown for a blog is that it is also a fully-featured programming language, allowing you to run arbitrary code to generate your markup.<sup><a id="footnote-return-1" href="#footnote-1" role="doc-noteref" aria-label="footnote 1">1</a></sup></p><h2>Setup</h2><p>To generate a SvelteKit project named <code data-lang>sveltekit-typst-blog</code>, open your terminal and run</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="bash">npx sv create sveltekit-typst-blog</code></pre></div><p>Then, when prompted, choose <code data-lang>SvelteKit minimal</code> as your template, add TypeScript type checking, and don’t add anything else to your project.<sup><a id="footnote-return-2" href="#footnote-2" role="doc-noteref" aria-label="footnote 2">2</a></sup> Now, run</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="bash">cd sveltkit-typst-blog
+npm run dev -- --open</code></pre></div><p>You should see your website running in your browser!</p><enhanced-img src="&quot;sveltekit-typst-blog/svelkit-starter.png&quot;" alt="&quot;Screenshot of rendered SvelteKit starter project, with simple 'Welcome to SvelteKit' header.&quot;"></enhanced-img><h2>Strategy</h2><p>I’ll discuss the strategy we’ll use to render Typst in our website. We will</p><ol><li>Write our blog posts in Typst.</li><li>Use the Typst compiler to convert all Typst files into HTML files.</li><li>Parse the HTML files server-side to extract metadata, like the post title and publish date.</li><li>Render the HTML on the frontend with the Svelte <a href="https://svelte.dev/docs/svelte/@html"><code data-lang>@html</code> template syntax</a>.</li></ol><h2>Posts folder</h2><p>We’ll start by creating a folder to hold our blog posts. Create a folder <code data-lang>src/posts</code>. Inside this folder, create</p><ol><li>a folder named <code data-lang>lib</code> with a file <code data-lang>lib.typ</code>, which we will use to create shared code for all articles</li><li>a folder named <code data-lang>target</code> which will contain the generated HTML</li><li>a file <code data-lang>test.typ</code> that we’ll use to test different content types</li></ol><h3><code data-lang>lib.typ</code> article function</h3><p>In our <code data-lang>lib.typ</code> file, we’ll create a function called <code data-lang>article</code> that we’ll wrap all future articles in using show rules:</p><file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let article(
   content,
   title: "Article title",
   date: datetime(year: 2025, month: 12, day: 14),
@@ -66,18 +13,12 @@ npm run dev -- --open</code></pre>
       #content
     ]
   ]
-}</code></pre></div></file-display>
-    <p>Here, we allow users to specify we use Typst’s HTML <code data-lang>elem</code> function to generate the basic structure of our document, including metadata in the <code data-lang>head</code> element.<sup><a id="footnote-return-3" href="#footnote-3" role="doc-noteref" aria-label="footnote 3">3</a></sup></p>
-    <h3><code data-lang>test.typ</code> content types</h3>
-    <p>Now, we can use our newly-created <code data-lang>article</code> function in our test article:</p>
-    <file-display path="&quot;src/posts/test.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#import "lib/lib.typ": *
+}</code></pre></div></file-display><p>Here, we allow users to specify we use Typst’s HTML <code data-lang>elem</code> function to generate the basic structure of our document, including metadata in the <code data-lang>head</code> element.<sup><a id="footnote-return-3" href="#footnote-3" role="doc-noteref" aria-label="footnote 3">3</a></sup></p><h3><code data-lang>test.typ</code> content types</h3><p>Now, we can use our newly-created <code data-lang>article</code> function in our test article:</p><file-display path="&quot;src/posts/test.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#import "lib/lib.typ": *
 
 #show: article.with(
   title: "Test article",
   date: datetime(year: 2025, month: 12, day: 14),
-)</code></pre></div></file-display>
-    <p>We’ll also include examples of different types content we want to support in our blog.</p>
-    <collapsible><file-display path="&quot;src/posts/test.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">// ...
+)</code></pre></div></file-display><p>We’ll also include examples of different types content we want to support in our blog.</p><collapsible><file-display path="&quot;src/posts/test.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">// ...
 = Paragraph
 #lorem(67)
 
@@ -143,29 +84,10 @@ Inline math $(1 + 3 + 3^4 / 1) / 2 x y z$ wow that was cool math.
 Block math:
 $
   cases(1 + 1, hat(2 + 2), 3 + 3/2)
-$</code></pre></div></file-display></collapsible>
-    <h3>Compile to HTML</h3>
-    <p>Now, we can compile our file to HTML! Install the <a href="https://typst.app/open-source/">Typst compiler</a> if you haven’t already, then open your terminal and run</p>
-    <div class="raw">
-      <raw-copy-button></raw-copy-button>
-      <pre><code data-lang="bash">typst compile src/posts/test.typ src/posts/target/test.html --format html --features html</code></pre>
-    </div>
-    <p>You should see a newly created <code data-lang>test.html</code> in <code data-lang>src/posts/target/test.html</code>! Ignore any warnings you get for now, we will fix them later.</p>
-    <h2>Post rendering</h2>
-    <p>Now, let’s display our posts in SvelteKit!</p>
-    <h3>Extraction functions</h3>
-    <p>First, we’ll create some utility functions to extract the metadata and content out of our generated HTML files. To parse our HTML on the server, which doesn’t have access to the browser’s DOM API, we need to install <a href="https://github.com/WebReflection/linkedom">linkedom</a>. To do that, run</p>
-    <div class="raw">
-      <raw-copy-button></raw-copy-button>
-      <pre><code data-lang="bash">npm i linkedom</code></pre>
-    </div>
-    <p>Now, create a new file <code data-lang>posts.ts</code> in <code data-lang>src/lib</code> for our extraction functions. We’ll first create a <code data-lang>PostMeta</code> type to group each post’s metadata:</p>
-    <file-display path="&quot;src/lib/posts.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export type PostMeta = {
+$</code></pre></div></file-display></collapsible><h3>Compile to HTML</h3><p>Now, we can compile our file to HTML! Install the <a href="https://typst.app/open-source/">Typst compiler</a> if you haven’t already, then open your terminal and run</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="bash">typst compile src/posts/test.typ src/posts/target/test.html --format html --features html</code></pre></div><p>You should see a newly created <code data-lang>test.html</code> in <code data-lang>src/posts/target/test.html</code>! Ignore any warnings you get for now, we will fix them later.</p><h2>Post rendering</h2><p>Now, let’s display our posts in SvelteKit!</p><h3>Extraction functions</h3><p>First, we’ll create some utility functions to extract the metadata and content out of our generated HTML files. To parse our HTML on the server, which doesn’t have access to the browser’s DOM API, we need to install <a href="https://github.com/WebReflection/linkedom">linkedom</a>. To do that, run</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="bash">npm i linkedom</code></pre></div><p>Now, create a new file <code data-lang>posts.ts</code> in <code data-lang>src/lib</code> for our extraction functions. We’ll first create a <code data-lang>PostMeta</code> type to group each post’s metadata:</p><file-display path="&quot;src/lib/posts.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export type PostMeta = {
   title: string;
   date: string;
-};</code></pre></div></file-display>
-    <p>Then, we’ll create a function to extract that metadata, using the <code data-lang>parseHTML</code> function from <code data-lang>linkedom</code>.</p>
-    <file-display path="&quot;src/lib/posts.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export function extractMeta(html: string): PostMeta {
+};</code></pre></div></file-display><p>Then, we’ll create a function to extract that metadata, using the <code data-lang>parseHTML</code> function from <code data-lang>linkedom</code>.</p><file-display path="&quot;src/lib/posts.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export function extractMeta(html: string): PostMeta {
   const { document } = parseHTML(html);
 
   const title = document.title ?? "no title";
@@ -179,15 +101,10 @@ $</code></pre></div></file-display></collapsible>
     title,
     date,
   };
-}</code></pre></div></file-display>
-    <p>Finally, we’ll create a symmetrical function to extract the article’s content.</p>
-    <file-display path="&quot;src/lib/posts.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export function extractContent(html: string): string {
+}</code></pre></div></file-display><p>Finally, we’ll create a symmetrical function to extract the article’s content.</p><file-display path="&quot;src/lib/posts.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export function extractContent(html: string): string {
   const { document } = parseHTML(html);
   return document.body.innerHTML;
-}</code></pre></div></file-display>
-    <h3>Post listing</h3>
-    <p>We’ll make the website’s homepage display a list of links to all blog posts. In <code data-lang>src/routes</code>, create a new file <code data-lang>+page.server.ts</code>. This file will load all HTML files in our target directory and extract the metadata from each one.</p>
-    <file-display path="&quot;src/routes/+page.server.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { extractMeta } from "$lib/posts";
+}</code></pre></div></file-display><h3>Post listing</h3><p>We’ll make the website’s homepage display a list of links to all blog posts. In <code data-lang>src/routes</code>, create a new file <code data-lang>+page.server.ts</code>. This file will load all HTML files in our target directory and extract the metadata from each one.</p><file-display path="&quot;src/routes/+page.server.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { extractMeta } from "$lib/posts";
 
 export async function load() {
   const allPostFiles = import.meta.glob("/src/posts/target/*.html", {
@@ -208,9 +125,7 @@ export async function load() {
   );
 
   return { posts };
-}</code></pre></div></file-display>
-    <p>Then, we’ll edit the existing <code data-lang>src/routes/+page.svelte</code> to display a list of links to all posts.</p>
-    <file-display path="&quot;src/routes/+page.svelte&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="svelte">&lt;script lang="ts">
+}</code></pre></div></file-display><p>Then, we’ll edit the existing <code data-lang>src/routes/+page.svelte</code> to display a list of links to all posts.</p><file-display path="&quot;src/routes/+page.svelte&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="svelte">&lt;script lang="ts">
   let { data } = $props();
 &lt;/script>
 
@@ -223,11 +138,7 @@ export async function load() {
       &lt;/a>
     &lt;/li>
   {/each}
-&lt;/ul></code></pre></div></file-display>
-    <h3>Post display</h3>
-    <p>In <code data-lang>src/routes</code>, create a folder called <code data-lang>[slug]</code>. Inside that folder, first create a file <code data-lang>+page.server.ts</code>. This file will get our HTML file, extract the metadata, and send both the metadata and the article contents to the frontend.</p>
-    <p>We’ll define a function called <code data-lang>load</code>, whose return value SvelteKit will automatically pass to the frontend.</p>
-    <file-display path="&quot;src/routes/[slug]/+page.server.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { extractContent, extractMeta } from "$lib/posts";
+&lt;/ul></code></pre></div></file-display><h3>Post display</h3><p>In <code data-lang>src/routes</code>, create a folder called <code data-lang>[slug]</code>. Inside that folder, first create a file <code data-lang>+page.server.ts</code>. This file will get our HTML file, extract the metadata, and send both the metadata and the article contents to the frontend.</p><p>We’ll define a function called <code data-lang>load</code>, whose return value SvelteKit will automatically pass to the frontend.</p><file-display path="&quot;src/routes/[slug]/+page.server.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { extractContent, extractMeta } from "$lib/posts";
 import { error } from "@sveltejs/kit";
 
 export async function load({ params }) {
@@ -244,10 +155,7 @@ export async function load({ params }) {
     content: extractContent(html),
     meta: extractMeta(html),
   };
-}</code></pre></div></file-display>
-    <p>Here, we first load the HTML by <code data-lang>import</code>ing it from the target directory based on the URL’s slug (the slug is the part after the last <code data-lang>/</code> in the URL, which should match the name of our file, see the <a href="https://svelte.dev/docs/kit/routing">SvelteKit routing docs</a> for more information). Then, we use our extraction functions to return the post’s content and metadata.</p>
-    <p>With all the data we need extracted, rendering it becomes quite easy. Create another file <code data-lang>+page.svelte</code> in our <code data-lang>[slug]</code> folder. In that file, we’ll write some simple rendering code:</p>
-    <file-display path="&quot;src/routes/[slug]/+page.svelte&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="svelte">&lt;script lang="ts">
+}</code></pre></div></file-display><p>Here, we first load the HTML by <code data-lang>import</code>ing it from the target directory based on the URL’s slug (the slug is the part after the last <code data-lang>/</code> in the URL, which should match the name of our file, see the <a href="https://svelte.dev/docs/kit/routing">SvelteKit routing docs</a> for more information). Then, we use our extraction functions to return the post’s content and metadata.</p><p>With all the data we need extracted, rendering it becomes quite easy. Create another file <code data-lang>+page.svelte</code> in our <code data-lang>[slug]</code> folder. In that file, we’ll write some simple rendering code:</p><file-display path="&quot;src/routes/[slug]/+page.svelte&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="svelte">&lt;script lang="ts">
   let { data } = $props();
 &lt;/script>
 
@@ -255,31 +163,9 @@ export async function load({ params }) {
 &lt;p>Published on {data.meta.date}&lt;/p>
 &lt;article>
   {@html data.content}
-&lt;/article></code></pre></div></file-display>
-    <p>Now, all the pieces are in place! Run <code data-lang="bash">npm run dev</code>, and go to <code data-lang>localhost:????/test</code> to view the rendered <code data-lang>test.typ</code> blog post!</p>
-    <enhanced-img src="&quot;sveltekit-typst-blog/first-post-render.png&quot;" alt="&quot;Screenshot of rendered blog post, with the title and date displayed at the top, followed by sample headings, paragraphs, and lists.&quot;"></enhanced-img>
-    <h2>Developer experience</h2>
-    <p>Although the current setup works, the developer experience is not good. Currently, to see changes in your blog post, you have to manually rerun <code data-lang>typst compile</code> and reload the website. We’ll fix this by automatically recompiling Typst files when they change, and automatically reloading the website when the source HTML files change in <code data-lang>dev</code> mode.</p>
-    <h3>File watcher</h3>
-    <p>First, to install the libraries we need for our file watcher, run</p>
-    <div class="raw">
-      <raw-copy-button></raw-copy-button>
-      <pre><code data-lang="bash">npm install --save @types/node
+&lt;/article></code></pre></div></file-display><p>Now, all the pieces are in place! Run <code data-lang="bash">npm run dev</code>, and go to <code data-lang>localhost:????/test</code> to view the rendered <code data-lang>test.typ</code> blog post!</p><enhanced-img src="&quot;sveltekit-typst-blog/first-post-render.png&quot;" alt="&quot;Screenshot of rendered blog post, with the title and date displayed at the top, followed by sample headings, paragraphs, and lists.&quot;"></enhanced-img><h2>Developer experience</h2><p>Although the current setup works, the developer experience is not good. Currently, to see changes in your blog post, you have to manually rerun <code data-lang>typst compile</code> and reload the website. We’ll fix this by automatically recompiling Typst files when they change, and automatically reloading the website when the source HTML files change in <code data-lang>dev</code> mode.</p><h3>File watcher</h3><p>First, to install the libraries we need for our file watcher, run</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="bash">npm install --save @types/node
 npm i -D chokidar
-npm i -D concurrently</code></pre>
-    </div>
-    <p>Then, create a new file <code data-lang>scripts/typst-manager.ts</code>. This script has two modes, <code data-lang>dev</code> and <code data-lang>build</code>, corresponding to <code data-lang>vite dev</code> and <code data-lang>vite build</code>.</p>
-    <ul>
-      <li>in <code data-lang>build</code> mode, it just runs <code data-lang>typst compile</code> for all <code data-lang>.typ</code> files in <code data-lang>src/posts</code></li>
-      <li>
-        <p>in <code data-lang>dev</code> mode, it builds all <code data-lang>.typ</code> files <em>and</em> checks for updates to <code data-lang>.typ</code> files</p>
-        <ul>
-          <li>if a <code data-lang>.typ</code> file is modified, then the script runs <code data-lang>typst watch</code> for that file, which will instantly update the HTML whenever the Typst content changes. The approach prevents spawning hundreds of <code data-lang>typst watch</code> processes if you have hundreds of <code data-lang>.typ</code> files (assuming that you will likely only edit one blog post at a time).</li>
-        </ul>
-      </li>
-    </ul>
-    <p>I won’t go into much more detail about the script. Here’s the code:</p>
-    <collapsible><file-display path="&quot;scripts/typst-manager.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { spawn, execSync } from "node:child_process";
+npm i -D concurrently</code></pre></div><p>Then, create a new file <code data-lang>scripts/typst-manager.ts</code>. This script has two modes, <code data-lang>dev</code> and <code data-lang>build</code>, corresponding to <code data-lang>vite dev</code> and <code data-lang>vite build</code>.</p><ul><li>in <code data-lang>build</code> mode, it just runs <code data-lang>typst compile</code> for all <code data-lang>.typ</code> files in <code data-lang>src/posts</code></li><li><p>in <code data-lang>dev</code> mode, it builds all <code data-lang>.typ</code> files <em>and</em> checks for updates to <code data-lang>.typ</code> files</p><ul><li>if a <code data-lang>.typ</code> file is modified, then the script runs <code data-lang>typst watch</code> for that file, which will instantly update the HTML whenever the Typst content changes. The approach prevents spawning hundreds of <code data-lang>typst watch</code> processes if you have hundreds of <code data-lang>.typ</code> files (assuming that you will likely only edit one blog post at a time).</li></ul></li></ul><p>I won’t go into much more detail about the script. Here’s the code:</p><collapsible><file-display path="&quot;scripts/typst-manager.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { spawn, execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import chokidar from "chokidar";
@@ -389,9 +275,7 @@ function spawnDedicatedWatcher(fileName: string) {
   child.on("close", () => {
     activeWatchers.delete(fileName);
   });
-}</code></pre></div></file-display></collapsible>
-    <p>Now, we’ll modify our <code data-lang>package.json</code> to run <code data-lang>typst-manager.ts</code> whenever we run <code data-lang>dev</code> or <code data-lang>build</code>. Modify the <code data-lang>scripts</code> section of <code data-lang>package.json</code>:</p>
-    <file-display path="&quot;package.json&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="json">{
+}</code></pre></div></file-display></collapsible><p>Now, we’ll modify our <code data-lang>package.json</code> to run <code data-lang>typst-manager.ts</code> whenever we run <code data-lang>dev</code> or <code data-lang>build</code>. Modify the <code data-lang>scripts</code> section of <code data-lang>package.json</code>:</p><file-display path="&quot;package.json&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="json">{
   ...
   "scripts": {
     "typst:dev": "node scripts/typst-manager.ts dev", // [!code ++]
@@ -404,12 +288,7 @@ function spawnDedicatedWatcher(fileName: string) {
     ...
   },
   ...
-}</code></pre></div></file-display>
-    <p>Now, if you run <code data-lang="bash">npm run dev</code>, any changes to <code data-lang>test.typ</code> should be reflected in <code data-lang>test.html</code> on save.</p>
-    <h3>Hot reloading</h3>
-    <p>Even though our HTML files change in sync with our Typst files, we have to manually reload our blog in <code data-lang>dev</code> mode if we want to see how those changes will look on our website. Let’s fix that!</p>
-    <p>In <code data-lang>vite.config.ts</code>, we’ll create a new custom plugin that notifies the frontend whenever HTML files change.</p>
-    <file-display path="&quot;vite.config.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export default defineConfig({
+}</code></pre></div></file-display><p>Now, if you run <code data-lang="bash">npm run dev</code>, any changes to <code data-lang>test.typ</code> should be reflected in <code data-lang>test.html</code> on save.</p><h3>Hot reloading</h3><p>Even though our HTML files change in sync with our Typst files, we have to manually reload our blog in <code data-lang>dev</code> mode if we want to see how those changes will look on our website. Let’s fix that!</p><p>In <code data-lang>vite.config.ts</code>, we’ll create a new custom plugin that notifies the frontend whenever HTML files change.</p><file-display path="&quot;vite.config.ts&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">export default defineConfig({
 	plugins: [sveltekit()] // [!code --]
   // [!code ++:11]
   plugins: [
@@ -423,19 +302,12 @@ function spawnDedicatedWatcher(fileName: string) {
       },
     },
   ],
-});</code></pre></div></file-display>
-    <p>We can listen for these changes on the frontend by modifying <code data-lang>src/routes/+layout.svelte</code>. Add the following snippet to the <code data-lang>script</code> section of your <code data-lang>+layout.svelte</code> file:</p>
-    <file-display path="&quot;src/routes/+layout.svelte&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { invalidateAll } from "$app/navigation";
+});</code></pre></div></file-display><p>We can listen for these changes on the frontend by modifying <code data-lang>src/routes/+layout.svelte</code>. Add the following snippet to the <code data-lang>script</code> section of your <code data-lang>+layout.svelte</code> file:</p><file-display path="&quot;src/routes/+layout.svelte&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="ts">import { invalidateAll } from "$app/navigation";
 if (import.meta.hot) {
    import.meta.hot.on("content-update", () => {
      invalidateAll();
    });
-}</code></pre></div></file-display>
-    <p>Now, when you’re running <code data-lang="bash">npm run dev</code>, any changes to <code data-lang>test.typ</code> should be reflected in your browser on save!</p>
-    <h2>Math</h2>
-    <p>Clever observers might have noticed that Typst has been furiously emitting warnings about our use of math blocks in our <code data-lang>test.typ</code> file. Even cleverer observers might have noticed that our output HTML currently contains no math—Typst currently removes math elements because it doesn’t know how to display them. Let’s fix this!</p>
-    <p>In the article function, we’ll create a show rule that changes the way Typst renders math equations:</p>
-    <file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let article(
+}</code></pre></div></file-display><p>Now, when you’re running <code data-lang="bash">npm run dev</code>, any changes to <code data-lang>test.typ</code> should be reflected in your browser on save!</p><h2>Math</h2><p>Clever observers might have noticed that Typst has been furiously emitting warnings about our use of math blocks in our <code data-lang>test.typ</code> file. Even cleverer observers might have noticed that our output HTML currently contains no math—Typst currently removes math elements because it doesn’t know how to display them. Let’s fix this!</p><p>In the article function, we’ll create a show rule that changes the way Typst renders math equations:</p><file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let article(
   // ...
 ) = context {
   show math.equation: it => {
@@ -447,13 +319,7 @@ if (import.meta.hot) {
     html.frame(it)
   }
   // ...
-}</code></pre></div></file-display>
-    <p>Our show rule maps block math in <code data-lang>div</code>s and inline math in <code data-lang>span</code>s. Most importantly, it wraps the whole element in a <code data-lang>frame</code>, which makes Typst render the contained content as an SVG. Typst doesn’t currently have built-in HTML rendering for math, but it can render any part of the document as SVG, so we just wrap all our math equations with <code data-lang>frame</code>s to show them as SVGs instead.<sup><a id="footnote-return-4" href="#footnote-4" role="doc-noteref" aria-label="footnote 4">4</a></sup></p>
-    <p>Now, math displays correctly!</p>
-    <enhanced-img src="&quot;sveltekit-typst-blog/math.png&quot;" alt="&quot;Screenshot of rendered blog post, with math section containing inline and block equations.&quot;"></enhanced-img>
-    <h2>Footnotes</h2>
-    <p>Let’s add support for footnotes!<sup><a id="footnote-return-5" href="#footnote-5" role="doc-noteref" aria-label="footnote 5">5</a></sup> We want numbered superscripts that link to numbered footnotes at the bottom of the article which all also have backlinks. First, create another show rule:</p>
-    <file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let article(
+}</code></pre></div></file-display><p>Our show rule maps block math in <code data-lang>div</code>s and inline math in <code data-lang>span</code>s. Most importantly, it wraps the whole element in a <code data-lang>frame</code>, which makes Typst render the contained content as an SVG. Typst doesn’t currently have built-in HTML rendering for math, but it can render any part of the document as SVG, so we just wrap all our math equations with <code data-lang>frame</code>s to show them as SVGs instead.<sup><a id="footnote-return-4" href="#footnote-4" role="doc-noteref" aria-label="footnote 4">4</a></sup></p><p>Now, math displays correctly!</p><enhanced-img src="&quot;sveltekit-typst-blog/math.png&quot;" alt="&quot;Screenshot of rendered blog post, with math section containing inline and block equations.&quot;"></enhanced-img><h2>Footnotes</h2><p>Let’s add support for footnotes!<sup><a id="footnote-return-5" href="#footnote-5" role="doc-noteref" aria-label="footnote 5">5</a></sup> We want numbered superscripts that link to numbered footnotes at the bottom of the article which all also have backlinks. First, create another show rule:</p><file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let article(
   // ...
 ) = context {
   show footnote: it => {
@@ -470,10 +336,7 @@ if (import.meta.hot) {
       } #label("footnote-return-" + count)])
   }
   // ...
-}</code></pre></div></file-display>
-    <p>This show rule uses Typst’s <code data-lang>counter</code> function to display numbered footnotes linked to their sources, and also sets up backlink targets so that readers can return to the article after reading the footnote. We use a show rule to add accessible attributes to the generated <code data-lang>a</code> element.</p>
-    <p>Then, let’s update the <code data-lang>html.body</code> function to display each footnote, using Typst’s <code data-lang>query</code> function to find each footnote’s content.</p>
-    <file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#html.elem("body")[
+}</code></pre></div></file-display><p>This show rule uses Typst’s <code data-lang>counter</code> function to display numbered footnotes linked to their sources, and also sets up backlink targets so that readers can return to the article after reading the footnote. We use a show rule to add accessible attributes to the generated <code data-lang>a</code> element.</p><p>Then, let’s update the <code data-lang>html.body</code> function to display each footnote, using Typst’s <code data-lang>query</code> function to find each footnote’s content.</p><file-display path="&quot;src/posts/lib/lib.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#html.elem("body")[
   #content
   #context {
     let footnotes = query(footnote)
@@ -506,28 +369,13 @@ if (import.meta.hot) {
       ]
     }
   }
-]</code></pre></div></file-display>
-    <p>Here, we create the targets for the links we set up in our show rule, and create backlinks with the <code data-lang>↩︎</code> symbol at the end of each footnote. We also use another show rule to add accessible attributes to our links.</p>
-    <p>We can our implementation by modifying our <code data-lang>test.typ</code> file to include some example footnotes:</p>
-    <file-display path="&quot;src/posts/test.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">// ...
+]</code></pre></div></file-display><p>Here, we create the targets for the links we set up in our show rule, and create backlinks with the <code data-lang>↩︎</code> symbol at the end of each footnote. We also use another show rule to add accessible attributes to our links.</p><p>We can our implementation by modifying our <code data-lang>test.typ</code> file to include some example footnotes:</p><file-display path="&quot;src/posts/test.typ&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">// ...
 = Footnote
 
 Let's make footnotes#footnote[An example footnote]
 and more footnotes#footnote[
   Another example footnote with *rich content*
-]</code></pre></div></file-display>
-    <p>Now, we have support for footnotes!</p>
-    <enhanced-img src="&quot;sveltekit-typst-blog/footnote.png&quot;" alt="&quot;Screenshot of rendered blog post, with footnotes where clickable superscript links correspond to a numbered footnote list.&quot;"></enhanced-img>
-    <h2>Conclusion</h2>
-    <p>I hope this article provided a good guide for the basics of setting up a SvelteKit + Typst blog. Other features, like support for arbitrary figures or images that aren’t just embedded into the HTML can be implemented pretty easily with more show rules and some extra JavaScript. You can find the code <a href="https://github.com/Ashwagandhae/sveltekit-typst-blog">on Github</a>.</p>
-    <p>The approach I used has good developer experience but is somewhat fragile; future solutions could use <a href="https://github.com/Myriad-Dreamin/typst.ts">typst.ts</a> to make a proper Vite plugin.</p>
-    <footer>
-      <ol>
-        <li id="footnote-1" role="doc-footnote">
-          <p>For example, if I wanted to list out the first 40 fibonacci numbers, which are 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, and 63245986, I can do it by writing code like this:</p>
-          <div class="raw">
-            <raw-copy-button></raw-copy-button>
-            <pre><code data-lang="typ">#let fibs(n) = {
+]</code></pre></div></file-display><p>Now, we have support for footnotes!</p><enhanced-img src="&quot;sveltekit-typst-blog/footnote.png&quot;" alt="&quot;Screenshot of rendered blog post, with footnotes where clickable superscript links correspond to a numbered footnote list.&quot;"></enhanced-img><h2>Conclusion</h2><p>I hope this article provided a good guide for the basics of setting up a SvelteKit + Typst blog. Other features, like support for arbitrary figures or images that aren’t just embedded into the HTML can be implemented pretty easily with more show rules and some extra JavaScript. You can find the code <a href="https://github.com/Ashwagandhae/sveltekit-typst-blog">on Github</a>.</p><p>The approach I used has good developer experience but is somewhat fragile; future solutions could use <a href="https://github.com/Myriad-Dreamin/typst.ts">typst.ts</a> to make a proper Vite plugin.</p><footer><ol><li id="footnote-1" role="doc-footnote"><p>For example, if I wanted to list out the first 40 fibonacci numbers, which are 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, and 63245986, I can do it by writing code like this:</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="typ">#let fibs(n) = {
   let ret = (0, 1)
   for _ in range(n - 2) {
     ret = (..ret, ret.at(-1) + ret.at(-2))
@@ -536,22 +384,4 @@ and more footnotes#footnote[
 }
 For example, if I wanted to list out the first 40 fibonacci numbers,
 which are #fibs(40).map(str).join(", ", last: ", and "), I can do it by
-writing code like this:</code></pre>
-          </div>
-          <p><a href="#footnote-return-1" role="doc-backlink" aria-label="Back to content">↩︎</a></p>
-        </li>
-        <li id="footnote-2" role="doc-footnote">
-          <p>You can also just run</p>
-          <div class="raw">
-            <raw-copy-button></raw-copy-button>
-            <pre><code data-lang="bash">npx sv create --template minimal --types ts --install npm sveltkit-typst-blog</code></pre>
-          </div>
-          <p>to skip manually selecting settings. <a href="#footnote-return-2" role="doc-backlink" aria-label="Back to content">↩︎</a></p>
-        </li>
-        <li id="footnote-3" role="doc-footnote">Typst automatically generates the basic <code data-lang>html</code>, <code data-lang>head</code> and <code data-lang>body</code> if you don’t create your own <code data-lang>html</code> element. However, we’re manually specifying the structure to give us more control over metadata. <a href="#footnote-return-3" role="doc-backlink" aria-label="Back to content">↩︎</a></li>
-        <li id="footnote-4" role="doc-footnote">There are other approaches to rendering math, like using <a href="https://codeberg.org/akida/mathyml">mathyml</a> to convert equations to MathML Core or <a href="https://github.com/qwinsi/tex2typst">convert to LaTeX</a> and render with <a href="https://www.mathjax.org/">MathJax</a> or <a href="https://katex.org/">KaTeX</a>. I decided to use SVG rendering because of simplicity and visual accuracy. <a href="#footnote-return-4" role="doc-backlink" aria-label="Back to content">↩︎</a></li>
-        <li id="footnote-5" role="doc-footnote">Typst already supports footnotes if you don’t override the default <code data-lang>html</code> and <code data-lang>body</code> element creation. Because we did override it, we have to implement footnotes manually. Manual implementation has the benefit of more customization, like allowing for backlinks. <a href="#footnote-return-5" role="doc-backlink" aria-label="Back to content">↩︎</a></li>
-      </ol>
-    </footer>
-  </body>
-</html>
+writing code like this:</code></pre></div><a href="#footnote-return-1" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-2" role="doc-footnote"><p>You can also just run</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="bash">npx sv create --template minimal --types ts --install npm sveltkit-typst-blog</code></pre></div>to skip manually selecting settings. <a href="#footnote-return-2" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-3" role="doc-footnote">Typst automatically generates the basic <code data-lang>html</code>, <code data-lang>head</code> and <code data-lang>body</code> if you don’t create your own <code data-lang>html</code> element. However, we’re manually specifying the structure to give us more control over metadata. <a href="#footnote-return-3" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-4" role="doc-footnote">There are other approaches to rendering math, like using <a href="https://codeberg.org/akida/mathyml">mathyml</a> to convert equations to MathML Core or <a href="https://github.com/qwinsi/tex2typst">convert to LaTeX</a> and render with <a href="https://www.mathjax.org/">MathJax</a> or <a href="https://katex.org/">KaTeX</a>. I decided to use SVG rendering because of simplicity and visual accuracy. <a href="#footnote-return-4" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-5" role="doc-footnote">Typst already supports footnotes if you don’t override the default <code data-lang>html</code> and <code data-lang>body</code> element creation. Because we did override it, we have to implement footnotes manually. Manual implementation has the benefit of more customization, like allowing for backlinks. <a href="#footnote-return-5" role="doc-backlink" aria-label="Back to content">↩︎</a></li></ol></footer></body></html>
