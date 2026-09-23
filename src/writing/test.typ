@@ -89,7 +89,9 @@ def code_block(with_syntax_highlight):
     print(i)
   ```
 ]
-#file-display("src/main/long/path/that/is/very/long/and/extremely/long/hello-world.py")[
+#file-display(
+  "src/main/long/path/that/is/very/long/and/extremely/long/hello-world.py",
+)[
   ```python
   print("hello world")
   for i in range(0, 10):
@@ -148,7 +150,10 @@ $
 
 = Embedded components
 
-#embed("click-counter", attrs: (count: 67, celebrations: ("wow", "yay", "yippee")))
+#embed("click-counter", attrs: (
+  count: 67,
+  celebrations: ("wow", "yay", "yippee"),
+))
 
 #collapsible[
 
@@ -157,7 +162,10 @@ $
 
 = Images
 
-#image("san-francisco.png", alt: "San Francisco road with trees in the background")
+#image(
+  "san-francisco.png",
+  alt: "San Francisco road with trees in the background",
+)
 
 = Figure
 #import "@preview/lilaq:0.5.0" as lq

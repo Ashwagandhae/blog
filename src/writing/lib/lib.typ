@@ -9,6 +9,19 @@
   }
   html.elem(tag, body, attrs: json-attrs)
 }
+// inserts zero-width space before capital letters
+#let auto-zws(string) = {
+  let zws = "\u{200B}"
+  string
+    .clusters()
+    .map(c => if c == upper(c) {
+      zws + c
+    } else {
+      c
+    })
+    .join("")
+}
+#let skibidi = "hello".clusters()
 
 #let collapsible(body) = {
   embed("collapsible", body: body)
@@ -27,17 +40,21 @@
 ) = {
   set text(fill: white, font: "Atkinson Hyperlegible")
 
-  show math.equation: it => context {
-    if target() == "html" {
-      show: if it.block {
-        it => html.elem("div", attrs: (class: "math"), it)
-      } else {
-        it => html.elem("span", attrs: (class: "math"), it)
-      }
-      html.elem("span", attrs: (class: "mathVisual", aria-hidden: "true"), html.frame(it))
-      html.elem("span", attrs: (class: "mathSemantic"), to-mathml(it))
-    } else { it }
-  }
+  // show math.equation: it => context {
+  //   // if target() == "html" {
+  //   //   show: if it.block {
+  //   //     it => html.elem("div", attrs: (class: "math"), it)
+  //   //   } else {
+  //   //     it => html.elem("span", attrs: (class: "math"), it)
+  //   //   }
+  //   //   html.elem(
+  //   //     "span",
+  //   //     attrs: (class: "mathVisual", aria-hidden: "true"),
+  //   //     html.frame(it),
+  //   //   )
+  //   //   html.elem("span", attrs: (class: "mathSemantic"), to-mathml(it))
+  //   // } else { it }
+  // }
 
   show image: it => context {
     if it.alt == none {
@@ -45,7 +62,6 @@
     }
     embed("enhanced-img", attrs: (src: it.source, alt: it.alt))
   }
-
 
   show raw: it => context {
     let lang = if it.lang == none { "" } else { it.lang }
@@ -72,7 +88,6 @@
     }
   }
 
-
   show figure: it => {
     html.elem("figure")[
       #html.frame(it.body)
@@ -82,13 +97,20 @@
     ]
   }
 
-
   show footnote: it => {
     let count = counter(footnote).display()
     super([#{
         show html.elem.where(tag: "a"): it => {
           if it.attrs.at("role", default: none) == none {
-            html.elem("a", attrs: (..it.attrs, role: "doc-noteref", aria-label: "footnote " + count), it.body)
+            html.elem(
+              "a",
+              attrs: (
+                ..it.attrs,
+                role: "doc-noteref",
+                aria-label: "footnote " + count,
+              ),
+              it.body,
+            )
           } else {
             it
           }
@@ -97,14 +119,19 @@
       } #label("footnote-return-" + count)])
   }
 
-
   html.elem("html")[
     #html.elem("head")[
       #html.elem("meta", attrs: (charset: "utf-8"))
-      #html.elem("meta", attrs: (name: "viewport", content: "width=device-width, initial-scale=1"))
+      #html.elem("meta", attrs: (
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      ))
       #html.elem("title")[#title]
       #html.elem("meta", attrs: (name: "description", content: description))
-      #html.elem("meta", attrs: (property: "article:published_time", content: date.display()))
+      #html.elem("meta", attrs: (
+        property: "article:published_time",
+        content: date.display(),
+      ))
       #for tag in tags {
         html.elem("meta", attrs: (property: "article:tag", content: tag))
       }
@@ -119,12 +146,18 @@
             #html.elem("ol")[
               #for (i, footnote) in footnotes.enumerate() {
                 let count = str(i + 1)
-                [#html.elem("li", attrs: (role: "doc-footnote"))[#footnote.body #{
+                [#html.elem("li", attrs: (
+                    role: "doc-footnote",
+                  ))[#footnote.body #{
                       show html.elem.where(tag: "a"): it => {
                         if it.attrs.at("role", default: none) == none {
                           html.elem(
                             "a",
-                            attrs: (..it.attrs, role: "doc-backlink", aria-label: "Back to content"),
+                            attrs: (
+                              ..it.attrs,
+                              role: "doc-backlink",
+                              aria-label: "Back to content",
+                            ),
                             it.body,
                           )
                         } else {

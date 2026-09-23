@@ -113,7 +113,7 @@
     top: 0;
     width: calc((100vw - var(--content-width)) / 2);
     overflow-y: auto;
-    max-width: 12rem;
+    max-width: max-content;
     box-sizing: border-box;
     padding: 0 var(--pad-big);
     padding-top: var(--pad-big);
@@ -162,7 +162,6 @@
     color: var(--text);
     opacity: 0.75;
     padding-left: calc((var(--heading-level) - 2) * var(--pad-big));
-    word-break: break-all;
   }
 
   .tocItem.active {

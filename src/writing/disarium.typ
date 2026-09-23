@@ -196,7 +196,11 @@ Because lower-place digits have the biggest impact, I decided to see how isolati
       mark: none,
     ),
 
-    lq.stem(xs, x => if calc.rem(x, 10) == 8 { disarium(x) - x } else { 0 }, mark: none),
+    lq.stem(
+      xs,
+      x => if calc.rem(x, 10) == 8 { disarium(x) - x } else { 0 },
+      mark: none,
+    ),
   )
 ]
 

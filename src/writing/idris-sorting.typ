@@ -102,7 +102,7 @@ Our definition has a base case of `Here` if `x` is the first element of the list
 
 When thinking through how to prove our theorem, I found it easiest to start from high-level functions and create smaller functions with the correct type declarations but with #link("https://docs.idris-lang.org/en/latest/tutorial/typesfuns.html#holes")[holes] as placeholders for their bodies.
 
-== `insertionSort`
+== #raw(auto-zws("insertionSort"))
 
 The highest-level theorem is, of course, our `insertionSort` function. First, let's create the functions type declaration. Note that this type declaration corresponds to the theorem that we are stating by the Curry-Howard isomorphism:
 ```idris
@@ -110,7 +110,9 @@ insertionSort : (inList : Vect n Nat)
   -> (outList : Vect n Nat ** (Sorted outList, Permutation inList outList))
 ```
 Here, we take in some list `inList`, and output an `outList` #link("https://docs.idris-lang.org/en/latest/tutorial/typesfuns.html#dependent-pairs")[dependently-paired] with a proof that `outList` is sorted and that `outList` permutes `inList`. Stating this function as a theorem, we are saying that
-#quote(block: true)[Let `inList` be a list. There exists a sorted list `outList` that is a permutation of `inList`.]
+#quote(
+  block: true,
+)[Let `inList` be a list. There exists a sorted list `outList` that is a permutation of `inList`.]
 
 
 Now, let's look at our function implementation. By the Curry-Howard isomorphism, the implementation corresponds to the proof of our theorem. First, we handle the case of an empty list:
@@ -219,7 +221,7 @@ To prove permutation, we use `PermutationGrow` to prove that `y::(x::ys)` permut
 
 To prove sortedness, we use a magical theorem `yLtXAndYsImpliesYLtXYs` to show that `y::x_ys`, a theorem complex enough to deserve its own section!
 
-== `yLtXAndYsImpliesYLtXYs`
+== #raw(auto-zws("yLtXAndYsImpliesYLtXYs"))
 
 As the theorems got more complex, naming them also became harder, leading to the mess of characters heading this section. The type declaration this function shares the complexity of its name:
 ```idris
@@ -271,7 +273,7 @@ In the case that `f` equals `x`, we can use the fact that we know that `y` $<=$ 
 In the case that `f` is in `ys`, we use another theorem `yAfterXInSortedListImpliesXLtY` to show that `y` $<=$ `f`.
 
 
-== `elOfListIsInPermOfList`
+== #raw(auto-zws("elOfListIsInPermOfList"))
 
 This theorem tells us that given some list containing element `x`, any permutation of that list will also contain `x`.
 
@@ -292,7 +294,7 @@ elOfListIsInPermOfList a (PermutationTrans as bs cs p1 p2) aElemAs = let
 
 Here, we simply look at every possible `Permutation` constructor, recursively finding out where the element is. Note that we don't need to handle `PermutationZero` because idris has statically determined that passing in `PermutationZero` would be impossible for lists that contain elements.
 
-== `yAfterXInSortedListImpliesXLtY`
+== #raw(auto-zws("yAfterXInSortedListImpliesXLtY"))
 
 We've arrived at our final theorem, another heap of messy characters. The idea of this theorem, however, is simple: if an element `y` is in a list `xs`, and the list `x::xs` is sorted, then `x <= y`. In other words, if an element `y` comes after `x` in a sorted list, then `x <= y`.
 
@@ -323,7 +325,9 @@ Our proof splits on two cases:
 With all these theorems in place, our program finally compiles, which—by the guarantees of Idris' type system—proves that our sorting algorithm works correctly. Creating an actual proof is a powerful statement: assuming Idris has no bugs, our program will sort _any_ list of natural numbers, no matter the size of the list or the size of the numbers. We know this without any testing, fuzzing, or manual inspection—as long as we trust our definitions, the fact that the program compiles provides total assurance. You can find the complete #link("https://github.com/Ashwagandhae/cs-2051-dependent-types/blob/main/src/MainPrez.idr")[source code on GitHub].
 
 Throughout this guide, I paired thorough proof explanations and programs that express those proofs. I intended for these pairings to help clarify the main idea of the Curry-Howard correspondence:
-#quote(block: true)[Types correspond to propositions, programs correspond to proofs]
+#quote(
+  block: true,
+)[Types correspond to propositions, programs correspond to proofs]
 
 I hope it helps aspiring dependent typers learn!
 
