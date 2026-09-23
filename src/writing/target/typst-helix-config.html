@@ -2,20 +2,21 @@
 command = "tinymist"
 config.preview.background.enabled = true
 config.preview.background.args = ["--data-plane-host=127.0.0.1:0"]</code></pre></div></file-display><p>These lines configure Tinymist to start a preview server at a random port once you’ve opened your first Typst file, as specified by setting the <code data-lang>data-plane-host</code> port to <code data-lang>0</code>.</p></li><li>Make sure you’ve installed <a href="https://www.nushell.sh/">Nushell</a>.<sup><a id="footnote-return-1" href="#footnote-1" role="doc-noteref" aria-label="footnote 1">1</a></sup></li><li><p>Create a file <code data-lang>typst-preview.nu</code> somewhere, perhaps in your <a href="https://docs.helix-editor.com/configuration.html">Helix config directory</a>, with the contents:</p><file-display path="&quot;~/.config/helix/typst-preview.nu&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="nu">let helix_pid = (ps | where pid == $nu.pid | first).ppid
-let tinymist_proc = ps |
-  where ppid == $helix_pid |
-  where name =~ tinymist |
-  first
+
+let tinymist_proc = ps
+| where ppid == $helix_pid
+| where name =~ tinymist
+| first
 if $tinymist_proc == null {
-  print "tinymist proc is null"
-  return
+    print "tinymist proc is null"
 } else {
-  let tinymist_entry = lsof -i -P -n |
-    from ssv --minimum-spaces 1 |
-    where PID == ($tinymist_proc.pid | into string) |
-    first
-  ^open -na "Google Chrome" --args --app=("http://" + $tinymist_entry.NAME)
-  # should be `google-chrome --app=("http://" + $tinymist_entry.NAME)` on Linux
+    let tinymist_entry = lsof -i -P -n
+    | from ssv --minimum-spaces 1
+    | where PID == ($tinymist_proc.pid |
+    into string)
+    | first
+    # should be `google-chrome --app=("http://" + $tinymist_entry.NAME)` on Linux
+    ^open -na "Google Chrome" --args --app=("http://" + $tinymist_entry.NAME)
 }</code></pre></div></file-display><p>This script finds your Helix instance’s process ID, finds the child Tinymist process that the Helix instance spawned, and looks up the address of the previewing server based on the child’s process ID.</p><p>The final <code data-lang="nu">open</code> command opens the address in Chrome, using the <code data-lang>--app</code> flag of Chromium browsers to hide tabs and other superfluous UI elements.<sup><a id="footnote-return-2" href="#footnote-2" role="doc-noteref" aria-label="footnote 2">2</a></sup></p></li><li>Open your <a href="https://docs.helix-editor.com/configuration.html">Helix config file</a>, and append:<span style="white-space: pre-wrap">&#x20;</span><file-display path="&quot;~/.config/helix/config.toml&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="toml">[keys.normal]
 "C-S-p" = ':sh nu ~/.config/helix/typst-preview.nu'
 "C-p" = ':lsp-workspace-command tinymist.pinMain "%sh{realpath %{buffer_name}}"'</code></pre></div></file-display><span style="white-space: pre-wrap">&#x20;</span>These lines create the keyboard shortcuts <a href="#keyboard-shortcuts">described above</a>.</li></ol><h2>Credits</h2><p>Most of the config comes from <a href="https://forum.typst.app/t/what-is-the-best-setup-for-using-typst-in-helix-editor/5867/3">sijo’s reply in the Typst forums</a>, without which I wouldn’t have understood how to make Tinymist preview at a random port. Thank you!</p><p>My improvements consist of</p><ul><li>Letting you open the preview server intentionally with a shortcut instead of having Tinymist open your browser automatically on startup and annoyingly steal your focus</li><li>Opening the preview in a dedicated UI-less window instead of cluttering your browser’s tabs<sup><a id="footnote-return-3" href="#footnote-3" role="doc-noteref" aria-label="footnote 3">3</a></sup></li></ul><p>I hope this helps!</p><footer><ol><li id="footnote-1" role="doc-footnote">If you don’t like installing things, you can also rewrite the script in Bash and update the Helix command to run the Bash script. <a href="#footnote-return-1" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-2" role="doc-footnote">You can also open the url in other browsers like Firefox or Safari, but to my knowledge those browsers don’t have a similar UI-hiding feature. <a href="#footnote-return-2" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-3" role="doc-footnote">Additionally, because I use Zen as my actual browser, opening the preview in the seperate app Chrome allow any shortcuts I use to switch to the Zen app to better match my intent, focusing my actual browser window instead of a random Typst preview. <a href="#footnote-return-3" role="doc-backlink" aria-label="Back to content">↩︎</a></li></ol></footer></body></html>

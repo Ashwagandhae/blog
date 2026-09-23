@@ -54,20 +54,21 @@ The previewing window
   #file-display("~/.config/helix/typst-preview.nu")[
     ```nu
     let helix_pid = (ps | where pid == $nu.pid | first).ppid
-    let tinymist_proc = ps |
-      where ppid == $helix_pid |
-      where name =~ tinymist |
-      first
+
+    let tinymist_proc = ps
+    | where ppid == $helix_pid
+    | where name =~ tinymist
+    | first
     if $tinymist_proc == null {
-      print "tinymist proc is null"
-      return
+        print "tinymist proc is null"
     } else {
-      let tinymist_entry = lsof -i -P -n |
-        from ssv --minimum-spaces 1 |
-        where PID == ($tinymist_proc.pid | into string) |
-        first
-      ^open -na "Google Chrome" --args --app=("http://" + $tinymist_entry.NAME)
-      # should be `google-chrome --app=("http://" + $tinymist_entry.NAME)` on Linux
+        let tinymist_entry = lsof -i -P -n
+        | from ssv --minimum-spaces 1
+        | where PID == ($tinymist_proc.pid |
+        into string)
+        | first
+        # should be `google-chrome --app=("http://" + $tinymist_entry.NAME)` on Linux
+        ^open -na "Google Chrome" --args --app=("http://" + $tinymist_entry.NAME)
     }
     ```
   ]
