@@ -4,7 +4,7 @@
 #show: article.with(
   title: "Configuring Helix for convenient Typst previewing",
   date: datetime(year: 2026, month: 9, day: 22),
-  description: "Using the dependently-typed programming language Idris to verify insertion sort.",
+  description: "Guide to configure Helix to open Typst preview in a dedicated window on-demand.",
   tags: ("typst", "helix"),
 )
 
