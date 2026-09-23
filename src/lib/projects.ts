@@ -216,7 +216,7 @@ export const projects: Project[] = [
 		},
 		tags: ["rust", "typescript", "python"],
 		description: `<p>
-        <a href="https://github.com/Gimloader/Gimloader">Advent of code </a> solutions,
+        <a href="https://github.com/Gimloader/Gimloader">Advent of code</a> solutions,
         and a custom advent of code command line tool with auto submitting and support
         for multiple languages.
       </p>`,
@@ -246,7 +246,7 @@ export const projects: Project[] = [
 		},
 		tags: ["typescript", "vue"],
 		description: `<p>
-			Recipes for cakes and plätzchen from my grandmother
+			Recipes for cakes and plätzchen from my grandmother.
 		</p>`,
 		image: {
 			src: omaRecipes,
