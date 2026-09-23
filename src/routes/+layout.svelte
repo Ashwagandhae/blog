@@ -10,6 +10,7 @@
   import NavItem from "$lib/components/NavItem.svelte";
   import ChickenLogo from "$lib/components/ChickenLogo.svelte";
   import { setPaletteContext, type PaletteLayers } from "$lib/palette";
+  import { onMount } from "svelte";
 
   let { children } = $props();
 

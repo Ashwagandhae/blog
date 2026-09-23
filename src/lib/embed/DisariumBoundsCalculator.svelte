@@ -1,4 +1,6 @@
 <script lang="ts">
+  import HideIfNoScript from "$lib/components/HideIfNoScript.svelte";
+
   let numDigits: number = $state(5);
   let frozenDigits: string = $state("89");
 
@@ -83,59 +85,61 @@
   });
 </script>
 
-<div class="top">
-  <div class="row">
-    <label for="digits">number of digits</label>
-    <input
-      type="range"
-      placeholder="number of digits"
-      name="digits"
-      min="1"
-      max="22"
-      bind:value={numDigits}
-    />
-    <input
-      type="text"
-      inputmode="numeric"
-      min="1"
-      max="22"
-      bind:value={numDigits}
-    />
-  </div>
+<HideIfNoScript name="Interactive frozen-digit-savings calculator">
+  <div class="top">
+    <div class="row">
+      <label for="digits">number of digits</label>
+      <input
+        type="range"
+        placeholder="number of digits"
+        name="digits"
+        min="1"
+        max="22"
+        bind:value={numDigits}
+      />
+      <input
+        type="text"
+        inputmode="numeric"
+        min="1"
+        max="22"
+        bind:value={numDigits}
+      />
+    </div>
 
-  <div class="row">
-    <label for="digits">frozen digits</label>
-    <input type="text" bind:value={frozenDigits} />
+    <div class="row">
+      <label for="digits">frozen digits</label>
+      <input type="text" bind:value={frozenDigits} />
+    </div>
   </div>
-</div>
-<div class="top">
-  <div class="out">
-    {#if boundDigits.type == "error"}
-      <p>
-        error: {boundDigits.message}
-      </p>
-    {:else}
-      <p>
-        min digits: {boundDigits.minDigits} with digit-power-sum of {boundDigits.minSum}
-      </p>
+  <div class="top">
+    <div class="out">
+      {#if boundDigits.type == "error"}
+        <p>
+          error: {boundDigits.message}
+        </p>
+      {:else}
+        <p>
+          min digits: {boundDigits.minDigits} with digit-power-sum of {boundDigits.minSum}
+        </p>
 
-      <p>
-        max digits: {boundDigits.maxDigits} with digit-power-sum of {boundDigits.maxSum}
-      </p>
+        <p>
+          max digits: {boundDigits.maxDigits} with digit-power-sum of {boundDigits.maxSum}
+        </p>
 
-      <p>
-        original check count: {boundDigits.originalCheckCount}
-      </p>
-      <p>
-        new check count: {boundDigits.finalCheckCount}
-      </p>
-      <p>
-        fraction of original: {Number(boundDigits.finalCheckCount) /
-          Number(boundDigits.originalCheckCount)}
-      </p>
-    {/if}
+        <p>
+          original check count: {boundDigits.originalCheckCount}
+        </p>
+        <p>
+          new check count: {boundDigits.finalCheckCount}
+        </p>
+        <p>
+          fraction of original: {Number(boundDigits.finalCheckCount) /
+            Number(boundDigits.originalCheckCount)}
+        </p>
+      {/if}
+    </div>
   </div>
-</div>
+</HideIfNoScript>
 
 <style>
   .top {

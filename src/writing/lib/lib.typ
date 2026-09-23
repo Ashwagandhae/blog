@@ -89,7 +89,9 @@
   }
 
   show figure: it => {
-    html.elem("figure")[
+    html.elem("figure", attrs: (
+      aria-label: if it.alt == none { "" } else { it.alt },
+    ))[
       #html.frame(it.body)
       #if it.caption != none {
         html.elem("figcaption", it.caption)

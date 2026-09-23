@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ArticleContent } from "$lib/article";
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
   import ContentRenderer from "./ContentRenderer.svelte";
   import { SvelteSet } from "svelte/reactivity";
 
@@ -103,8 +103,7 @@
     top: 0;
 
     height: 100%;
-
-    display: none;
+    display: block;
   }
 
   .toc {
@@ -119,6 +118,9 @@
     padding-top: var(--pad-big);
     overflow: scroll;
     max-height: calc(100vh);
+  }
+  .toc ul {
+    display: none;
   }
 
   .stickySentinel {
@@ -142,11 +144,13 @@
   } */
 
   .toc ul {
-    opacity: 0;
     transition: opacity var(--transition-duration-slow);
   }
   .toc.noTransition ul {
     transition: opacity 0s;
+  }
+  :global(.js-enabled) .toc ul {
+    opacity: 0;
   }
   .toc.isStuck ul {
     opacity: 1;
@@ -164,7 +168,8 @@
     padding-left: calc((var(--heading-level) - 2) * var(--pad-big));
   }
 
-  .tocItem.active {
+  .tocItem.active,
+  .tocItem:active {
     opacity: 1;
     /* font-weight: bold; */
     text-decoration: underline;
@@ -182,7 +187,7 @@
   }
 
   @media (min-width: 1000px) {
-    .tocWrapper {
+    .tocWrapper ul {
       display: block;
     }
   }

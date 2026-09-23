@@ -160,7 +160,9 @@ To help look for patterns, I used a quick python script to create a graph of the
 #let xs = range(0, 100)
 
 #show: lq.theme.moon
-#figure[
+#figure(
+  alt: "Graph of n subtracted from digit-power-sum(n) shown on the y-axis for integers in [0, 100] on the x-axis. The graph shows big spikes every 10 digits, revealing that the lower-place digits have the biggest impact on the digit-power-sum.",
+)[
   #lq.diagram(
     xlabel: [natural numbers],
     ylabel: [$"digit-power-sum"(n) - n$],
@@ -181,7 +183,9 @@ This graph helped me realize was that *lower-place digits have the largest impac
 
 Because lower-place digits have the biggest impact, I decided to see how isolating numbers ending in the same digit—for example, digit 8—would look.
 
-#figure[
+#figure(
+  alt: "Graph of n subtracted from digit-power-sum(n) shown on the y-axis for integers in [0, 100] on the x-axis, with digits ending with 8 highlighted. The graph shows only a small window where the differences are close to zero.",
+)[
   #lq.diagram(
     xlabel: [natural numbers],
     ylabel: [$"digit-power-sum"(n) - n$],
@@ -310,7 +314,7 @@ When I initially implemented digit freezing, I chose $m$,the number of digits to
 
 Previously, `NUM_FROZEN` had been a constant. I decided to preserve this behavior by using Rust's const generics to create an array of different variants of the `freeze_and_split` functions, each with different constant `NUM_FROZEN` sizes, allowing the frozen digits array to be perfectly sized for all variants of the function.#footnote[(Ab)using generics like this might make compile times slower because you create many copies of the `freeze_and_split` function. However, it theoretically also has the benefit of allowing the compiler to optimize for each individual array size.]
 
-#file-display("lib.rs")[
+#file-display("src/lib.rs")[
   ```rs
   fn freeze_and_split<const NUM_FROZEN: usize>(digit_count: u32, bound: Number) -> Vec<Number> { // [!code ++]
   fn freeze_and_split(digit_count: u32, bound: Number) -> Vec<Number> { // [!code --]
@@ -331,7 +335,7 @@ Previously, `NUM_FROZEN` had been a constant. I decided to preserve this behavio
 
 Then, I wrote some code to manually benchmark each of these variants, improperly writing my own warm-up code instead of using criterion because I just wanted to see if I could find any patterns in what `NUM_FROZEN` value resulted in the fastest performance.
 
-#file-display("main.rs")[
+#file-display("src/main.rs")[
   ```rs
   fn time_digit_count(digit_count: u32) {
       let max = (10 as u128).pow(digit_count) - 1;
@@ -366,7 +370,7 @@ The differences in times consistently stayed above 2 or 3x slower for increasing
 
 Using my knowledge, I created an array indexed by `digit_count` of `freeze_and_split` functions with optimal `FROZEN_DIGIT`s.
 
-#file-display("lib.rs")[
+#file-display("src/lib.rs")[
   ```rust
   const FREEZE_AND_SPLIT_FUNCS: [fn(u32, Number) -> Vec<Number>; 26] = [
       // ... (low digit counts)

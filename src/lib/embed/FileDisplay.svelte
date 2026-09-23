@@ -6,7 +6,7 @@
   let lastSlash = $derived(path.lastIndexOf("/"));
 
   let dir: string | null = $derived(
-    lastSlash <= 0 ? null : path.substring(0, lastSlash + 1)
+    lastSlash <= 0 ? null : path.substring(0, lastSlash + 1),
   );
 
   let file = $derived(lastSlash === -1 ? path : path.substring(lastSlash + 1));
@@ -24,7 +24,11 @@
           {:else}
             …/
           {/if}
-        </button>{/if}<span class="file">
+        </button>{/if}<noscript
+        ><span class="dir">
+          {dir}
+        </span></noscript
+      ><span class="file">
         {file}
       </span>
     </div>
@@ -86,6 +90,12 @@
     pointer-events: none;
   }
 
+  button.dir {
+    display: none;
+  }
+  :global(.js-enabled) button.dir {
+    display: inline-block;
+  }
   .dir {
     background: none;
     border: none;
@@ -96,9 +106,11 @@
     line-height: inherit;
     color: var(--text-weak);
     vertical-align: baseline;
+  }
+  button.dir {
     cursor: pointer;
   }
-  .dir:hover {
+  button.dir:hover {
     text-decoration: underline;
   }
 </style>

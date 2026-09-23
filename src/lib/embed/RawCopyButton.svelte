@@ -20,6 +20,13 @@
 
 <style>
   .copyButton {
+    display: none;
+  }
+  :global(.js-enabled) .copyButton {
+    display: block;
+  }
+
+  .copyButton {
     position: absolute;
     top: 0;
     right: 0;
