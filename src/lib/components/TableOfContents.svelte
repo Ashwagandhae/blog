@@ -116,7 +116,8 @@
     box-sizing: border-box;
     padding: 0 var(--pad-big);
     padding-top: var(--pad-big);
-    overflow: scroll;
+    overflow: auto;
+    scrollbar-width: none;
     max-height: calc(100vh);
   }
   .toc ul {
