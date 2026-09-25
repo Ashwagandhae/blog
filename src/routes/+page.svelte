@@ -1,5 +1,6 @@
 <script>
   import InlineIcon from "$lib/components/InlineIcon.svelte";
+  import Webring from "$lib/components/Webring.svelte";
   import { titleSuffix } from "$lib/title";
 </script>
 
@@ -13,38 +14,20 @@
 <h1>Home</h1>
 <p>Welcome to Julian Bauer's home on the internet.</p>
 <h2>Webrings</h2>
-<div class="webring">
-  <a class="webring-link" href="https://dan.onl/" aria-label="Left link">
-    <InlineIcon name="triangleLeft" />
-  </a>
-  <div>Bay Leaf Webring</div>
-  <a class="webring-link" href="https://kiyuri.ca/" aria-label="Right link">
-    <InlineIcon name="triangleRight" />
-  </a>
+<div class="webrings">
+  <Webring left="https://dan.onl/" right="https://kiyuri.ca/"
+    >Bay Leaf Webring</Webring
+  >
+  <Webring
+    left="https://www.romanreddick.com/"
+    right="https://henrygustafson.com/">Gimkit Webring</Webring
+  >
 </div>
 
 <style>
-  a.webring-link {
-    color: var(--text-weak);
-    display: grid;
-    width: 3ch;
-    text-decoration: none;
-    place-content: center;
-
-    gap: var(--pad-small);
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  a.webring-link:hover {
-    color: var(--text);
-  }
-  a.webring-link:active {
-    color: var(--text-strong);
-  }
-  .webring {
+  .webrings {
     display: flex;
-    align-items: center;
     flex-direction: row;
+    flex-wrap: wrap;
   }
 </style>
