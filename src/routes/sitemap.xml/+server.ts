@@ -1,4 +1,4 @@
-import { loadArticlesHtml } from "$lib/article";
+import { loadArticlesHtml } from "#lib/article.js";
 
 export const GET = async () => {
   const articles = await loadArticlesHtml();

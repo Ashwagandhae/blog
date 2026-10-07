@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getTagHue } from "$lib/tag";
-  import InlineIcon from "$lib/components/InlineIcon.svelte";
+  import { getTagHue } from "#lib/tag.js";
+  import InlineIcon from "#lib/components/InlineIcon.svelte";
   let { tag, backLink }: { tag: string; backLink: string } = $props();
   let hue = $derived(getTagHue(tag) ?? 0);
 </script>

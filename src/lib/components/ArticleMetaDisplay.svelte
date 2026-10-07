@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { ArticleMeta } from "$lib/article";
-  import ArticleTag from "$lib/components/ArticleTag.svelte";
+  import type { ArticleMeta } from "#lib/article.js";
+  import ArticleTag from "#lib/components/ArticleTag.svelte";
   import InfoTag from "./InfoTag.svelte";
   import TagsContainer from "./TagsContainer.svelte";
   let { meta }: { meta: ArticleMeta } = $props();

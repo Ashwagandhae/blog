@@ -1,7 +1,7 @@
 <script>
-  import InlineIcon from "$lib/components/InlineIcon.svelte";
-  import Webring from "$lib/components/Webring.svelte";
-  import { titleSuffix } from "$lib/title";
+  import InlineIcon from "#lib/components/InlineIcon.svelte";
+  import Webring from "#lib/components/Webring.svelte";
+  import { titleSuffix } from "#lib/title.js";
 </script>
 
 <svelte:head>

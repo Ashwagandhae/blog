@@ -1,5 +1,5 @@
 <script lang="ts">
-  import HideIfNoScript from "$lib/components/HideIfNoScript.svelte";
+  import HideIfNoScript from "#lib/components/HideIfNoScript.svelte";
 
   let numDigits: number = $state(5);
   let frozenDigits: string = $state("89");

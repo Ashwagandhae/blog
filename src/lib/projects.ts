@@ -1,15 +1,15 @@
-import flower from "$lib/assets/flower.png?enhanced";
-import mutable from "$lib/assets/mutable.gif";
-import rolly from "$lib/assets/rolly.gif";
-import monochromeLayers from "$lib/assets/monochromeLayers.gif";
-import evidencer from "$lib/assets/evidencer.jpg?enhanced";
-import dateoFunRemover from "$lib/assets/dateoFunRemover.png?enhanced";
-import brot from "$lib/assets/brot.png?enhanced";
-import gimkitBlockConverter from "$lib/assets/gimkitBlockConverter.jpg?enhanced";
-import frameworkSpeak from "$lib/assets/frameworkSpeak.png?enhanced";
-import typesweeper from "$lib/assets/typesweeper.png?enhanced";
-import clairoCharmNotebook from "$lib/assets/clairoCharmNotebook.png?enhanced";
-import omaRecipes from "$lib/assets/omaRecipes.png?enhanced";
+import flower from "#lib/assets/flower.png?enhanced";
+import mutable from "#lib/assets/mutable.gif";
+import rolly from "#lib/assets/rolly.gif";
+import monochromeLayers from "#lib/assets/monochromeLayers.gif";
+import evidencer from "#lib/assets/evidencer.jpg?enhanced";
+import dateoFunRemover from "#lib/assets/dateoFunRemover.png?enhanced";
+import brot from "#lib/assets/brot.png?enhanced";
+import gimkitBlockConverter from "#lib/assets/gimkitBlockConverter.jpg?enhanced";
+import frameworkSpeak from "#lib/assets/frameworkSpeak.png?enhanced";
+import typesweeper from "#lib/assets/typesweeper.png?enhanced";
+import clairoCharmNotebook from "#lib/assets/clairoCharmNotebook.png?enhanced";
+import omaRecipes from "#lib/assets/omaRecipes.png?enhanced";
 
 import type { Picture } from "@sveltejs/enhanced-img";
 export type Project = {

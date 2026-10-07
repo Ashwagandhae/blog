@@ -1,5 +1,5 @@
-import { getSortedArticleMetas, loadArticlesHtml } from "$lib/article";
-import { extractMeta } from "$lib/article";
+import { getSortedArticleMetas, loadArticlesHtml } from "#lib/article.js";
+import { extractMeta } from "#lib/article.js";
 
 export async function load({ params }) {
   const tag = params.slug;

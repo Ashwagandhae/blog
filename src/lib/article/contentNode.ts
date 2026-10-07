@@ -1,4 +1,4 @@
-import { embedComponents } from "$lib/embed";
+import { embedComponents } from "#lib/embed.js";
 
 const customTags = new Set(Object.keys(embedComponents));
 

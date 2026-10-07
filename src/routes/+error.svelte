@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/state";
-  import { titleSuffix } from "$lib/title";
+  import { titleSuffix } from "#lib/title.js";
 </script>
 
 <svelte:head>

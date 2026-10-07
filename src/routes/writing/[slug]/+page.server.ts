@@ -4,7 +4,7 @@ import {
   getSortedArticleMetas,
   type ArticleContent,
   type ArticleMeta,
-} from "$lib/article";
+} from "#lib/article.js";
 import { error } from "@sveltejs/kit";
 
 type Article = {

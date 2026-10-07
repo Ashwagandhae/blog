@@ -1,5 +1,5 @@
 <script>
-  import { titleSuffix } from "$lib/title";
+  import { titleSuffix } from "#lib/title.js";
 </script>
 
 <svelte:head>

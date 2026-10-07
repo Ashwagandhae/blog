@@ -1,4 +1,4 @@
-import { extractMeta, loadArticlesHtml } from "$lib/article";
+import { extractMeta, loadArticlesHtml } from "#lib/article.js";
 
 export async function load() {
   let allTags = (await loadArticlesHtml()).flatMap(

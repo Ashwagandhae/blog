@@ -2,14 +2,14 @@
   import "@fontsource-variable/atkinson-hyperlegible-next";
   import "@fontsource-variable/atkinson-hyperlegible-next/wght-italic.css";
   import "@fontsource-variable/jetbrains-mono";
-  import "$lib/global.css";
-  import "$lib/article.css";
+  import "#lib/global.css";
+  import "#lib/article.css";
 
   import { invalidateAll } from "$app/navigation";
-  import favicon from "$lib/assets/chicken.svg";
-  import NavItem from "$lib/components/NavItem.svelte";
-  import ChickenLogo from "$lib/components/ChickenLogo.svelte";
-  import { setPaletteContext, type PaletteLayers } from "$lib/palette";
+  import favicon from "#lib/assets/chicken.svg";
+  import NavItem from "#lib/components/NavItem.svelte";
+  import ChickenLogo from "#lib/components/ChickenLogo.svelte";
+  import { setPaletteContext, type PaletteLayers } from "#lib/palette.js";
   import { onMount } from "svelte";
 
   let { children } = $props();

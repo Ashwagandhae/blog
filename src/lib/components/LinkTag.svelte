@@ -1,6 +1,6 @@
 <script lang="ts">
   import InfoTag from "./InfoTag.svelte";
-  import { getTagHue } from "$lib/tag";
+  import { getTagHue } from "#lib/tag.js";
 
   let { name, route }: { name: string; route: string } = $props();
 

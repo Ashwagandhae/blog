@@ -1,6 +1,6 @@
 <script lang="ts">
   import ProjectDisplay from "./ProjectDisplay.svelte";
-  import { projects, type Project } from "$lib/projects";
+  import { projects, type Project } from "#lib/projects.js";
   let { filter }: { filter: (project: Project) => boolean } = $props();
 </script>
 

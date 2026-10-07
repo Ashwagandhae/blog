@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { titleSuffix } from "$lib/title";
-  import ProjectsDisplay from "$lib/components/ProjectsDisplay.svelte";
-  import InfoTag from "$lib/components/InfoTag.svelte";
+  import { titleSuffix } from "#lib/title.js";
+  import ProjectsDisplay from "#lib/components/ProjectsDisplay.svelte";
+  import InfoTag from "#lib/components/InfoTag.svelte";
 </script>
 
 <svelte:head>

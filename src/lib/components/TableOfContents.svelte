@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ArticleContent } from "$lib/article";
+  import type { ArticleContent } from "#lib/article.js";
   import { onMount } from "svelte";
   import ContentRenderer from "./ContentRenderer.svelte";
   import { SvelteSet } from "svelte/reactivity";

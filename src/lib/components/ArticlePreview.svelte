@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { ArticleMeta } from "$lib/article";
+  import type { ArticleMeta } from "#lib/article.js";
   import {
     getArticlePalette,
     getPaletteContext,
     type Palette,
-  } from "$lib/palette";
+  } from "#lib/palette.js";
   import ArticleMetaDisplay from "./ArticleMetaDisplay.svelte";
 
   let { path, meta }: { path: string; meta: ArticleMeta } = $props();

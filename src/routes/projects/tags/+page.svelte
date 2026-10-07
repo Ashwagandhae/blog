@@ -1,7 +1,7 @@
 <script lang="ts">
-  import ProjectTag from "$lib/components/ProjectTag.svelte";
-  import { projects } from "$lib/projects";
-  import { titleSuffix } from "$lib/title.js";
+  import ProjectTag from "#lib/components/ProjectTag.svelte";
+  import { projects } from "#lib/projects.js";
+  import { titleSuffix } from "#lib/title.js";
 
   const tags = Array.from(
     new Set(projects.flatMap((project) => project.tags)),

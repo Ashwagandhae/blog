@@ -1,9 +1,9 @@
 <script lang="ts">
-  import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
-  import ProjectsDisplay from "$lib/components/ProjectsDisplay.svelte";
-  import WithTagHeading from "$lib/components/WithTagHeading.svelte";
-  import { getTagPalette, type Palette } from "$lib/palette.js";
-  import { titleSuffix } from "$lib/title.js";
+  import PaletteDisplay from "#lib/components/PaletteDisplay.svelte";
+  import ProjectsDisplay from "#lib/components/ProjectsDisplay.svelte";
+  import WithTagHeading from "#lib/components/WithTagHeading.svelte";
+  import { getTagPalette, type Palette } from "#lib/palette.js";
+  import { titleSuffix } from "#lib/title.js";
 
   let { data } = $props();
 

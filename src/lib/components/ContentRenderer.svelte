@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { ContentNode } from "$lib/article/contentNode";
-  import { embedComponents } from "$lib/embed";
+  import type { ContentNode } from "#lib/article/contentNode.js";
+  import { embedComponents } from "#lib/embed.js";
   import Self from "./ContentRenderer.svelte";
 
   let { nodes }: { nodes: ContentNode[] } = $props();

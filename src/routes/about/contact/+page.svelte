@@ -1,6 +1,6 @@
 <script>
-  import ContactForm from "$lib/components/ContactForm.svelte";
-  import { titleSuffix } from "$lib/title";
+  import ContactForm from "#lib/components/ContactForm.svelte";
+  import { titleSuffix } from "#lib/title.js";
 </script>
 
 <svelte:head>

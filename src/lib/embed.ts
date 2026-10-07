@@ -4,7 +4,7 @@ export const embedComponents: Record<string, Component<any>> = getComponents();
 
 function getComponents() {
   let res = {};
-  const modules = import.meta.glob("$lib/embed/*.svelte", { eager: true });
+  const modules = import.meta.glob("#lib/embed/*.svelte", { eager: true });
   for (const path in modules) {
     const fileName = path.split("/").pop()?.replace(".svelte", "") || "";
 

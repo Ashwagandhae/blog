@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Palette } from "$lib/palette";
+  import type { Palette } from "#lib/palette.js";
 
   let { palette }: { palette: Palette | null } = $props();
 

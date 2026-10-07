@@ -1,11 +1,11 @@
 <script lang="ts">
-  import ArticleMeta from "$lib/components/ArticleMetaDisplay.svelte";
-  import ContentRenderer from "$lib/components/ContentRenderer.svelte";
-  import InlineIcon from "$lib/components/InlineIcon.svelte";
-  import PaletteDisplay from "$lib/components/PaletteDisplay.svelte";
-  import TableOfContents from "$lib/components/TableOfContents.svelte";
-  import { getArticlePalette, type Palette } from "$lib/palette.js";
-  import { titleSuffix } from "$lib/title.js";
+  import ArticleMeta from "#lib/components/ArticleMetaDisplay.svelte";
+  import ContentRenderer from "#lib/components/ContentRenderer.svelte";
+  import InlineIcon from "#lib/components/InlineIcon.svelte";
+  import PaletteDisplay from "#lib/components/PaletteDisplay.svelte";
+  import TableOfContents from "#lib/components/TableOfContents.svelte";
+  import { getArticlePalette, type Palette } from "#lib/palette.js";
+  import { titleSuffix } from "#lib/title.js";
   let { data } = $props();
 
   let palette: Palette | null = $derived(getArticlePalette(data.meta));

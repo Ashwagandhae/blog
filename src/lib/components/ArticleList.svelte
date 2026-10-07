@@ -1,6 +1,6 @@
 <script lang="ts">
   import ArticlePreview from "./ArticlePreview.svelte";
-  import type { ArticleMeta } from "$lib/article";
+  import type { ArticleMeta } from "#lib/article.js";
 
   let {
     articles,

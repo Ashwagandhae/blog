@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ArticleTag from "$lib/components/ArticleTag.svelte";
-  import { titleSuffix } from "$lib/title.js";
+  import ArticleTag from "#lib/components/ArticleTag.svelte";
+  import { titleSuffix } from "#lib/title.js";
 
   let { data } = $props();
 </script>
