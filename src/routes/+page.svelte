@@ -29,5 +29,6 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: var(--pad);
   }
 </style>
