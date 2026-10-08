@@ -17,8 +17,8 @@
 <div class="title">
   <h1>Writing</h1>
   <div class="links">
-    <a href="/writing/tags"><InfoTag icon="tag">all tags</InfoTag></a>
     <a href="/feed.xml"><InfoTag icon="rss">feed</InfoTag></a>
+    <a href="/writing/tags"><InfoTag icon="tag">all tags</InfoTag></a>
   </div>
 </div>
 
