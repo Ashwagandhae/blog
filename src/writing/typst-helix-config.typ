@@ -10,7 +10,7 @@
 
 
 
-While switching from #link("https://code.visualstudio.com/")[VSCode] to #link("https://helix-editor.com/")[Helix] this summer provided much perceived efficiency and fun, it also degraded my #link("https://typst.app/")[Typst] editing workflow by making previewing less ergonomic. After much finnicking, I've found a satisfactory Helix configuration on par with VSCode's functionality.
+While switching from #link("https://code.visualstudio.com/")[VSCode] to the vim-inspired #link("https://helix-editor.com/")[Helix] text editor this summer provided much perceived efficiency and fun, it also degraded my editing workflow for #link("https://typst.app/")[Typst]---the LaTeX replacement with markdown-like syntax---by making previewing less ergonomic. After much finnicking, I've found a satisfactory Helix configuration on par with VSCode's functionality.
 
 
 = What you get
@@ -30,12 +30,12 @@ This configuration creates two new keyboard shortcuts you can use when editing T
 ) <keyboard-shortcuts>
 
 The previewing window
-- Has all the #link("https://github.com/Myriad-Dreamin/tinymist")[Tinymist] preview features, including instant previewing as you type, click-to-jump, and dark theme
+- Has all the preview features for the Typst language server #link("https://github.com/Myriad-Dreamin/tinymist")[Tinymist], including instant previewing as you type, jumping to source on-click, and dark theme
 - Spawns as a seperate window without distracting browser elements like tabs and search bars
 - Works without conflicting with other preview windows spawned from other Helix instances
 
 = Configuration steps <configuration-steps>
-+ Make sure you've installed the #link("https://github.com/Myriad-Dreamin/tinymist")[Tinymist LSP]
++ Make sure you've installed the Typst language server #link("https://github.com/Myriad-Dreamin/tinymist")[Tinymist]
 + Open your global #link("https://docs.helix-editor.com/languages.html")[Helix languages file], and append:
   #file-display("~/.config/helix/languages.toml")[
     ```toml
@@ -47,7 +47,7 @@ The previewing window
   ]
 
   These lines configure Tinymist to start a preview server at a random port once you've opened your first Typst file, as specified by setting the `data-plane-host` port to `0`.
-+ Make sure you've installed #link("https://www.nushell.sh/")[Nushell].#footnote[
++ Make sure you've installed #link("https://www.nushell.sh/")[Nushell]---a modern shell and programming language intended to replace bash, zsh, and other shells---so that you can run the preview-opening script.#footnote[
     If you don't like installing things, you can also rewrite the script in Bash and update the Helix command to run the Bash script.
   ]
 + Create a file `typst-preview.nu` somewhere, perhaps in your #link("https://docs.helix-editor.com/configuration.html")[Helix config directory], with the contents:

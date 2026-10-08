@@ -12,18 +12,23 @@ article {
 h1 {
   font-size: 2em;
 }
+
 h2 {
   font-size: 1.5em;
 }
+
 h3 {
   font-size: 1.17em;
 }
+
 h4 {
   font-size: 1em;
 }
+
 h5 {
   font-size: 0.83em;
 }
+
 h6 {
   font-size: 0.67;
 }
@@ -45,6 +50,7 @@ blockquote {
   margin-top: var(--margin);
   margin-bottom: var(--margin);
 }
+
 :is(ul, ol) :is(ul, ol) {
   margin: 0;
 }
@@ -83,6 +89,7 @@ ol ol ol ol ol ol {
 a {
   color: oklch(0.8 0.05 260);
 }
+
 a:visited {
   color: oklch(0.8, 0.2, 280);
 }
@@ -113,15 +120,17 @@ table th {
   position: relative;
   vertical-align: top;
 }
+
 table tr :is(td, th):first-child {
   border-left: var(--line-width) solid var(--line-color);
 }
+
 table tr:first-child :is(th) {
   border-top: var(--line-width) solid var(--line-color);
 }
 
-table td > *,
-table th > * {
+table td>*,
+table th>* {
   margin-bottom: 0;
 }
 
@@ -138,12 +147,15 @@ table td p {
 th:first-of-type {
   border-top-left-radius: var(--radius);
 }
+
 th:last-of-type {
   border-top-right-radius: var(--radius);
 }
+
 tr:last-of-type td:first-of-type {
   border-bottom-left-radius: var(--radius);
 }
+
 tr:last-of-type td:last-of-type {
   border-bottom-right-radius: var(--radius);
 }
@@ -153,13 +165,16 @@ tr:last-of-type td:last-of-type {
   position: relative;
   vertical-align: baseline;
 }
+
 div.math {
   text-align: center;
   width: 100%;
 }
+
 .mathVisual svg {
   display: block;
 }
+
 .mathVisual {
   display: inline-block;
   user-select: none;
@@ -209,6 +224,7 @@ figure {
   margin: 0;
   text-align: center;
 }
+
 figure svg {
   max-width: 100%;
   height: auto;
@@ -220,6 +236,7 @@ figure svg {
 div.raw {
   position: relative;
 }
+
 pre {
   background: var(--transparent-back);
   border-radius: var(--radius);
@@ -229,6 +246,7 @@ pre {
   padding: 0.25em 0;
   position: relative;
 }
+
 .fileDisplay pre {
   border-radius: 0 var(--radius) var(--radius) var(--radius);
   margin-top: 0;
@@ -245,6 +263,7 @@ code {
   tab-size: 2ch;
   font-size: 0.8em;
 }
+
 pre code {
   background: none;
   color: inherit;
@@ -270,9 +289,7 @@ pre code {
 }
 
 .shiki.has-diff .line.diff.add {
-  background-color: oklch(
-    70% var(--line-back-chroma) 160 / var(--line-back-alpha)
-  );
+  background-color: oklch(70% var(--line-back-chroma) 160 / var(--line-back-alpha));
   position: relative;
 }
 
@@ -284,10 +301,7 @@ pre code {
 }
 
 .shiki.has-diff .line.diff.remove {
-  background-color: oklch(
-    70% var(--line-back-chroma) 15 /
-      calc(var(--line-back-alpha) / var(--line-weak-opacity))
-  );
+  background-color: oklch(70% var(--line-back-chroma) 15 / calc(var(--line-back-alpha) / var(--line-weak-opacity)));
   position: relative;
   opacity: var(--line-weak-opacity);
 }
@@ -305,16 +319,12 @@ pre code {
 }
 
 .shiki.has-highlighted .error {
-  background-color: oklch(
-    80% var(--line-back-chroma) 15 / var(--line-back-alpha-1)
-  );
+  background-color: oklch(80% var(--line-back-chroma) 15 / var(--line-back-alpha-1));
   position: relative;
 }
 
 .shiki.has-highlighted .warning {
-  background-color: oklch(
-    80% var(--line-back-chroma) 100 / var(--line-back-alpha-1)
-  );
+  background-color: oklch(80% var(--line-back-chroma) 100 / var(--line-back-alpha-1));
   position: relative;
 }
 
@@ -326,17 +336,18 @@ pre code {
   opacity: 1;
 }
 
-.shiki.has-highlighted .highlighted-word {
+:is(.shiki, .shiki-inline) .highlighted-word,
+.highlighted-word {
   background: oklch(100% 0 0 / var(--line-back-alpha-1));
   border-radius: 0.4em;
 }
 
-.shiki.has-highlighted .highlighted-word + .highlighted-word {
+:is(.shiki, .shiki-inline) .highlighted-word+.highlighted-word {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.shiki.has-highlighted .highlighted-word:has(+ .highlighted-word) {
+:is(.shiki, .shiki-inline) .highlighted-word:has(+ .highlighted-word) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }

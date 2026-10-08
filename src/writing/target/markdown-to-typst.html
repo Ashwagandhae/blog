@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Converting all my Markdown notes to Typst</title><meta name="description" content="Using Pandoc to upgrade more than 400 notes."><meta property="article:published_time" content="2026-10-07"><meta property="article:tag" content="pandoc"><meta property="article:tag" content="typst"><meta property="article:tag" content="markdown"></head><body><p>After the vim-inspired modal editor <a href="https://helix-editor.com/">Helix</a> conquered my code writing habits this summer, it demanded complete loyalty. That meant that my homemade note-taking app, <a href="https://github.com/Ashwagandhae/brot">brot</a>, built with the <a href="https://tiptap.dev/">Tiptap</a> what-you-see-is-what-you-get Markdown editor, needed surgical alteration to meet my new standards.</p><p>I initially tried making a modal Markdown editor to allow myself to edit my notes without changing their representation. However, looking at the strange corners of Markdown syntax I had to handle, with millions<sup><a id="footnote-return-1" href="#footnote-1" role="doc-noteref" aria-label="footnote 1">1</a></sup> of redundant ways to make bullet points and strange alternative heading types<sup><a id="footnote-return-2" href="#footnote-2" role="doc-noteref" aria-label="footnote 2">2</a></sup> , convinced me to search for <a href="https://karl-voit.at/2025/08/17/Markdown-disaster/">articles to confirm my growing Markdown disapproval</a>.</p><p>With my dislike of Markdown now supported by credible sources, I decided to convert all my 400 notes to <a href="https://typst.app/">Typst</a>, the LaTeX replacement with Markdown-like syntax. I will describe that conversion process in this post to help anyone else converting many Markdown documents.</p><h2>Setup</h2><p>I used the universal document converter <a href="https://pandoc.org/">Pandoc</a> to automate the conversion. To minimize the cost of mistakes, I wrote a Python script that would run each command-line tool, and save the output in a folder separate from my actual notes folder. This separation protected my actual notes from modification before I became certain about my conversion process.</p><p>The main part of my Python script initially looked like this:</p><file-display path="&quot;main.py&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="py">old_dir = Path("./old")
+new_dir = Path("./new")
+
+if new_dir.exists():
+    shutil.rmtree(new_dir)
+    print("cleared new_dir")
+
+new_dir.mkdir(parents=True, exist_ok=True)
+
+md_names = [
+    "md_to_typ_test.md",
+    "-hackerman--brot_rich_content_test.md",
+]
+
+for md_name in md_names:
+    print("converting", md_name)
+
+    md_file = old_dir / md_name
+    content = md_file.read_text(encoding="utf-8")
+    modified_content = process_content(content)
+
+    typ_file = new_dir / md_file.with_suffix(".typ").name
+    typ_file.write_text(modified_content, encoding="utf-8")
+
+    print("compiling with typst")
+    path = str(typ_file)
+    call_typst(path)
+    call_typstyle(path)</code></pre></div></file-display><p>I started by only converting two test Markdown files containing examples of richly formatted content. For each of those files, I first used Pandoc to convert the content to Typst, ensured that the results compiled by calling Typst, and finally fixed formatting with the formatter <a href="https://github.com/typstyle-rs/typstyle">typstyle</a>.</p><p>This infrastructure allowed me to quickly iterate on my conversion process, giving me the ability to easily change arguments for all command-line tools and quickly see the conversion results.</p><h2>Results</h2><p>After much iteration, I created a process that worked correctly for almost all my notes.</p><h3 id="preprocessing">Preprocessing</h3><p>Tiptap denotes underlines with the nonstandard <code data-lang>++</code> syntax, for example <code data-lang="md">++I am underlined++</code>. I used an evil RegEx to solve this problem, using python to replace these markers with the <em>bracketed spans</em> notation that Pandoc understands.</p><p>The below regex replaces text like <code data-lang="md">++hello world++</code> with <code data-lang="md">[hello world]{.underline}</code>.</p><file-display path="&quot;main.py&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="py">def preprocess_markdown(md_text: str) -> str:
+    md_text = re.sub(r"(?&lt;!\\)\+\+(.+?)(?&lt;!\\)\+\+", r"[\1]{.underline}", md_text)
+    return md_text</code></pre></div></file-display><h3>Pandoc command</h3><p>My final Pandoc command looked like this:</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="sh">pandoc
+  -f gfm-gfm_auto_identifiers+bracketed_spans+smart-autolink_bare_uris
+  -t typst
+  --lua-filter=filter.lua</code></pre></div><p>I converted from Github-Flavored Markdown (specified by setting <code data-lang>-f</code> to <code data-lang>gfm</code>), because it better fit Tiptap’s Markdown export. I also configured some Pandoc extensions on GFM, and added a Lua filter to fix edge cases.</p><h4>Pandoc extensions</h4><ul><li>I disabled the <code data-lang>gfm_auto_identifiers</code> <a href="https://pandoc.org/MANUAL.html#extensions">Pandoc extension</a> by appending <code data-lang>‑gfm_auto_identifiers</code> (you can read this syntax as “subtract <code data-lang>gfm_auto_identifiers</code>”) so that each heading wouldn’t have an associated <a href="https://typst.app/docs/reference/foundations/label/">Typst label</a>.</li><li>I enabled the <code data-lang>bracketed_spans</code> extension to handle the underlines I created in <a href="#preprocessing">preprocessing</a>.</li><li>I enabled the <code data-lang>smart</code> extension so that Pandoc would correctly interpret quotes matching curly quotes, and not escape them when converting to typst Typst, preventing the problem of <code data-lang="md">"hello world"</code> turning into <code data-lang="typ">\"hello world\"</code>.</li><li>I disabled the <code data-lang>autolink_bare_uris</code> extension to pass plain links to Typst as plain text.</li></ul><h4>Lua filter</h4><p>I also used a Pandoc <a href="https://pandoc.org/lua-filters.html">Lua filter</a> by specifying the <code data-lang>--lua-filter</code> option, allowing me to make precise adjustments by writing arbitrary Lua code with access to Pandoc’s internal representation of elements.</p><p>The Lua filter I wrote grew into complexity to shoulder the heap of edge cases in the large number of notes I’d written. It consists of two passes, <code data-lang>convert_html</code> and <code data-lang>modify_elements</code>. Pandoc knows the order to run the filters because Lua tables are ordered by insertion.</p><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local convert_html = {
+  -- ...
+}
+
+local modify_elements = {
+  -- ...
+}
+
+return { convert_html, modify_elements }</code></pre></div></file-display><p>The <code data-lang>convert_html</code> filter consists of only one selector which finds HTML tables and forces Pandoc to parse them as actual tables.</p><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local convert_html = {
+  RawBlock = function(raw)
+    if raw.format:match 'html' and raw.text:match '%&lt;table' then
+      return pandoc.read(raw.text, raw.format).blocks
+    end
+  end
+}</code></pre></div></file-display><p>The <code data-lang>modify_elements</code> filter has many more selectors.</p><ul><li><p>The first selectors force Pandoc to render strong and emphasized elements using the dedicated syntax, turning <code data-lang="typ">#strong(hello) #emph(world)</code> into <code data-lang="typ">*hello* _world_</code>.</p><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local modify_elements = {
+  Strong = function(el)
+    local inlines = { pandoc.RawInline('typst', '*') }
+    for _, item in ipairs(el.content) do
+      table.insert(inlines, item)
+    end
+    table.insert(inlines, pandoc.RawInline('typst', '*'))
+    return inlines
+  end,
+
+  Emph = function(el)
+    local inlines = { pandoc.RawInline('typst', '_') }
+    for _, item in ipairs(el.content) do
+      table.insert(inlines, item)
+    end
+    table.insert(inlines, pandoc.RawInline('typst', '_'))
+    return inlines
+  end,
+  -- ...
+}</code></pre></div></file-display></li><li><p>The <code data-lang>Link</code> filter turns links without bodies and links with bodies identical to their sources into plaintext links that Typst recognizes, allowing <code data-lang="md">[https://julianlbauer.com](https://julianlbauer.com)</code> to become <code data-lang="typ">https://julianlbauer.com</code> instead of <code data-lang="typ">#link("https://julianlbauer.com")[https://julianlbauer.com]</code>.</p><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local modify_elements = {
+  -- ...
+  Link = function(el)
+    local content_text = pandoc.utils.stringify(el.content)
+
+    if content_text == el.target or content_text == "" then
+      return pandoc.RawInline('typst', el.target)
+    else
+      return el
+    end
+  end,
+  -- ...
+}</code></pre></div></file-display></li><li>The <code data-lang>Math</code> filter passes the content inside math elements directly to Typst, because I had already created a custom Tiptap plugin that used Typst math syntax inside Typst using <a href="https://github.com/qwinsi/tex2typst">tex2typst</a>. I also included some evil find-and-replace lines to fix tex2typst’s inconsistencies with Typst.<span style="white-space: pre-wrap">&#x20;</span><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local modify_elements = {
+  -- ...
+  Math = function(el)
+    local modified_text = string.gsub(el.text, "cdot", "dot ")
+    modified_text = string.gsub(modified_text, "int ", "integral ")
+    modified_text = string.gsub(modified_text, "int%%^", "integral^")
+    modified_text = string.gsub(modified_text, "int_", "integral_")
+    modified_text = string.gsub(modified_text, "empty", "emptyset")
+    modified_text = string.gsub(modified_text, " sub ", " subset ")
+    if el.mathtype == 'InlineMath' then
+      return pandoc.RawInline('typst', '$' .. modified_text .. '$')
+    else
+      return pandoc.RawInline('typst', '$ ' .. modified_text .. ' $')
+    end
+  end,
+  -- ...
+}</code></pre></div></file-display></li><li>The <code data-lang>Span</code> filter adds underlines to the spans created in <a href="#preprocessing">preprocessing</a>.<span style="white-space: pre-wrap">&#x20;</span><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local modify_elements = {
+  -- ...
+  Span = function(el)
+    if el.classes:includes('underline') then
+      return pandoc.Underline(el.content)
+    end
+  end,
+  -- ...
+}</code></pre></div></file-display></li><li>The <code data-lang>Table</code> filter removes the <code data-lang="typ">#figure()</code> wrapping around tables, and uses evil RegExes to remove some table boilerplate I found unecessary.<span style="white-space: pre-wrap">&#x20;</span><file-display path="&quot;filter.lua&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="lua">local modify_elements = {
+  -- ...
+  Table = function(elem)
+    elem.attr.classes:insert('typst:no-figure')
+    elem.attr.attributes['typst:figure:kind'] = 'none'
+    local typst_code = pandoc.write(pandoc.Pandoc({elem}), 'typst')
+    typst_code = typst_code:gsub("%s*align:%s*%([^%)]+%),?\n", "\n")
+    typst_code = typst_code:gsub("%s*table%.hline%(%),?\n", "\n")
+    return pandoc.RawBlock('typst', typst_code)
+  end
+}</code></pre></div></file-display></li></ul><h3>Postprocessing</h3><p>I discovered that Pandoc overcautiously escaped the second slash in the <code data-lang>https://</code> of links to prevent creating a <code data-lang="typ">// typst comment</code>, an unnecessary and uglifying change that made all bare links in the resulting Typst look like <code data-lang="typ">http:/\/julianlbauer.com// [!code word:http\:/\\/]</code> instead of <code data-lang="typ">http://julianlbauer.com // [!code word:http\://]</code>.</p><p>As a final evil hack, I used find-and-replace on the resulting source code to remove that extra backslash.</p><file-display path="&quot;main.py&quot;"><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="py">def postprocess_typst(text: str) -> str:
+    text = text.replace("https:/\\/", "https://")
+    return text</code></pre></div></file-display><h3>Manual adjustments</h3><p>Tragically, there were a few unavoidable manual adjustments I had to make. Before switching my math to Typst, I had written a quarter dozen notes with LaTeX math. I converted those equations to Typst by hand.</p><h2>Conclusion</h2><p>I had to write much more code than I expected, due to the verbosity of Pandoc’s default Typst output and the nonstandard Markdown output of my Tiptap editor. Luckily, my process was still much faster than manually converting each note.</p><p>You can see my <a href="https://github.com/Ashwagandhae/brot-md-to-typ">conversion code on Github</a>. I hope this article can act as an example for new Pandoc users facing big document conversion projects!</p><footer><ol><li id="footnote-1" role="doc-footnote">Ok, there exist only 3 ways: <code data-lang="md">- Item</code>, <code data-lang="md">+ Item</code>, and <code data-lang="md">* Item</code>, but it still feels like too many. <a href="#footnote-return-1" role="doc-backlink" aria-label="Back to content">↩︎</a></li><li id="footnote-2" role="doc-footnote"><p>Did you know about <a href="https://spec.commonmark.org/0.20/#setext-header">setext headings</a>? The ones that let you with the following syntax?</p><div class="raw"><raw-copy-button></raw-copy-button><pre><code data-lang="md">Wow, h1 heading
+====================
+
+Wow, h2 heading
+---------
+
+Uh oh, there's no way to make an h3...</code></pre></div><p>Neither did I. <a href="#footnote-return-2" role="doc-backlink" aria-label="Back to content">↩︎</a></p></li></ol></footer></body></html>
