@@ -46,6 +46,7 @@ export async function extractContent(html: string): Promise<ArticleContent> {
 	const { document } = parseHTML(html);
 
 	await modifyHtml(document);
+	await addShikiHighlighting(document.body);
 
 	let toc = processHeaders(document);
 
@@ -58,7 +59,7 @@ export async function extractContent(html: string): Promise<ArticleContent> {
 export async function extractContentRss(html: string): Promise<ContentNode[]> {
 	const { document } = parseHTML(html);
 
-	await modifyHtml(document);
+	await addShikiHighlighting(document.body);
 
 	let nodes = nodesToContentNodes(Array.from(document.body.childNodes));
 	return nodes;
@@ -74,7 +75,6 @@ async function modifyHtml(document: Document) {
 		'.math [stroke="#ffffff"], figure [stroke="#ffffff"]',
 	);
 	targetStrokes.forEach((el) => el.setAttribute("stroke", "currentColor"));
-	await addShikiHighlighting(document.body);
 }
 
 import { addShikiHighlighting } from "./article/highlight";

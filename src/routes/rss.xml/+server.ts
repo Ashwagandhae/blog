@@ -19,17 +19,24 @@ function cleanRssHtml(html: string): string {
 	const root = document.firstElementChild as HTMLElement;
 
 	root.querySelectorAll("svg").forEach((svg) => {
+		svg.removeAttribute("style");
+		const bg = document.createElement("rect");
+		bg.setAttribute("width", "100%");
+		bg.setAttribute("height", "100%");
+		bg.setAttribute("fill", "#1a1a1a");
+		svg.insertBefore(bg, svg.firstChild);
+
 		svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+		if (!svg.hasAttribute("xmlns:xlink")) {
+			svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+		}
 
-		const svgString = svg.outerHTML;
-
-		const dataUri = `data:image/svg+xml,${encodeURIComponent(svgString)}`;
-
+		const dataUri = `data:image/svg+xml,${encodeURIComponent(svg.outerHTML)}`;
 		const img = document.createElement("img");
 		img.setAttribute("src", dataUri);
 
 		if (svg.getAttribute("aria-label")) {
-			img.setAttribute("alt", svg.getAttribute("aria-label") || "");
+			img.setAttribute("alt", svg.getAttribute("aria-label") || "Data Plot");
 		}
 
 		svg.parentNode?.insertBefore(img, svg);
