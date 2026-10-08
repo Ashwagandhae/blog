@@ -157,7 +157,7 @@ $
 
 #collapsible[
 
-  #lorem(400)
+  #raw(block: true, lorem(50).replace(" ", "\n"))
 ]
 
 = Images

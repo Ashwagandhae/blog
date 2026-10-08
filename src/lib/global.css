@@ -78,6 +78,7 @@
   inherits: true;
   initial-value: 280;
 }
+
 @property --hue-front {
   syntax: "<number>";
   inherits: true;
@@ -116,12 +117,8 @@ body {
   --text-chroma: 0.04;
   --text-color-chroma: 0.1;
   --text: oklch(var(--text-lightness) var(--text-chroma) var(--hue-front));
-  --text-strong: oklch(
-    var(--text-strong-lightness) var(--text-chroma) var(--hue-front)
-  );
-  --text-weak: oklch(
-    var(--text-weak-lightness) var(--text-chroma) var(--hue-front)
-  );
+  --text-strong: oklch(var(--text-strong-lightness) var(--text-chroma) var(--hue-front));
+  --text-weak: oklch(var(--text-weak-lightness) var(--text-chroma) var(--hue-front));
 
   --tag-back: var(--transparent-back);
   --tag-transition: background var(--transition-duration);
@@ -129,12 +126,9 @@ body {
   --article-tag-lightness-hover: var(--level-3);
   --article-tag-lightness-active: var(--level-4);
 
-  --back-gradient: radial-gradient(
-      circle clamp(400px, 80vw, 900px) at 0% 0%,
+  --back-gradient: radial-gradient(circle clamp(400px, 80vw, 900px) at 0% 0%,
       oklch(0.26 0.08 var(--hue-front)),
-      transparent
-    )
-    oklch(0.19 0.05 var(--hue-back));
+      transparent) oklch(0.19 0.05 var(--hue-back));
 
   color: var(--text);
 
@@ -144,6 +138,7 @@ body {
 
   background: var(--back-gradient);
 }
+
 /* body::before {
   content: "";
   position: fixed;
@@ -155,7 +150,7 @@ body {
   z-index: -1;
 } */
 button,
-a.button {
+.button {
   background: var(--transparent-back);
   border: none;
   margin: 0;
@@ -173,20 +168,21 @@ a.button {
 
   transition: background var(--transition-duration-slow);
 }
+
 button:hover,
-a.button:hover {
+.button:hover {
   background: var(--transparent-back-1);
   transition: background var(--transition-duration);
 }
 
 button:active,
-a.button:active {
+.button:active {
   background: var(--transparent-back-2);
   transition: background var(--transition-duration);
 }
 
 button:disabled,
-a.button:disabled {
+.button:disabled {
   background: var(--transparent-back);
   color: var(--text-weak);
 }
