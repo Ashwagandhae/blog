@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from "#lib/components/Icon.svelte";
+  import { getIsRss } from "#lib/rss";
 
   let element: HTMLElement | null = $state(null);
   function copyText() {
@@ -7,16 +8,19 @@
     if (text == null) return;
     navigator.clipboard.writeText(text);
   }
+  const isRss = getIsRss();
 </script>
 
-<button
-  class="copyButton"
-  onclick={copyText}
-  aria-label="Copy code"
-  bind:this={element}
->
-  <Icon name="copy" />
-</button>
+{#if !isRss}
+  <button
+    class="copyButton"
+    onclick={copyText}
+    aria-label="Copy code"
+    bind:this={element}
+  >
+    <Icon name="copy" />
+  </button>
+{/if}
 
 <style>
   .copyButton {

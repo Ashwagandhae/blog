@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { getIsRss } from "#lib/rss";
   let { children } = $props();
 
   let isOpen = $state(false);
 
   const uid = $props.id();
+  const isRss = getIsRss();
 
   let wrapper: HTMLDivElement | undefined = $state();
 
@@ -18,24 +20,28 @@
   });
 </script>
 
-<div class="collapsible" bind:this={wrapper}>
-  <div class="content">
-    {@render children()}
+{#if isRss}
+  {@render children()}
+{:else}
+  <div class="collapsible" bind:this={wrapper}>
+    <div class="content">
+      {@render children()}
+    </div>
+
+    <div class="fade"></div>
+
+    <input
+      class="toggle"
+      type="checkbox"
+      id={uid}
+      bind:checked={isOpen}
+      autocomplete="off"
+    />
+    <label class="toggle-button button" for={uid}>
+      <span class="sr-only">Toggle collapsed</span></label
+    >
   </div>
-
-  <div class="fade"></div>
-
-  <input
-    class="toggle"
-    type="checkbox"
-    id={uid}
-    bind:checked={isOpen}
-    autocomplete="off"
-  />
-  <label class="toggle-button button" for={uid}>
-    <span class="sr-only">Toggle collapsed</span></label
-  >
-</div>
+{/if}
 
 <style>
   .collapsible {

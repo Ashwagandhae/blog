@@ -3,10 +3,10 @@
   import { embedComponents } from "#lib/embed.js";
   import Self from "./ContentRenderer.svelte";
 
-  let { nodes }: { nodes: ContentNode[] } = $props();
+  let { nodes }: { nodes: ContentNode[]; isRss: boolean } = $props();
 
   function deserializeAttributes(
-    attributes: Record<string, string>
+    attributes: Record<string, string>,
   ): Record<string, any> {
     let res: Record<string, any> = {};
     for (let key of Object.keys(attributes)) {

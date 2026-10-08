@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import { getIsRss } from "#lib/rss";
 
   let { children, path }: { children: Snippet; path: string } = $props();
 
@@ -12,34 +13,40 @@
   let file = $derived(lastSlash === -1 ? path : path.substring(lastSlash + 1));
 
   let showDir = $state(false);
+  const isRss = getIsRss();
 </script>
 
-<div class="fileDisplay">
-  <div class="path">
-    <div class="content-scroll">
-      {#if dir != null}
-        <button class="dir" onclick={() => (showDir = !showDir)}>
-          {#if showDir}
+{#if isRss}
+  <p>{dir}{file}:</p>
+  {@render children()}
+{:else}
+  <div class="fileDisplay">
+    <div class="path">
+      <div class="content-scroll">
+        {#if dir != null}
+          <button class="dir" onclick={() => (showDir = !showDir)}>
+            {#if showDir}
+              {dir}
+            {:else}
+              …/
+            {/if}
+          </button>{/if}<noscript
+          ><span class="dir">
             {dir}
-          {:else}
-            …/
-          {/if}
-        </button>{/if}<noscript
-        ><span class="dir">
-          {dir}
-        </span></noscript
-      ><span class="file">
-        {file}
-      </span>
+          </span></noscript
+        ><span class="file">
+          {file}
+        </span>
+      </div>
+
+      <svg class="corner-right" viewBox="0 0 20 20">
+        <path d="M 0 0 A 20 20 0 0 0 20 20 L 0 20 Z" />
+      </svg>
     </div>
 
-    <svg class="corner-right" viewBox="0 0 20 20">
-      <path d="M 0 0 A 20 20 0 0 0 20 20 L 0 20 Z" />
-    </svg>
+    {@render children()}
   </div>
-
-  {@render children()}
-</div>
+{/if}
 
 <style>
   .fileDisplay {
