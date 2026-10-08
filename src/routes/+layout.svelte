@@ -43,6 +43,12 @@
   <link rel="manifest" href="/site.webmanifest" />
 
   <link rel="shortcut icon" href="/favicon.ico" />
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom feed"
+    href="/feed.xml"
+  />
 </svelte:head>
 <header>
   <nav aria-label="Main navigation">

@@ -16,7 +16,10 @@
 
 <div class="title">
   <h1>Writing</h1>
-  <a href="/writing/tags"><InfoTag icon="tag">all tags</InfoTag></a>
+  <div class="links">
+    <a href="/writing/tags"><InfoTag icon="tag">all tags</InfoTag></a>
+    <a href="/feed.xml"><InfoTag icon="rss">feed</InfoTag></a>
+  </div>
 </div>
 
 <ArticleList articles={data.articles}></ArticleList>
@@ -28,6 +31,13 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+  }
+  .links {
+    display: flex;
+    flex-direction: row;
+    gap: var(--pad-big);
+    align-items: center;
+    width: min-content;
   }
 
   .title a {

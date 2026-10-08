@@ -1,10 +1,6 @@
 import { render } from "svelte/server";
 import ContentRenderer from "#lib/components/ContentRenderer.svelte";
-import {
-	getSortedArticlesRss,
-	type ArticleContent,
-	type ArticleMeta,
-} from "#lib/article.ts";
+import { getSortedArticlesRss, type ArticleMeta } from "#lib/article.ts";
 import type { ContentNode } from "#lib/article/contentNode.ts";
 import { parseHTML } from "linkedom";
 
@@ -42,14 +38,19 @@ function cleanRssHtml(html: string): string {
 		svg.parentNode?.insertBefore(img, svg);
 		svg.remove();
 	});
+
 	root.querySelectorAll("a[href], img[src]").forEach((node) => {
 		const attr = node.tagName === "A" ? "href" : "src";
 		const val = node.getAttribute(attr);
+
+		// Keep hash links intact
+		if (val && val.startsWith("#")) return;
 
 		if (val && (val.startsWith("/") || val.startsWith("."))) {
 			node.setAttribute(attr, new URL(val, SITE_URL).href);
 		}
 	});
+
 	const walker = document.createTreeWalker(root, 128);
 	const comments: Node[] = [];
 	while (walker.nextNode()) {
@@ -65,7 +66,7 @@ function cleanRssHtml(html: string): string {
 	return root.innerHTML;
 }
 
-function generateRssItem(
+function generateAtomEntry(
 	nodes: ContentNode[],
 	meta: ArticleMeta,
 	path: string,
@@ -76,40 +77,53 @@ function generateRssItem(
 		context,
 	});
 	const cleanHtml = cleanRssHtml(body);
+	const permalink = `${SITE_URL}/writing/${path}`;
+
+	// Atom strictly requires ISO 8601 formatting
+	const isoDate = new Date(meta.date).toISOString();
 
 	return `
-    <item>
+    <entry>
       <title><![CDATA[${meta.title}]]></title>
-      <link>${SITE_URL}/writing/${path}</link>
-      <guid isPermaLink="true">${SITE_URL}/writing/${path}</guid>
-      <pubDate>${new Date(meta.date).toUTCString()}</pubDate>
-      <description>${meta.description}</description>
-			<content:encoded><![CDATA[${cleanHtml}]]></content:encoded>
-    </item>
+      <link href="${permalink}" />
+      <id>${permalink}</id>
+      <published>${isoDate}</published>
+      <updated>${isoDate}</updated>
+      <summary><![CDATA[${meta.description}]]></summary>
+      <content type="html"><![CDATA[${cleanHtml}]]></content>
+    </entry>
   `;
 }
 
 export async function GET() {
 	const posts = await getSortedArticlesRss();
 	const recentPosts = posts.slice(0, 15);
-	const itemsXml = recentPosts
-		.map(({ nodes, meta, path }) => generateRssItem(nodes, meta, path))
+	const entriesXml = recentPosts
+		.map(({ nodes, meta, path }) => generateAtomEntry(nodes, meta, path))
 		.join("");
 
+	const lastUpdated =
+		recentPosts.length > 0
+			? new Date(recentPosts[0].meta.date).toISOString()
+			: new Date().toISOString();
+
 	const xml = `<?xml version="1.0" encoding="UTF-8" ?>
-	<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-    <channel>
+    <feed xmlns="http://www.w3.org/2005/Atom">
       <title>${SITE_TITLE}</title>
-      <link>${SITE_URL}</link>
-      <description>${SITE_DESC}</description>
-      <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
-      ${itemsXml}
-    </channel>
-  </rss>`.trim();
+      <subtitle>${SITE_DESC}</subtitle>
+      <link href="${SITE_URL}/atom.xml" rel="self" />
+      <link href="${SITE_URL}" />
+      <id>${SITE_URL}/</id>
+      <updated>${lastUpdated}</updated>
+      <author>
+        <name>Julian Bauer</name>
+      </author>
+      ${entriesXml}
+    </feed>`.trim();
 
 	return new Response(xml, {
 		headers: {
-			"Content-Type": "application/xml",
+			"Content-Type": "application/atom+xml",
 			"Cache-Control": "max-age=0, s-maxage=3600",
 		},
 	});
