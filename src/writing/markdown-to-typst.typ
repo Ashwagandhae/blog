@@ -103,7 +103,7 @@ I converted from Github-Flavored Markdown (specified by setting `-f` to `gfm`), 
 
 - I disabled the `gfm_auto_identifiers` #link("https://pandoc.org/MANUAL.html#extensions")[Pandoc extension] by appending #raw("\u{2011}gfm_auto_identifiers") (you can read this syntax as "subtract `gfm_auto_identifiers`") so that each heading wouldn't have an associated #link("https://typst.app/docs/reference/foundations/label/")[Typst label].
 - I enabled the `bracketed_spans` extension to handle the underlines I created in #link(<preprocessing>)[preprocessing].
-- I enabled the `smart` extension so that Pandoc would correctly interpret quotes matching curly quotes, and not escape them when converting to typst Typst, preventing the problem of ```md "hello world"``` turning into ```typ \"hello world\"```.
+- I enabled the `smart` extension so that Pandoc would correctly interpret quotes matching curly quotes, and not escape them when converting to Typst, preventing the problem of ```md "hello world"``` turning into ```typ \"hello world\"```.
 - I disabled the `autolink_bare_uris` extension to pass plain links to Typst as plain text.
 
 
