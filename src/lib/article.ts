@@ -55,6 +55,14 @@ export async function extractContent(html: string): Promise<ArticleContent> {
 		toc,
 	};
 }
+export async function extractContentRss(html: string): Promise<ContentNode[]> {
+	const { document } = parseHTML(html);
+
+	await modifyHtml(document);
+
+	let nodes = nodesToContentNodes(Array.from(document.body.childNodes));
+	return nodes;
+}
 
 async function modifyHtml(document: Document) {
 	const targetFills = document.body.querySelectorAll(
@@ -112,8 +120,8 @@ export async function getSortedArticleMetas(): Promise<
 		}))
 		.sort(articleSorter);
 }
-export async function getSortedArticles(): Promise<
-	{ meta: ArticleMeta; content: ArticleContent; path: string }[]
+export async function getSortedArticlesRss(): Promise<
+	{ meta: ArticleMeta; nodes: ContentNode[]; path: string }[]
 > {
 	return (
 		await Promise.all(
@@ -122,7 +130,7 @@ export async function getSortedArticles(): Promise<
 			).map(async ({ html, path }) => ({
 				path,
 				meta: extractMeta(html),
-				content: await extractContent(html),
+				nodes: await extractContentRss(html),
 			})),
 		)
 	).sort(articleSorter);
