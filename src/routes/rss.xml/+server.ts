@@ -19,10 +19,11 @@ function cleanRssHtml(html: string): string {
 	const root = document.firstElementChild as HTMLElement;
 
 	root.querySelectorAll("svg").forEach((svg) => {
+		svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
 		const svgString = svg.outerHTML;
 
-		const base64Svg = Buffer.from(svgString).toString("base64");
-		const dataUri = `data:image/svg+xml;base64,${base64Svg}`;
+		const dataUri = `data:image/svg+xml,${encodeURIComponent(svgString)}`;
 
 		const img = document.createElement("img");
 		img.setAttribute("src", dataUri);
@@ -34,19 +35,14 @@ function cleanRssHtml(html: string): string {
 		svg.parentNode?.insertBefore(img, svg);
 		svg.remove();
 	});
-
 	root.querySelectorAll("a[href], img[src]").forEach((node) => {
 		const attr = node.tagName === "A" ? "href" : "src";
 		const val = node.getAttribute(attr);
 
-		if (
-			val &&
-			(val.startsWith("/") || val.startsWith(".") || val.startsWith("#"))
-		) {
+		if (val && (val.startsWith("/") || val.startsWith("."))) {
 			node.setAttribute(attr, new URL(val, SITE_URL).href);
 		}
 	});
-
 	const walker = document.createTreeWalker(root, 128);
 	const comments: Node[] = [];
 	while (walker.nextNode()) {
