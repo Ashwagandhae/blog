@@ -12,7 +12,7 @@
 
 After the vim-inspired modal editor #link("https://helix-editor.com/")[Helix] conquered my code writing habits this summer, it demanded complete loyalty. That meant that my homemade note-taking app, #link("https://github.com/Ashwagandhae/brot")[brot], built with the #link("https://tiptap.dev/")[Tiptap] what-you-see-is-what-you-get Markdown editor, needed surgical alteration to meet my new standards.
 
-I initially tried making a modal Markdown editor to allow myself to edit my notes without changing their representation. However, looking at the strange corners of Markdown syntax I had to handle, with millions#footnote[Ok, there exist only 3 ways: ```md - Item```, ```md + Item```, and ```md * Item```, but it still feels like too many.] of redundant ways to make bullet points and strange alternative heading types#footnote[Did you know about #link("https://spec.commonmark.org/0.20/#setext-header")[setext headings]? The ones that let you with the following syntax?
+I initially tried making a modal Markdown editor to allow myself to edit my notes without changing their representation. However, looking at the strange corners of Markdown syntax I had to handle, with millions#footnote[Ok, there exist only 3 ways: ```md - Item```, ```md + Item```, and ```md * Item```, but it still feels like too many.] of redundant ways to make bullet points and strange alternative heading types#footnote[Did you know about #link("https://spec.commonmark.org/0.20/#setext-header")[setext headings]? The ones that let you use the following syntax?
   ```md
   Wow, h1 heading
   ====================
