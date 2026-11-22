@@ -15,7 +15,7 @@
 <p>Welcome to Julian Bauer's home on the internet.</p>
 <h2>Webrings</h2>
 <div class="webrings">
-  <Webring left="https://dan.onl/" right="https://kiyuri.ca/"
+  <Webring left="https://dan.onl/" right="https://mileskent.github.io/"
     >Bay Leaf Webring</Webring
   >
   <Webring
