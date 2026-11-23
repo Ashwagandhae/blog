@@ -1,0 +1,12 @@
+{
+	"ci": {
+		"collect": {
+			"staticDistDir": "./www",
+			"url": [],
+			"numberOfRuns": 1
+		},
+		"upload": {
+			"target": "temporary-public-storage"
+		}
+	}
+}

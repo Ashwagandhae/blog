@@ -1,6 +1,4 @@
 
-#import "@local/mathyml:0.1.0": to-mathml;
-
 // embedded components
 #let embed(tag, body: none, attrs: (:)) = {
   let json-attrs = (:)
