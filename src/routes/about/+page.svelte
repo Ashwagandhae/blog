@@ -25,6 +25,7 @@
 <h2>Links</h2>
 <a href="https://github.com/Ashwagandhae">Github</a> •
 <a href="https://www.linkedin.com/in/julian-bauer-32823b246/">Linkedin</a> •
+<a href="https://orcid.org/0009-0006-4692-6986">ORCID</a> •
 <a href="./about/contact">Contact</a>
 <h2>Colophon</h2>
 <p>
