@@ -6,7 +6,11 @@
 </script>
 
 <div class="tag" style="--hue: {hue}">
-  <span class="text">{tag}</span><a href={backLink} class="close">
+  <span class="text">{tag}</span><a
+    href={backLink}
+    class="close"
+    aria-label="Close tag filter"
+  >
     <InlineIcon name="x" />
   </a>
 </div>
