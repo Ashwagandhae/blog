@@ -20,7 +20,7 @@
   >
   <Webring
     left="https://www.romanreddick.com/"
-    right="https://henrygustafson.com/">Gimkit Webring</Webring
+    right="https://jalenvuong.github.io/">Gimkit Webring</Webring
   >
 </div>
 
